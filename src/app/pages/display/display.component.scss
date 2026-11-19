@@ -1,4 +1,3 @@
-/* Portrait stage: on landscape desktops, letterbox a vertical mirror frame */
 .stage {
   min-height: 100dvh;
   background: #000;
@@ -17,37 +16,37 @@
   min-height: 100dvh;
   display: flex;
   flex-direction: column;
-  padding: 14px 16px 10px;
+  padding: 18px 22px 12px;
   box-sizing: border-box;
   background: #000;
   overflow: hidden;
 }
 
-/* Vertical kiosk composition (matches MagicMirror portrait TV) */
 .stage[data-layout='mirror'] .mirror {
   height: 100dvh;
   max-height: 100dvh;
 }
 
+/* Portrait kiosk frame on landscape monitors */
 @media (orientation: landscape) and (min-width: 1100px) {
   .stage[data-layout='mirror'] .mirror {
     width: min(100vw, calc(100dvh * 9 / 16));
-    max-width: 1080px;
+    max-width: 1200px;
     height: 100dvh;
-    border-left: 1px solid rgba(118, 215, 196, 0.12);
-    border-right: 1px solid rgba(118, 215, 196, 0.12);
+    border-left: 1px solid rgba(118, 215, 196, 0.1);
+    border-right: 1px solid rgba(118, 215, 196, 0.1);
   }
 }
 
 .settings-fab {
   position: absolute;
-  top: 10px;
-  right: 14px;
+  top: 12px;
+  right: 16px;
   z-index: 5;
-  opacity: 0.22;
+  opacity: 0.18;
   color: var(--text);
   text-decoration: none;
-  font-size: 1.15rem;
+  font-size: 1.25rem;
 }
 
 .settings-fab:hover {
@@ -61,22 +60,22 @@
   flex: 1 1 auto;
   min-height: 0;
   display: grid;
-  gap: 18px 22px;
+  gap: 28px 36px;
   align-items: start;
 }
 
 .mirror[data-layout='mirror'] .layout {
-  grid-template-columns: minmax(240px, 300px) minmax(0, 1fr);
+  grid-template-columns: minmax(300px, 360px) minmax(0, 1fr);
 }
 
 .mirror[data-layout='columns'] .layout {
-  grid-template-columns: var(--card-width) 1fr minmax(260px, 480px);
+  grid-template-columns: var(--card-width) 1fr minmax(300px, 520px);
 }
 
 .col {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 12px;
   min-width: 0;
 }
 
@@ -93,10 +92,6 @@
 .right {
   justify-self: stretch;
   width: 100%;
-  align-items: stretch;
-}
-
-.mirror[data-layout='mirror'] .right {
   align-items: flex-end;
 }
 
@@ -105,15 +100,14 @@
   z-index: 2;
   flex: 0 0 auto;
   width: 94%;
-  margin: 6px auto 0;
+  margin: 10px auto 0;
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  max-height: 34vh;
+  gap: 8px;
+  max-height: 36vh;
   overflow: hidden;
 }
 
-/* Only collapse on very narrow phones — keep 2-col on portrait TVs (~1080 wide) */
 @media (max-width: 720px) {
   .mirror[data-layout='mirror'] .layout,
   .mirror[data-layout='columns'] .layout {

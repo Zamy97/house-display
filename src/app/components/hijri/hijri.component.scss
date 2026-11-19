@@ -5,21 +5,13 @@
   background: none;
   border: none;
   box-shadow: none;
-  padding: 4px 8px;
+  padding: 8px 6px;
   text-align: right;
   color: var(--gold);
 }
 
-.label {
-  font-size: 0.75rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--text-faint);
-}
-
 .value {
   color: var(--gold);
-  font-size: 1rem;
+  font-size: 1.25rem;
   letter-spacing: 0.04em;
-  margin-top: 4px;
 }

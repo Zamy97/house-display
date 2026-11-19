@@ -6,13 +6,23 @@ import { ContentService, DuaItem } from '../../core/services/content.service';
   standalone: true,
   template: `
     <section class="panel content-panel">
-      <h2>Dua</h2>
+      <h2>Dua of the Day</h2>
       @if (dua; as d) {
-        <div class="title">{{ title }}</div>
         @if (d.arabic) {
           <div class="arabic">{{ d.arabic }}</div>
         }
-        <div class="translation">{{ translation }}</div>
+        @if (d.transliteration) {
+          <div class="transliteration">{{ d.transliteration }}</div>
+        }
+        @if (d.text) {
+          <div class="translation">{{ d.text }}</div>
+        }
+        @if (preferBn && d.textBn) {
+          <div class="bangla">{{ d.textBn }}</div>
+        }
+        @if (d.repeat && d.repeat > 1) {
+          <div class="repeat">Repeat {{ d.repeat }}x</div>
+        }
         @if (d.reference) {
           <div class="ref">{{ d.reference }}</div>
         }
@@ -26,18 +36,6 @@ export class DuaComponent implements OnChanges {
   dua: DuaItem | null = null;
 
   constructor(private readonly content: ContentService) {}
-
-  get translation(): string {
-    if (!this.dua) return '';
-    if (this.preferBn && this.dua.textBn) return this.dua.textBn;
-    return this.dua.text || '';
-  }
-
-  get title(): string {
-    if (!this.dua) return '';
-    if (this.preferBn && this.dua.titleBn) return this.dua.titleBn;
-    return this.dua.title || '';
-  }
 
   ngOnChanges(): void {
     this.content.pickDua(this.preferBn).subscribe((d) => (this.dua = d));

@@ -11,28 +11,30 @@
 .cell {
   width: 50%;
   box-sizing: border-box;
-  padding: 4px 6px;
+  padding: 6px 8px;
 }
 
 .zone {
   display: flex;
   align-items: center;
-  gap: 6px;
-  font-size: 0.66rem;
+  gap: 7px;
+  font-size: 0.78rem;
   letter-spacing: 0.05em;
   color: var(--text-faint);
-  line-height: 1.2;
+  line-height: 1.25;
 }
 
 .flag {
   border-radius: 2px;
   object-fit: cover;
   flex-shrink: 0;
+  width: 22px;
+  height: 15px;
 }
 
 .time {
-  font-size: 0.95rem;
+  font-size: 1.15rem;
   color: var(--accent);
-  line-height: 1.2;
+  line-height: 1.25;
   font-weight: 500;
 }

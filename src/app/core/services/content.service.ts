@@ -11,6 +11,7 @@ export type DuaItem = {
   transliteration?: string;
   text?: string;
   textBn?: string;
+  repeat?: number;
   reference?: string;
 };
 

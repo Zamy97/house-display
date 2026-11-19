@@ -6,7 +6,6 @@ import { HijriService } from '../../core/services/hijri.service';
   standalone: true,
   template: `
     <section class="panel hijri-panel">
-      <div class="label">Islamic Date</div>
       <div class="value">{{ value }}</div>
     </section>
   `,

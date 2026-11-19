@@ -5,7 +5,7 @@
 
 .weather-stack {
   width: 100%;
-  max-width: 520px;
+  max-width: 560px;
   margin-left: auto;
   text-align: right;
 }
@@ -14,38 +14,41 @@
   background: none;
   border: none;
   box-shadow: none;
-  padding: 0 4px 6px;
+  padding: 0 4px 8px;
 }
 
 .section-title {
   color: var(--accent-2);
-  font-size: 0.95rem;
-  letter-spacing: 0.06em;
+  font-size: 1.2rem;
+  letter-spacing: 0.07em;
   text-transform: uppercase;
-  margin: 0 0 6px;
+  margin: 0 0 8px;
   font-weight: 600;
   text-align: right;
-  border-bottom: 1px solid rgba(234, 246, 255, 0.28);
-  padding-bottom: 5px;
+  border-bottom: 1px solid rgba(234, 246, 255, 0.3);
+  padding-bottom: 6px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .meta {
   display: flex;
   justify-content: flex-start;
-  gap: 18px;
+  gap: 24px;
   color: var(--text);
-  font-size: 1.05rem;
-  margin: 8px 0 10px;
+  font-size: 1.35rem;
+  margin: 12px 0 14px;
 }
 
 .meta-item {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
 }
 
 .wi {
-  font-size: 1.1rem;
+  font-size: 1.35rem;
   line-height: 1;
 }
 
@@ -53,15 +56,15 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 10px;
-  margin: 2px 0 6px;
+  gap: 12px;
+  margin: 4px 0 10px;
 }
 
 .hero-icon {
-  width: 110px;
-  height: 110px;
+  width: 148px;
+  height: 148px;
   object-fit: contain;
-  filter: drop-shadow(0 0 10px rgba(118, 215, 196, 0.4));
+  filter: drop-shadow(0 0 12px rgba(118, 215, 196, 0.45));
 }
 
 .hero-temps {
@@ -71,19 +74,19 @@
 
 .temp {
   color: var(--accent);
-  font-size: 3.6rem;
+  font-size: 5.2rem;
   font-weight: 300;
-  line-height: 1;
+  line-height: 0.95;
 }
 
 .feels {
-  margin-top: 4px;
-  font-size: 1.05rem;
+  margin-top: 6px;
+  font-size: 1.35rem;
   color: var(--text-dim);
 }
 
 .forecast {
-  margin-top: 4px;
+  margin-top: 6px;
 }
 
 .grid-2 {
@@ -94,35 +97,35 @@
 
 .cell {
   text-align: center;
-  padding: 7px 4px 8px;
-  border-bottom: 1px solid rgba(234, 246, 255, 0.22);
+  padding: 10px 6px 12px;
+  border-bottom: 1px solid rgba(234, 246, 255, 0.24);
 }
 
 .cell img {
-  width: 44px;
-  height: 44px;
+  width: 56px;
+  height: 56px;
   object-fit: contain;
-  margin: 1px auto;
+  margin: 2px auto;
   display: block;
   filter: drop-shadow(0 0 6px rgba(118, 215, 196, 0.25));
 }
 
 .label {
   color: var(--text-dim);
-  font-size: 0.95rem;
+  font-size: 1.15rem;
   text-transform: uppercase;
   letter-spacing: 0.04em;
 }
 
 .val {
   color: var(--accent);
-  font-size: 1.2rem;
+  font-size: 1.45rem;
   font-weight: 500;
 }
 
 .range {
   color: var(--text);
-  font-size: 0.95rem;
+  font-size: 1.1rem;
   white-space: nowrap;
 }
 
@@ -136,5 +139,5 @@
 
 .muted {
   color: var(--text-faint);
-  font-size: 0.95rem;
+  font-size: 1rem;
 }

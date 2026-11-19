@@ -3,9 +3,9 @@
 }
 
 h2 {
-  margin: 0 0 8px;
+  margin: 0 0 10px;
   color: var(--accent-2);
-  font-size: 0.8rem;
+  font-size: 0.95rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   font-weight: 600;
@@ -16,23 +16,23 @@ h2 {
 .grid {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  gap: 2px;
+  gap: 3px;
   text-align: center;
 }
 
 .weekdays span {
   color: var(--text-faint);
-  font-size: 0.68rem;
+  font-size: 0.8rem;
   letter-spacing: 0.04em;
-  padding: 2px 0 6px;
+  padding: 2px 0 8px;
 }
 
 .day {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 26px;
-  font-size: 0.82rem;
+  height: 32px;
+  font-size: 1rem;
   color: var(--text-dim);
   border-radius: 4px;
 }

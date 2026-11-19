@@ -6,7 +6,7 @@ import { ContentService, HadithItem } from '../../core/services/content.service'
   standalone: true,
   template: `
     <section class="panel content-panel">
-      <h2>Hadith</h2>
+      <h2>Hadith of the Day</h2>
       @if (hadith; as h) {
         <div class="text">{{ h.text }}</div>
         @if (h.reference) {

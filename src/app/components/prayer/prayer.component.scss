@@ -3,10 +3,10 @@
 }
 
 h2 {
-  margin: 0 0 6px;
+  margin: 0 0 8px;
   color: var(--accent-2);
-  font-size: 0.8rem;
-  letter-spacing: 0.1em;
+  font-size: 0.95rem;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   font-weight: 600;
   padding-bottom: 6px;
@@ -15,15 +15,15 @@ h2 {
 table {
   width: 100%;
   border-collapse: separate;
-  border-spacing: 0 3px;
+  border-spacing: 0 4px;
 }
 
 td {
-  padding: 5px 8px;
+  padding: 7px 10px;
   border-radius: 6px;
   color: var(--text-dim);
   font-weight: 400;
-  font-size: 1rem;
+  font-size: 1.2rem;
 }
 
 td:first-child {
@@ -38,7 +38,7 @@ td:first-child {
 tr.current td {
   color: var(--gold) !important;
   font-weight: 600;
-  font-size: 1.08em;
+  font-size: 1.28rem;
   background: rgba(244, 208, 63, 0.14);
   text-shadow: 0 0 8px rgba(244, 208, 63, 0.35);
 }

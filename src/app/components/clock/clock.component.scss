@@ -1,7 +1,7 @@
 .clock-panel {
   width: var(--card-width);
-  margin-bottom: 4px;
-  padding: 0 4px;
+  margin-bottom: 2px;
+  padding: 0 2px;
   background: none;
   border: none;
   box-shadow: none;
@@ -9,16 +9,17 @@
 
 .date {
   color: var(--accent-2);
-  font-size: 1.15rem;
+  font-size: 1.45rem;
   letter-spacing: 0.03em;
-  margin-bottom: 4px;
+  margin-bottom: 6px;
+  font-weight: 400;
 }
 
 .time {
   color: var(--accent);
   font-weight: 200;
-  font-size: 3.4rem;
-  line-height: 1;
-  letter-spacing: 0.02em;
+  font-size: 4.6rem;
+  line-height: 0.95;
+  letter-spacing: 0.01em;
   text-transform: lowercase;
 }

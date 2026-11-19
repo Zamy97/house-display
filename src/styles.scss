@@ -12,7 +12,7 @@
   --card-border: rgba(118, 215, 196, 0.35);
   --card-shadow: 0 8px 22px rgba(0, 0, 0, 0.45);
   --radius: 12px;
-  --card-width: 300px;
+  --card-width: 340px;
   --bg: #050b12;
 }
 
@@ -43,15 +43,15 @@ body {
   border: 1px solid var(--card-border);
   border-radius: var(--radius);
   box-shadow: var(--card-shadow);
-  padding: 12px 14px;
-  margin-bottom: 10px;
+  padding: 14px 16px;
+  margin-bottom: 12px;
   box-sizing: border-box;
 }
 
 .panel h2 {
-  margin: 0 0 8px;
+  margin: 0 0 10px;
   color: var(--accent-2);
-  font-size: 0.8rem;
+  font-size: 0.95rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   font-weight: 600;
@@ -59,12 +59,12 @@ body {
 
 .content-panel {
   width: 100%;
-  max-width: 880px;
+  max-width: 980px;
   margin-left: auto;
   margin-right: auto;
   background: none;
   border: none;
   box-shadow: none;
-  padding: 2px 16px 0;
+  padding: 4px 20px 0;
   text-align: center;
 }
