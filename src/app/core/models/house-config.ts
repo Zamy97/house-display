@@ -193,9 +193,9 @@ export const MODULE_SCALE_OPTIONS: { value: number; label: string }[] = [
 ];
 
 export const MODULE_REGION_LABELS: Record<ModuleRegion, string> = {
-  left: 'Left',
-  right: 'Right',
-  bottom: 'Bottom',
+  left: 'Left column',
+  right: 'Right column',
+  bottom: 'Bottom band',
 };
 
 export const MODULE_REGION_OPTIONS = Object.keys(

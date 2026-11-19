@@ -46,10 +46,10 @@
   color: rgba(232, 244, 241, 0.7);
 }
 
-/* THREE full-height columns — uses the entire page like home-prayer settings */
+/* THREE full-height columns — modules get the most width for stack/size controls */
 .main {
   display: grid;
-  grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1.85fr) minmax(0, 0.9fr) minmax(0, 0.9fr);
   min-height: 0;
   overflow: hidden;
 }
@@ -220,32 +220,32 @@ textarea {
 }
 
 .col-show {
-  width: 44px;
+  width: 48px;
 }
 
 .col-name {
-  width: 28%;
+  width: 22%;
 }
 
 .col-stack {
-  width: 22%;
+  width: 30%;
 }
 
 .col-size {
-  width: 22%;
+  width: 28%;
 }
 
 .col-order {
-  width: 90px;
+  width: 100px;
 }
 
 .module-table th,
 .module-table td {
   text-align: left;
-  padding: 8px 6px;
+  padding: 10px 8px;
   border-bottom: 1px solid rgba(118, 215, 196, 0.14);
   vertical-align: middle;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .module-table th {
@@ -279,8 +279,8 @@ textarea {
 .module-table select {
   width: 100%;
   min-width: 0;
-  padding: 6px 7px;
-  font-size: 0.84rem;
+  padding: 8px 10px;
+  font-size: 0.92rem;
 }
 
 .module-table .order {
