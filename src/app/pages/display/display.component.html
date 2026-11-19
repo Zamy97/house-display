@@ -1,18 +1,17 @@
 <div
   class="stage"
-  [attr.data-layout]="config().layout"
   [attr.data-orientation]="config().orientation"
 >
   <div
     class="mirror"
-    [attr.data-layout]="config().layout"
     [attr.data-orientation]="config().orientation"
   >
     <app-weather-effects [effect]="weatherEffect()" />
     <a class="settings-fab" routerLink="/settings" title="Settings">⚙</a>
 
-    <div class="layout">
-      <aside class="col left">
+    <!-- Example house regions: top_left | top_right | bottom_bar | bottom_right -->
+    <div class="region top">
+      <aside class="region top-left">
         @if (config().modules.clock) {
           <app-clock [timeFormat]="config().timeFormat" />
         }
@@ -37,41 +36,29 @@
         }
       </aside>
 
-      @if (config().layout === 'columns') {
-        <main class="col center">
-          @if (config().modules.dua) {
-            <app-dua [preferBn]="config().content.duaLanguage === 'bn'" />
-          }
-          @if (config().modules.hadith) {
-            <app-hadith [mode]="config().content.hadithRotation" />
-          }
-        </main>
-      } @else if (config().orientation === 'horizontal') {
-        <div class="col spacer" aria-hidden="true"></div>
-      }
-
-      <aside class="col right">
+      <aside class="region top-right">
         @if (config().modules.weather) {
           <app-weather [config]="config()" />
-        }
-        @if (config().modules.hijri) {
-          <app-hijri [locale]="config().locale" />
         }
       </aside>
     </div>
 
-    <footer class="footer">
-      @if (config().layout === 'mirror') {
-        @if (config().modules.dua) {
-          <app-dua [preferBn]="config().content.duaLanguage === 'bn'" />
-        }
-        @if (config().modules.hadith) {
-          <app-hadith [mode]="config().content.hadithRotation" />
-        }
+    <div class="region bottom-bar">
+      @if (config().modules.dua) {
+        <app-dua [preferBn]="config().content.duaLanguage === 'bn'" />
+      }
+      @if (config().modules.hadith) {
+        <app-hadith [mode]="config().content.hadithRotation" />
       }
       @if (config().modules.ayah) {
         <app-ayah [intervalMs]="config().content.ayahIntervalMs" />
       }
-    </footer>
+    </div>
+
+    @if (config().modules.hijri) {
+      <div class="region bottom-right">
+        <app-hijri [locale]="config().locale" />
+      </div>
+    }
   </div>
 </div>

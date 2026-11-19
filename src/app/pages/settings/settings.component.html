@@ -29,15 +29,11 @@
         }
       </select>
     </label>
-    <label>
-      Display layout
-      <select [(ngModel)]="draft.layout">
-        @for (id of layoutIds; track id) {
-          <option [ngValue]="id">{{ layoutLabels[id] }}</option>
-        }
-      </select>
-    </label>
-    <p class="hint">Both orientations stay on one screen (no scrolling).</p>
+    <p class="hint">
+      Layout follows the Example MagicMirror house (top-left modules, top-right weather,
+      bottom dua/hadith/ayah). Orientation only changes portrait vs landscape framing —
+      both stay on one screen with no scrolling.
+    </p>
   </section>
 
   <section>

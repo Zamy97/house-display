@@ -3,10 +3,8 @@ import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { ConfigService } from '../../core/services/config.service';
 import {
-  DisplayLayout,
   DisplayOrientation,
   HouseConfig,
-  LAYOUT_LABELS,
   MODULE_LABELS,
   ModuleId,
   ORIENTATION_LABELS,
@@ -24,8 +22,6 @@ export class SettingsComponent {
   draft: HouseConfig = structuredClone(this.configService.config());
   moduleIds = Object.keys(MODULE_LABELS) as ModuleId[];
   labels = MODULE_LABELS;
-  layoutIds = Object.keys(LAYOUT_LABELS) as DisplayLayout[];
-  layoutLabels = LAYOUT_LABELS;
   orientationIds = Object.keys(ORIENTATION_LABELS) as DisplayOrientation[];
   orientationLabels = ORIENTATION_LABELS;
   importText = '';

@@ -1,23 +1,19 @@
 <section class="weather-stack">
   @if (weather; as w) {
-    <section class="current panel-open">
+    <section class="current">
       <h2 class="section-title">Current Weather{{ w.city ? ' ' + w.city : '' }}</h2>
       <div class="meta">
         <span class="meta-item">
-          <span class="wi wind" aria-hidden="true">🌬</span>
+          <span class="wi" aria-hidden="true">🌬</span>
           {{ w.windSpeed }} {{ w.windDir }}
         </span>
         <span class="meta-item">
-          <span class="wi sun" aria-hidden="true">{{ w.sunLabel === 'sunset' ? '☀️' : '🌅' }}</span>
+          <span class="wi" aria-hidden="true">{{ w.sunLabel === 'sunset' ? '☀️' : '🌅' }}</span>
           {{ w.sunTime }}
         </span>
       </div>
       <div class="hero">
-        <img
-          class="hero-icon"
-          [src]="iconUrl(w.icon, '4x')"
-          [alt]="w.description"
-        />
+        <img class="hero-icon" [src]="iconUrl(w.icon, '4x')" [alt]="w.description" />
         <div class="hero-temps">
           <div class="temp">{{ w.temp | number: '1.0-1' }}°{{ w.unitsLabel }}</div>
           <div class="feels">Feels like {{ w.feelsLike }}°{{ w.unitsLabel }}</div>
@@ -25,13 +21,12 @@
       </div>
     </section>
 
-    <section class="forecast panel-open">
+    <section class="forecast">
       <h2 class="section-title">Weather</h2>
-
       @if (w.hourly.length) {
-        <div class="hourly grid-2">
+        <div class="tiles">
           @for (h of w.hourly; track h.time) {
-            <div class="cell">
+            <div class="tile">
               <div class="label">{{ h.time }}</div>
               <img [src]="iconUrl(h.icon)" [alt]="h.description" />
               <div class="val">{{ h.temp }}°</div>
@@ -39,11 +34,10 @@
           }
         </div>
       }
-
       @if (w.daily.length) {
-        <div class="daily grid-2">
+        <div class="tiles daily">
           @for (d of w.daily; track d.day) {
-            <div class="cell day-cell">
+            <div class="tile">
               <div class="label">{{ d.day }}</div>
               <img [src]="iconUrl(d.icon)" [alt]="d.description" />
               <div class="range">H {{ d.high }}° / L {{ d.low }}°</div>
@@ -53,7 +47,7 @@
       }
     </section>
   } @else {
-    <section class="panel-open muted-wrap">
+    <section class="current">
       <h2 class="section-title">Current Weather</h2>
       <p class="muted">Add OpenWeather API key in Settings</p>
     </section>

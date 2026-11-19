@@ -67,7 +67,7 @@ export const DEFAULT_HOUSE_CONFIG: HouseConfig = {
   worldClocks: [
     { title: 'LONDON', timezone: 'Europe/London', flag: 'gb' },
     { title: 'DHAKA', timezone: 'Asia/Dhaka', flag: 'bd' },
-    { title: 'MAKKAH', timezone: 'Asia/Riyadh', flag: 'sa' },
+    { title: 'MACCA', timezone: 'Asia/Riyadh', flag: 'sa' },
     { title: 'GAZA', timezone: 'Asia/Gaza', flag: 'ps' },
   ],
   modules: {

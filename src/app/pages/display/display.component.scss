@@ -1,13 +1,12 @@
+/* Region layout modeled on MagicMirror Example house (config + custom.css) */
 :host {
   display: block;
   height: 100dvh;
-  max-height: 100dvh;
   overflow: hidden;
 }
 
 .stage {
   height: 100dvh;
-  max-height: 100dvh;
   background: #000;
   display: flex;
   justify-content: center;
@@ -17,14 +16,14 @@
 
 .mirror {
   position: relative;
-  display: grid;
-  grid-template-rows: minmax(0, 1fr) auto;
-  padding: 14px 18px 10px;
+  height: 100dvh;
+  max-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  padding: 16px 20px 10px;
   box-sizing: border-box;
   background: #000;
   overflow: hidden;
-  height: 100dvh;
-  max-height: 100dvh;
 }
 
 .settings-fab {
@@ -35,7 +34,7 @@
   opacity: 0.18;
   color: var(--text);
   text-decoration: none;
-  font-size: 1.2rem;
+  font-size: 1.15rem;
 }
 
 .settings-fab:hover {
@@ -43,330 +42,117 @@
   color: var(--gold);
 }
 
-.layout {
+.region.top {
   position: relative;
   z-index: 2;
+  flex: 1 1 auto;
   min-height: 0;
-  display: grid;
-  align-items: start;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 24px;
   overflow: hidden;
-  grid-row: 1;
 }
 
-.footer {
-  position: relative;
-  z-index: 2;
-  grid-row: 2;
-  width: 94%;
-  margin: 0 auto;
+.region.top-left {
+  width: var(--card-width);
+  flex: 0 0 var(--card-width);
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 0;
   overflow: hidden;
-  min-height: 0;
 }
 
-.col {
+.region.top-right {
+  flex: 0 1 auto;
+  max-width: var(--weather-wide);
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  min-width: 0;
-  min-height: 0;
-  overflow: hidden;
-}
-
-.left {
-  width: 100%;
-}
-
-.center {
-  justify-content: flex-end;
-  min-height: 0;
-  overflow: hidden;
-}
-
-.right {
-  justify-self: stretch;
-  width: 100%;
   align-items: flex-end;
   overflow: hidden;
+  margin-left: auto;
 }
 
-.spacer {
-  min-width: 0;
-  min-height: 0;
+.region.bottom-bar {
+  position: relative;
+  z-index: 2;
+  flex: 0 0 auto;
+  width: 92%;
+  margin: 4px auto 0;
+  max-height: 34dvh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
 }
 
-/* ── Vertical ────────────────────────────────────────────── */
+.region.bottom-right {
+  position: absolute;
+  right: 20px;
+  bottom: 10px;
+  z-index: 3;
+  pointer-events: none;
+}
+
+/* Vertical = portrait standing mirror frame */
 .mirror[data-orientation='vertical'] {
   width: min(100vw, calc(100dvh * 9 / 16));
-  max-width: 1200px;
+  max-width: 1080px;
   border-left: 1px solid rgba(118, 215, 196, 0.08);
   border-right: 1px solid rgba(118, 215, 196, 0.08);
-  --card-width: clamp(260px, 32cqw, 360px);
-  container-type: size;
 }
 
-.mirror[data-orientation='vertical'][data-layout='mirror'] .layout {
-  grid-template-columns: minmax(240px, 34%) minmax(0, 1fr);
-  gap: 16px 22px;
-}
-
-.mirror[data-orientation='vertical'] .footer {
-  max-height: 32dvh;
-  padding-top: 6px;
-}
-
-.mirror[data-orientation='vertical'] ::ng-deep .clock-panel .time {
-  font-size: clamp(3.2rem, 8cqh, 4.8rem);
-}
-
-.mirror[data-orientation='vertical'] ::ng-deep .temp {
-  font-size: clamp(3.4rem, 9cqh, 5.2rem);
-}
-
-/* ── Horizontal — compact so left/right/footer all fit ───── */
+/* Horizontal = full landscape, same regions */
 .mirror[data-orientation='horizontal'] {
   width: 100vw;
   max-width: none;
-  border: none;
-  --card-width: clamp(220px, 20vw, 300px);
-  container-type: size;
-  padding: 10px 20px 6px;
-  gap: 4px;
 }
 
-.mirror[data-orientation='horizontal'][data-layout='mirror'] .layout {
-  grid-template-columns: minmax(200px, 24%) minmax(0, 1fr) minmax(340px, 44%);
-  gap: 8px 20px;
+.mirror[data-orientation='horizontal'] .region.bottom-bar {
+  max-height: 28dvh;
 }
 
-.mirror[data-orientation='horizontal'][data-layout='columns'] .layout {
-  grid-template-columns: var(--card-width) 1fr minmax(300px, 40%);
-  gap: 8px 20px;
+.mirror[data-orientation='horizontal'] .region.top-left {
+  /* Slightly denser so QR still fits under calendar */
+  transform-origin: top left;
 }
 
-.mirror[data-orientation='horizontal'] .footer {
-  max-height: 26dvh;
-  padding-top: 4px;
-}
-
-.mirror[data-orientation='horizontal'] .col {
-  gap: 6px;
-}
-
-.mirror[data-layout='columns'] .layout {
-  grid-template-columns: var(--card-width) 1fr minmax(280px, 1fr);
-}
-
-/* Horizontal density: shrink stacked modules */
 .mirror[data-orientation='horizontal'] ::ng-deep {
-  .panel {
-    padding: 8px 10px;
-    margin-bottom: 0;
-  }
-
-  .clock-panel {
-    margin-bottom: 0;
-  }
-
-  .clock-panel .date {
-    font-size: 1.05rem;
-    margin-bottom: 2px;
-  }
-
   .clock-panel .time {
-    font-size: 2.8rem;
-  }
-
-  .panel h2,
-  app-prayer h2 {
-    font-size: 0.75rem;
-    margin-bottom: 4px;
-    padding-bottom: 2px;
-  }
-
-  app-prayer td {
-    padding: 3px 6px;
-    font-size: 0.95rem;
-  }
-
-  app-prayer tr.current td {
-    font-size: 1rem;
-  }
-
-  app-calendar h2 {
-    font-size: 0.75rem;
-    margin-bottom: 4px;
-  }
-
-  app-calendar .day {
-    height: 22px;
-    font-size: 0.8rem;
-  }
-
-  app-calendar .weekdays span {
-    font-size: 0.65rem;
-    padding-bottom: 2px;
-  }
-
-  app-world-clocks .cell {
-    padding: 2px 4px;
-  }
-
-  app-world-clocks .zone {
-    font-size: 0.62rem;
-  }
-
-  app-world-clocks .time {
-    font-size: 0.9rem;
-  }
-
-  app-world-clocks .flag {
-    width: 16px;
-    height: 11px;
-  }
-
-  .qr {
-    width: 72px;
-    height: 72px;
-    margin-bottom: 4px;
-  }
-
-  app-wifi .ssid {
-    font-size: 0.75rem;
-  }
-
-  /* Weather: shorter hero + 3-col daily so 6 days fit */
-  .section-title {
-    font-size: 0.95rem;
-    margin-bottom: 4px;
-    padding-bottom: 3px;
-  }
-
-  .meta {
-    font-size: 1rem;
-    margin: 4px 0 6px;
-    gap: 14px;
-  }
-
-  .hero {
-    margin: 0 0 4px;
-  }
-
-  .hero-icon {
-    width: 84px;
-    height: 84px;
+    font-size: 3.2rem;
   }
 
   .temp {
-    font-size: 3rem;
+    font-size: 3.8rem;
   }
 
-  .feels {
-    font-size: 0.95rem;
-    margin-top: 2px;
+  .hero-icon {
+    width: 110px;
+    height: 110px;
   }
 
-  .forecast {
-    margin-top: 2px;
+  .qr {
+    width: 88px;
+    height: 88px;
   }
 
-  .daily.grid-2 {
-    grid-template-columns: 1fr 1fr 1fr;
-  }
-
-  .cell {
-    padding: 4px 2px 5px;
-  }
-
-  .cell img {
-    width: 36px;
-    height: 36px;
-  }
-
-  .label {
+  app-calendar .day {
+    height: 24px;
     font-size: 0.85rem;
   }
 
-  .val {
-    font-size: 1.05rem;
-  }
-
-  .range {
-    font-size: 0.8rem;
-  }
-
-  .hijri-panel .value {
-    font-size: 1rem;
-  }
-
-  /* Footer content must fit reserved band */
-  .content-panel {
-    padding: 2px 12px 0;
-  }
-
-  app-dua h2,
-  app-hadith h2 {
-    font-size: 0.7rem;
-    margin-bottom: 2px;
-  }
-
-  app-dua .arabic {
-    font-size: 1.05rem;
-    line-height: 1.4;
-    margin-bottom: 2px;
-  }
-
-  app-dua .transliteration {
-    font-size: 0.8rem;
-    margin-bottom: 2px;
-    display: -webkit-box;
-    -webkit-line-clamp: 1;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-
+  app-dua .transliteration,
   app-dua .translation,
   app-dua .bangla {
-    font-size: 0.85rem;
-    line-height: 1.3;
-    margin-bottom: 1px;
     display: -webkit-box;
     -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;
     overflow: hidden;
-  }
-
-  app-dua .repeat,
-  app-dua .ref {
-    font-size: 0.7rem;
   }
 
   app-hadith .text {
-    font-size: 0.9rem;
-    line-height: 1.3;
     display: -webkit-box;
     -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-
-  app-hadith .ref {
-    font-size: 0.7rem;
-  }
-
-  app-ayah .arabic {
-    font-size: 1.1rem;
-    line-height: 1.35;
-    margin-bottom: 2px;
-  }
-
-  app-ayah .translation {
-    font-size: 0.85rem;
-    line-height: 1.25;
-    display: -webkit-box;
-    -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;
     overflow: hidden;
   }

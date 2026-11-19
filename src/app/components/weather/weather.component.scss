@@ -1,50 +1,55 @@
+/* Example custom.css — wide current (520) + narrow forecast (300) */
 :host {
   display: block;
   width: 100%;
 }
 
 .weather-stack {
-  width: 100%;
-  max-width: 560px;
+  width: min(100%, var(--weather-wide));
   margin-left: auto;
   text-align: right;
 }
 
-.panel-open {
+.current,
+.forecast {
   background: none;
   border: none;
   box-shadow: none;
-  padding: 0 4px 8px;
+  padding: 0 4px 6px;
 }
 
 .section-title {
   color: var(--accent-2);
-  font-size: 1.2rem;
-  letter-spacing: 0.07em;
+  font-size: 1rem;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
-  margin: 0 0 8px;
+  margin: 0 0 10px;
   font-weight: 600;
   text-align: right;
-  border-bottom: 1px solid rgba(234, 246, 255, 0.3);
-  padding-bottom: 6px;
   white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+}
+
+.forecast .section-title {
+  font-size: 1.1rem;
+  letter-spacing: 0.08em;
+  margin-bottom: 8px;
 }
 
 .meta {
   display: flex;
   justify-content: flex-start;
-  gap: 24px;
-  color: var(--text);
-  font-size: 1.35rem;
-  margin: 12px 0 14px;
+  gap: 20px;
+  color: var(--text-dim);
+  font-size: 1.25rem;
+  margin: 4px 0 8px;
+  line-height: 1.4;
 }
 
 .meta-item {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
+  white-space: nowrap;
 }
 
 .wi {
@@ -56,15 +61,15 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
-  margin: 4px 0 10px;
+  gap: 16px;
+  margin: 4px 0 12px;
 }
 
 .hero-icon {
-  width: 148px;
-  height: 148px;
+  width: 132px;
+  height: 132px;
   object-fit: contain;
-  filter: drop-shadow(0 0 12px rgba(118, 215, 196, 0.45));
+  filter: drop-shadow(0 0 10px rgba(118, 215, 196, 0.4));
 }
 
 .hero-temps {
@@ -74,70 +79,65 @@
 
 .temp {
   color: var(--accent);
-  font-size: 5.2rem;
+  font-size: 4.4rem;
   font-weight: 300;
-  line-height: 0.95;
+  line-height: 1;
 }
 
 .feels {
   margin-top: 6px;
-  font-size: 1.35rem;
+  font-size: 1.25rem;
   color: var(--text-dim);
 }
 
 .forecast {
-  margin-top: 6px;
+  width: var(--forecast-width);
+  max-width: 100%;
+  margin-left: auto;
+  padding: 4px 8px;
 }
 
-.grid-2 {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0;
+.tiles {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
 }
 
-.cell {
+.tile {
+  width: 50%;
+  box-sizing: border-box;
   text-align: center;
-  padding: 10px 6px 12px;
-  border-bottom: 1px solid rgba(234, 246, 255, 0.24);
+  padding: 4px 6px;
 }
 
-.cell img {
-  width: 56px;
-  height: 56px;
+.tile img {
+  width: 44px;
+  height: 44px;
   object-fit: contain;
-  margin: 2px auto;
   display: block;
-  filter: drop-shadow(0 0 6px rgba(118, 215, 196, 0.25));
+  margin: 2px auto;
 }
 
 .label {
   color: var(--text-dim);
-  font-size: 1.15rem;
+  font-size: 1.1rem;
   text-transform: uppercase;
   letter-spacing: 0.04em;
 }
 
 .val {
   color: var(--accent);
-  font-size: 1.45rem;
+  font-size: 1.35rem;
   font-weight: 500;
 }
 
 .range {
-  color: var(--text);
-  font-size: 1.1rem;
+  color: var(--text-dim);
+  font-size: 1.05rem;
   white-space: nowrap;
-}
-
-.day-cell .label {
-  font-weight: 500;
-}
-
-.muted-wrap {
-  text-align: right;
 }
 
 .muted {
   color: var(--text-faint);
-  font-size: 1rem;
+  font-size: 0.95rem;
 }

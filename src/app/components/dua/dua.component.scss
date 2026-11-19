@@ -1,55 +1,55 @@
 h2 {
   color: var(--gold);
-  font-size: 0.85rem;
-  letter-spacing: 0.14em;
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  margin: 0 0 6px;
+  margin: 0 0 3px;
   font-weight: 600;
 }
 
 .arabic {
-  font-size: 1.45rem;
-  line-height: 1.7;
+  font-size: 1.15rem;
+  line-height: 1.65;
   direction: rtl;
   color: #ffffff;
-  max-width: 980px;
-  margin: 0 auto 8px;
+  max-width: 880px;
+  margin: 0 auto 6px;
   font-family: "Amiri Quran", "Noto Naskh Arabic", serif;
 }
 
 .transliteration {
-  font-size: 1.05rem;
-  line-height: 1.45;
+  font-size: 0.88rem;
+  line-height: 1.4;
   color: #b8d4e8;
   font-style: italic;
-  margin: 0 auto 6px;
-  max-width: 980px;
+  margin: 0 auto 4px;
+  max-width: 880px;
 }
 
 .translation {
-  font-size: 1.1rem;
-  line-height: 1.5;
-  max-width: 980px;
+  font-size: 0.92rem;
+  line-height: 1.45;
+  max-width: 880px;
   margin: 0 auto 4px;
   color: var(--text);
 }
 
 .bangla {
-  font-size: 1.05rem;
-  line-height: 1.5;
-  max-width: 980px;
+  font-size: 0.92rem;
+  line-height: 1.45;
+  max-width: 880px;
   margin: 0 auto 4px;
   color: #d7f0ff;
 }
 
 .repeat {
-  font-size: 0.9rem;
+  font-size: 0.78rem;
   color: var(--accent);
-  margin-top: 4px;
+  margin-top: 2px;
 }
 
 .ref {
-  font-size: 0.8rem;
+  font-size: 0.7rem;
   color: var(--text-faint);
   margin-top: 2px;
 }
