@@ -1,35 +1,38 @@
 h2 {
-  margin: 0 0 6px;
-  font-size: 0.85rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
   color: var(--gold);
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin: 0 0 3px;
+  font-weight: 600;
 }
 
 .title {
+  font-size: 0.82rem;
+  margin-bottom: 4px;
   color: var(--accent-2);
-  font-size: 0.95rem;
-  margin-bottom: 6px;
 }
 
 .arabic {
+  font-size: 1.15rem;
+  line-height: 1.65;
   direction: rtl;
-  text-align: center;
-  color: var(--purple);
-  font-size: 1.35rem;
-  line-height: 1.7;
-  margin-bottom: 8px;
+  color: #ffffff;
+  max-width: 880px;
+  margin: 0 auto 6px;
   font-family: "Amiri Quran", "Noto Naskh Arabic", serif;
 }
 
 .translation {
-  color: var(--mint);
-  font-style: italic;
-  line-height: 1.4;
+  font-size: 0.92rem;
+  line-height: 1.45;
+  max-width: 880px;
+  margin: 0 auto 4px;
+  color: var(--text);
 }
 
 .ref {
-  margin-top: 6px;
+  font-size: 0.7rem;
   color: var(--text-faint);
-  font-size: 0.85rem;
+  margin-top: 2px;
 }

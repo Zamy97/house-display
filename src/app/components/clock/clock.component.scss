@@ -1,20 +1,23 @@
 .clock-panel {
+  width: var(--card-width);
+  margin-bottom: 4px;
+  padding: 0 4px;
   background: none;
   border: none;
   box-shadow: none;
-  padding: 0 4px;
 }
 
 .time {
   color: var(--accent);
   font-weight: 200;
-  font-size: 3.4rem;
+  font-size: 3.6rem;
   line-height: 1;
   letter-spacing: 0.02em;
 }
 
 .date {
   color: var(--accent-2);
-  font-size: 1.15rem;
+  font-size: 1.2rem;
   margin-top: 4px;
+  letter-spacing: 0.03em;
 }

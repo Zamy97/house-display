@@ -2,6 +2,7 @@
   --accent: #76d7c4;
   --accent-2: #4dd0e1;
   --gold: #f4d03f;
+  --gold-dim: #c9a227;
   --text: #eaf6ff;
   --text-dim: rgba(234, 246, 255, 0.82);
   --text-faint: rgba(234, 246, 255, 0.6);
@@ -11,6 +12,7 @@
   --card-border: rgba(118, 215, 196, 0.35);
   --card-shadow: 0 8px 22px rgba(0, 0, 0, 0.45);
   --radius: 12px;
+  --card-width: 300px;
   --bg: #050b12;
 }
 
@@ -22,10 +24,12 @@ html,
 body {
   margin: 0;
   min-height: 100%;
-  background: radial-gradient(1200px 700px at 20% 0%, #0b1a28 0%, var(--bg) 55%);
+  background: #000;
   color: var(--text);
-  font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9), 0 0 10px rgba(0, 0, 0, 0.45);
+  font-family: "Roboto Condensed", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  text-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.9),
+    0 0 10px rgba(0, 0, 0, 0.5);
 }
 
 body {
@@ -33,17 +37,34 @@ body {
 }
 
 .panel {
-  width: 100%;
+  width: var(--card-width);
+  max-width: 100%;
   background: var(--card-bg);
   border: 1px solid var(--card-border);
   border-radius: var(--radius);
   box-shadow: var(--card-shadow);
   padding: 12px 14px;
+  margin-bottom: 10px;
   box-sizing: border-box;
 }
 
+.panel h2 {
+  margin: 0 0 8px;
+  color: var(--accent-2);
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
 .content-panel {
-  max-width: 720px;
+  width: 100%;
+  max-width: 880px;
   margin-left: auto;
   margin-right: auto;
+  background: none;
+  border: none;
+  box-shadow: none;
+  padding: 2px 16px 0;
+  text-align: center;
 }

@@ -1,19 +1,22 @@
 h2 {
-  margin: 0 0 6px;
-  font-size: 0.85rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
   color: var(--gold);
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin: 0 0 3px;
+  font-weight: 600;
 }
 
 .text {
-  color: var(--text);
+  font-size: 0.95rem;
   line-height: 1.45;
+  width: 100%;
+  margin: 0 auto 4px;
+  color: var(--text);
 }
 
 .ref {
-  margin-top: 6px;
+  font-size: 0.68rem;
   color: var(--text-faint);
-  font-size: 0.85rem;
-  text-align: right;
+  margin-top: 1px;
 }

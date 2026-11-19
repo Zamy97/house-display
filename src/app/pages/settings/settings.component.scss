@@ -3,6 +3,8 @@
   margin: 0 auto;
   padding: 24px 18px 48px;
   color: var(--text);
+  min-height: 100vh;
+  background: #000;
 }
 
 header {
@@ -17,14 +19,16 @@ h1 {
   margin: 0;
   font-weight: 400;
   font-size: 1.6rem;
+  color: var(--accent);
 }
 
 h2 {
   margin: 0 0 10px;
-  font-size: 1rem;
-  color: var(--gold);
-  letter-spacing: 0.04em;
+  font-size: 0.8rem;
+  color: var(--accent-2);
+  letter-spacing: 0.1em;
   text-transform: uppercase;
+  font-weight: 600;
 }
 
 a {
@@ -35,6 +39,7 @@ section {
   background: var(--card-bg);
   border: 1px solid var(--card-border);
   border-radius: var(--radius);
+  box-shadow: var(--card-shadow);
   padding: 14px 16px;
   margin-bottom: 14px;
 }

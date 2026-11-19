@@ -1,26 +1,29 @@
-h2 {
-  margin: 0 0 8px;
-  font-size: 0.95rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--gold);
+:host {
+  display: block;
 }
 
-.row {
+.grid {
   display: flex;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 4px 0;
-  border-bottom: 1px solid rgba(118, 215, 196, 0.12);
+  flex-direction: row;
+  flex-wrap: wrap;
 }
 
-.title {
-  color: var(--text-dim);
-  font-size: 0.9rem;
-  letter-spacing: 0.04em;
+.cell {
+  width: 50%;
+  box-sizing: border-box;
+  padding: 4px 6px;
+}
+
+.zone {
+  font-size: 0.66rem;
+  letter-spacing: 0.05em;
+  color: var(--text-faint);
+  line-height: 1.2;
 }
 
 .time {
+  font-size: 0.95rem;
   color: var(--accent);
-  font-variant-numeric: tabular-nums;
+  line-height: 1.2;
+  font-weight: 500;
 }
