@@ -1,0 +1,16 @@
+.hijri-panel {
+  text-align: right;
+}
+
+.label {
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+
+.value {
+  color: var(--gold);
+  font-size: 1.05rem;
+  margin-top: 4px;
+}

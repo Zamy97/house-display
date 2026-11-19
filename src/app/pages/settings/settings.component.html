@@ -1,0 +1,110 @@
+<div class="settings">
+  <header>
+    <h1>House Display Settings</h1>
+    <a routerLink="/">← Back to display</a>
+  </header>
+
+  @if (message) {
+    <p class="msg">{{ message }}</p>
+  }
+
+  <section>
+    <h2>House</h2>
+    <label>Name <input [(ngModel)]="draft.houseName" /></label>
+    <label>Timezone <input [(ngModel)]="draft.timezone" /></label>
+    <label>Latitude <input type="number" step="any" [(ngModel)]="draft.coords.lat" /></label>
+    <label>Longitude <input type="number" step="any" [(ngModel)]="draft.coords.lon" /></label>
+    <label>
+      Time format
+      <select [(ngModel)]="draft.timeFormat">
+        <option [ngValue]="12">12-hour</option>
+        <option [ngValue]="24">24-hour</option>
+      </select>
+    </label>
+  </section>
+
+  <section>
+    <h2>Prayer</h2>
+    <label>
+      Method
+      <select [(ngModel)]="draft.prayerMethod">
+        <option value="ISNA">ISNA</option>
+        <option value="MWL">MWL</option>
+        <option value="Egypt">Egypt</option>
+        <option value="Makkah">Makkah</option>
+        <option value="Karachi">Karachi</option>
+      </select>
+    </label>
+    <label>
+      Asr
+      <select [(ngModel)]="draft.asr">
+        <option value="Hanafi">Hanafi</option>
+        <option value="Standard">Standard</option>
+      </select>
+    </label>
+  </section>
+
+  <section>
+    <h2>Modules (show / hide)</h2>
+    <div class="toggles">
+      @for (id of moduleIds; track id) {
+        <label class="toggle">
+          <input type="checkbox" [(ngModel)]="draft.modules[id]" />
+          {{ labels[id] }}
+        </label>
+      }
+    </div>
+  </section>
+
+  <section>
+    <h2>Content</h2>
+    <label>
+      Dua language
+      <select [(ngModel)]="draft.content.duaLanguage">
+        <option value="en">English</option>
+        <option value="bn">Bangla</option>
+      </select>
+    </label>
+    <label>
+      Hadith rotation
+      <select [(ngModel)]="draft.content.hadithRotation">
+        <option value="daily">Daily</option>
+        <option value="random">Random</option>
+      </select>
+    </label>
+    <label>
+      Ayah interval (ms)
+      <input type="number" [(ngModel)]="draft.content.ayahIntervalMs" />
+    </label>
+  </section>
+
+  <section>
+    <h2>Weather</h2>
+    <label>
+      OpenWeather API key
+      <input [(ngModel)]="draft.openWeatherApiKey" placeholder="optional" />
+    </label>
+  </section>
+
+  <section>
+    <h2>Wi‑Fi</h2>
+    <label>SSID <input [(ngModel)]="draft.wifi.ssid" /></label>
+    <label>Password <input [(ngModel)]="draft.wifi.password" /></label>
+    <label class="toggle">
+      <input type="checkbox" [(ngModel)]="draft.wifi.showPassword" />
+      Show password on display
+    </label>
+  </section>
+
+  <section class="actions">
+    <button type="button" (click)="save()">Save</button>
+    <button type="button" class="ghost" (click)="reset()">Reset defaults</button>
+    <button type="button" class="ghost" (click)="exportConfig()">Export JSON</button>
+    <button type="button" class="ghost" (click)="importConfig()">Import JSON</button>
+  </section>
+
+  <section>
+    <h2>Import / export</h2>
+    <textarea rows="12" [(ngModel)]="importText" placeholder="Paste house config JSON here"></textarea>
+  </section>
+</div>

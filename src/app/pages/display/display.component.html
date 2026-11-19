@@ -1,0 +1,51 @@
+<div class="mirror">
+  <a class="settings-fab" routerLink="/settings" title="Settings">⚙</a>
+
+  <div class="layout">
+    <aside class="col left">
+      @if (config().modules.clock) {
+        <app-clock [timeFormat]="config().timeFormat" />
+      }
+      @if (config().modules.prayer) {
+        <app-prayer [config]="config()" />
+      }
+      @if (config().modules.worldClocks) {
+        <app-world-clocks
+          [clocks]="config().worldClocks"
+          [timeFormat]="config().timeFormat"
+        />
+      }
+      @if (config().modules.wifi) {
+        <app-wifi
+          [ssid]="config().wifi.ssid"
+          [password]="config().wifi.password"
+          [showPassword]="config().wifi.showPassword"
+        />
+      }
+    </aside>
+
+    <main class="col center">
+      @if (config().modules.dua) {
+        <app-dua [preferBn]="config().content.duaLanguage === 'bn'" />
+      }
+      @if (config().modules.hadith) {
+        <app-hadith [mode]="config().content.hadithRotation" />
+      }
+    </main>
+
+    <aside class="col right">
+      @if (config().modules.weather) {
+        <app-weather [config]="config()" />
+      }
+      @if (config().modules.hijri) {
+        <app-hijri [locale]="config().locale" />
+      }
+    </aside>
+  </div>
+
+  @if (config().modules.ayah) {
+    <footer class="footer">
+      <app-ayah [intervalMs]="config().content.ayahIntervalMs" />
+    </footer>
+  }
+</div>

@@ -1,0 +1,25 @@
+h2 {
+  margin: 0 0 8px;
+  font-size: 0.95rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.ssid {
+  color: var(--accent);
+  font-size: 1.1rem;
+}
+
+.password {
+  margin-top: 4px;
+  color: var(--text);
+  font-family: ui-monospace, monospace;
+}
+
+.hint,
+.muted {
+  margin-top: 6px;
+  color: var(--text-faint);
+  font-size: 0.85rem;
+}

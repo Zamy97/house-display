@@ -1,0 +1,24 @@
+h2 {
+  margin: 0 0 8px;
+  font-size: 0.95rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 4px;
+}
+
+td {
+  padding: 4px 2px;
+  color: var(--text);
+}
+
+.time {
+  text-align: right;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+}

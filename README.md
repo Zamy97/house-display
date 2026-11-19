@@ -1,59 +1,73 @@
-# HouseDisplay
+# House Display
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.0.5.
+Angular kiosk dashboard for home Raspberry Pis — prayer times, dua, hadith, Quran ayah, weather, clocks, and more.
 
-## Development server
+Built to replace MagicMirror module churn with an app we fully control. Users can toggle modules and configure the house from **Settings**.
 
-To start a local development server, run:
+## Features
 
-```bash
-ng serve
-```
+- Fullscreen mirror-style display (same visual language as our MagicMirror theme)
+- **Settings page** (`/settings`) — show/hide modules, lat/lon, prayer method, Wi‑Fi, OpenWeather key
+- Config saved in `localStorage` (export/import JSON)
+- Offline content: duas, hadith sample, full Quran ayahs
+- Local prayer calculation (PrayTimes / ISNA + Hanafi)
+- Optional OpenWeather current conditions
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+## Develop
 
 ```bash
-ng generate --help
+cd house-display
+npm start
 ```
 
-## Building
+Open http://localhost:4200 — gear icon opens Settings.
 
-To build the project run:
+## Production build
 
 ```bash
-ng build
+npm run build
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+Output: `dist/house-display/browser/`
 
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+Serve with any static server, e.g.:
 
 ```bash
-ng test
+npx serve -s dist/house-display/browser -l 8080
 ```
 
-## Running end-to-end tests
+## Raspberry Pi kiosk
 
-For end-to-end (e2e) testing, run:
+1. Build (on Mac or Pi): `npm run build`
+2. Copy `dist/house-display/browser` to the Pi (e.g. `~/house-display`)
+3. Serve + Chromium:
 
 ```bash
-ng e2e
+# simple static server
+npx --yes serve -s ~/house-display -l 8080 &
+
+# labwc autostart
+# wlr-randr ...
+# chromium --kiosk --incognito --noerrdialogs http://localhost:8080 &
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+Prefer waiting until the port is up before launching Chromium (same pattern as our old kiosk wait script).
 
-## Additional Resources
+## Module toggles
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+| Module | What it shows |
+|--------|----------------|
+| clock | Local time + date |
+| prayer | Today’s salah times |
+| weather | OpenWeather (needs API key) |
+| hijri | Islamic date |
+| dua | Morning/evening dua from local JSON |
+| hadith | Daily/random hadith |
+| ayah | Rotating Quran ayah |
+| worldClocks | Configurable timezones |
+| wifi | SSID (+ optional password) |
+
+## Related
+
+- Playbook / house configs: [magicmirror-house-setup](https://github.com/Zamy97/magicmirror-house-setup)
+- Content sources: MMM-DailyDua, MMM-DailyHadith, MMM-QuranAyah

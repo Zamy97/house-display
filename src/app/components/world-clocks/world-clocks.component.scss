@@ -1,0 +1,26 @@
+h2 {
+  margin: 0 0 8px;
+  font-size: 0.95rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 4px 0;
+  border-bottom: 1px solid rgba(118, 215, 196, 0.12);
+}
+
+.title {
+  color: var(--text-dim);
+  font-size: 0.9rem;
+  letter-spacing: 0.04em;
+}
+
+.time {
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+}

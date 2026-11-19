@@ -1,0 +1,32 @@
+{
+  "houseName": "Example",
+  "locale": "en-US",
+  "timeFormat": 12,
+  "coords": { "lat": 42.4710579, "lon": -83.0133362 },
+  "timezone": "America/Detroit",
+  "prayerMethod": "ISNA",
+  "asr": "Hanafi",
+  "openWeatherApiKey": "",
+  "wifi": { "ssid": "HOME-WIFI", "password": "", "showPassword": false },
+  "worldClocks": [
+    { "title": "LONDON", "timezone": "Europe/London" },
+    { "title": "DHAKA", "timezone": "Asia/Dhaka" },
+    { "title": "MAKKAH", "timezone": "Asia/Riyadh" }
+  ],
+  "modules": {
+    "clock": true,
+    "prayer": true,
+    "weather": true,
+    "hijri": true,
+    "dua": true,
+    "hadith": true,
+    "ayah": true,
+    "worldClocks": true,
+    "wifi": true
+  },
+  "content": {
+    "duaLanguage": "bn",
+    "ayahIntervalMs": 300000,
+    "hadithRotation": "daily"
+  }
+}

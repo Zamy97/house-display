@@ -1,0 +1,35 @@
+h2 {
+  margin: 0 0 6px;
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.title {
+  color: var(--accent-2);
+  font-size: 0.95rem;
+  margin-bottom: 6px;
+}
+
+.arabic {
+  direction: rtl;
+  text-align: center;
+  color: var(--purple);
+  font-size: 1.35rem;
+  line-height: 1.7;
+  margin-bottom: 8px;
+  font-family: "Amiri Quran", "Noto Naskh Arabic", serif;
+}
+
+.translation {
+  color: var(--mint);
+  font-style: italic;
+  line-height: 1.4;
+}
+
+.ref {
+  margin-top: 6px;
+  color: var(--text-faint);
+  font-size: 0.85rem;
+}
