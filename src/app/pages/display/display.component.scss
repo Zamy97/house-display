@@ -1,4 +1,3 @@
-/* Always one locked viewport — no page scroll on the display */
 :host {
   display: block;
   height: 100dvh;
@@ -18,62 +17,14 @@
 
 .mirror {
   position: relative;
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
   padding: 14px 18px 10px;
   box-sizing: border-box;
   background: #000;
   overflow: hidden;
   height: 100dvh;
   max-height: 100dvh;
-}
-
-/* ── Vertical (portrait standing mirror) ─────────────────── */
-.mirror[data-orientation='vertical'] {
-  width: min(100vw, calc(100dvh * 9 / 16));
-  max-width: 1200px;
-  border-left: 1px solid rgba(118, 215, 196, 0.08);
-  border-right: 1px solid rgba(118, 215, 196, 0.08);
-  --card-width: clamp(260px, 32cqw, 360px);
-  container-type: size;
-}
-
-.mirror[data-orientation='vertical'][data-layout='mirror'] .layout {
-  grid-template-columns: minmax(240px, 34%) minmax(0, 1fr);
-  gap: 16px 22px;
-}
-
-.mirror[data-orientation='vertical'] .footer {
-  max-height: 34%;
-}
-
-/* ── Horizontal (wide / landscape TV) ────────────────────── */
-.mirror[data-orientation='horizontal'] {
-  width: 100vw;
-  max-width: none;
-  border: none;
-  --card-width: clamp(240px, 22vw, 320px);
-  container-type: size;
-  padding: 12px 24px 8px;
-}
-
-.mirror[data-orientation='horizontal'][data-layout='mirror'] .layout {
-  grid-template-columns: minmax(220px, 26%) minmax(0, 1fr) minmax(320px, 42%);
-  gap: 12px 28px;
-}
-
-.mirror[data-orientation='horizontal'][data-layout='columns'] .layout {
-  grid-template-columns: var(--card-width) 1fr minmax(300px, 40%);
-  gap: 12px 24px;
-}
-
-.mirror[data-orientation='horizontal'] .footer {
-  max-height: 28%;
-}
-
-.spacer {
-  min-width: 0;
-  min-height: 0;
 }
 
 .settings-fab {
@@ -95,15 +46,24 @@
 .layout {
   position: relative;
   z-index: 2;
-  flex: 1 1 auto;
   min-height: 0;
   display: grid;
   align-items: start;
   overflow: hidden;
+  grid-row: 1;
 }
 
-.mirror[data-layout='columns'] .layout {
-  grid-template-columns: var(--card-width) 1fr minmax(280px, 1fr);
+.footer {
+  position: relative;
+  z-index: 2;
+  grid-row: 2;
+  width: 94%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  overflow: hidden;
+  min-height: 0;
 }
 
 .col {
@@ -121,7 +81,6 @@
 
 .center {
   justify-content: flex-end;
-  padding-bottom: 8px;
   min-height: 0;
   overflow: hidden;
 }
@@ -133,36 +92,29 @@
   overflow: hidden;
 }
 
-.footer {
-  position: relative;
-  z-index: 2;
-  flex: 0 1 auto;
-  width: 94%;
-  margin: 6px auto 0;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  overflow: hidden;
+.spacer {
+  min-width: 0;
   min-height: 0;
 }
 
-/* Compact modules slightly in horizontal so everything fits one screen */
-.mirror[data-orientation='horizontal'] ::ng-deep .clock-panel .time {
-  font-size: 3.4rem;
+/* ── Vertical ────────────────────────────────────────────── */
+.mirror[data-orientation='vertical'] {
+  width: min(100vw, calc(100dvh * 9 / 16));
+  max-width: 1200px;
+  border-left: 1px solid rgba(118, 215, 196, 0.08);
+  border-right: 1px solid rgba(118, 215, 196, 0.08);
+  --card-width: clamp(260px, 32cqw, 360px);
+  container-type: size;
 }
 
-.mirror[data-orientation='horizontal'] ::ng-deep .temp {
-  font-size: 4rem;
+.mirror[data-orientation='vertical'][data-layout='mirror'] .layout {
+  grid-template-columns: minmax(240px, 34%) minmax(0, 1fr);
+  gap: 16px 22px;
 }
 
-.mirror[data-orientation='horizontal'] ::ng-deep .hero-icon {
-  width: 110px;
-  height: 110px;
-}
-
-.mirror[data-orientation='horizontal'] ::ng-deep .qr {
-  width: 100px;
-  height: 100px;
+.mirror[data-orientation='vertical'] .footer {
+  max-height: 32dvh;
+  padding-top: 6px;
 }
 
 .mirror[data-orientation='vertical'] ::ng-deep .clock-panel .time {
@@ -171,4 +123,251 @@
 
 .mirror[data-orientation='vertical'] ::ng-deep .temp {
   font-size: clamp(3.4rem, 9cqh, 5.2rem);
+}
+
+/* ── Horizontal — compact so left/right/footer all fit ───── */
+.mirror[data-orientation='horizontal'] {
+  width: 100vw;
+  max-width: none;
+  border: none;
+  --card-width: clamp(220px, 20vw, 300px);
+  container-type: size;
+  padding: 10px 20px 6px;
+  gap: 4px;
+}
+
+.mirror[data-orientation='horizontal'][data-layout='mirror'] .layout {
+  grid-template-columns: minmax(200px, 24%) minmax(0, 1fr) minmax(340px, 44%);
+  gap: 8px 20px;
+}
+
+.mirror[data-orientation='horizontal'][data-layout='columns'] .layout {
+  grid-template-columns: var(--card-width) 1fr minmax(300px, 40%);
+  gap: 8px 20px;
+}
+
+.mirror[data-orientation='horizontal'] .footer {
+  max-height: 26dvh;
+  padding-top: 4px;
+}
+
+.mirror[data-orientation='horizontal'] .col {
+  gap: 6px;
+}
+
+.mirror[data-layout='columns'] .layout {
+  grid-template-columns: var(--card-width) 1fr minmax(280px, 1fr);
+}
+
+/* Horizontal density: shrink stacked modules */
+.mirror[data-orientation='horizontal'] ::ng-deep {
+  .panel {
+    padding: 8px 10px;
+    margin-bottom: 0;
+  }
+
+  .clock-panel {
+    margin-bottom: 0;
+  }
+
+  .clock-panel .date {
+    font-size: 1.05rem;
+    margin-bottom: 2px;
+  }
+
+  .clock-panel .time {
+    font-size: 2.8rem;
+  }
+
+  .panel h2,
+  app-prayer h2 {
+    font-size: 0.75rem;
+    margin-bottom: 4px;
+    padding-bottom: 2px;
+  }
+
+  app-prayer td {
+    padding: 3px 6px;
+    font-size: 0.95rem;
+  }
+
+  app-prayer tr.current td {
+    font-size: 1rem;
+  }
+
+  app-calendar h2 {
+    font-size: 0.75rem;
+    margin-bottom: 4px;
+  }
+
+  app-calendar .day {
+    height: 22px;
+    font-size: 0.8rem;
+  }
+
+  app-calendar .weekdays span {
+    font-size: 0.65rem;
+    padding-bottom: 2px;
+  }
+
+  app-world-clocks .cell {
+    padding: 2px 4px;
+  }
+
+  app-world-clocks .zone {
+    font-size: 0.62rem;
+  }
+
+  app-world-clocks .time {
+    font-size: 0.9rem;
+  }
+
+  app-world-clocks .flag {
+    width: 16px;
+    height: 11px;
+  }
+
+  .qr {
+    width: 72px;
+    height: 72px;
+    margin-bottom: 4px;
+  }
+
+  app-wifi .ssid {
+    font-size: 0.75rem;
+  }
+
+  /* Weather: shorter hero + 3-col daily so 6 days fit */
+  .section-title {
+    font-size: 0.95rem;
+    margin-bottom: 4px;
+    padding-bottom: 3px;
+  }
+
+  .meta {
+    font-size: 1rem;
+    margin: 4px 0 6px;
+    gap: 14px;
+  }
+
+  .hero {
+    margin: 0 0 4px;
+  }
+
+  .hero-icon {
+    width: 84px;
+    height: 84px;
+  }
+
+  .temp {
+    font-size: 3rem;
+  }
+
+  .feels {
+    font-size: 0.95rem;
+    margin-top: 2px;
+  }
+
+  .forecast {
+    margin-top: 2px;
+  }
+
+  .daily.grid-2 {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+
+  .cell {
+    padding: 4px 2px 5px;
+  }
+
+  .cell img {
+    width: 36px;
+    height: 36px;
+  }
+
+  .label {
+    font-size: 0.85rem;
+  }
+
+  .val {
+    font-size: 1.05rem;
+  }
+
+  .range {
+    font-size: 0.8rem;
+  }
+
+  .hijri-panel .value {
+    font-size: 1rem;
+  }
+
+  /* Footer content must fit reserved band */
+  .content-panel {
+    padding: 2px 12px 0;
+  }
+
+  app-dua h2,
+  app-hadith h2 {
+    font-size: 0.7rem;
+    margin-bottom: 2px;
+  }
+
+  app-dua .arabic {
+    font-size: 1.05rem;
+    line-height: 1.4;
+    margin-bottom: 2px;
+  }
+
+  app-dua .transliteration {
+    font-size: 0.8rem;
+    margin-bottom: 2px;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  app-dua .translation,
+  app-dua .bangla {
+    font-size: 0.85rem;
+    line-height: 1.3;
+    margin-bottom: 1px;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  app-dua .repeat,
+  app-dua .ref {
+    font-size: 0.7rem;
+  }
+
+  app-hadith .text {
+    font-size: 0.9rem;
+    line-height: 1.3;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  app-hadith .ref {
+    font-size: 0.7rem;
+  }
+
+  app-ayah .arabic {
+    font-size: 1.1rem;
+    line-height: 1.35;
+    margin-bottom: 2px;
+  }
+
+  app-ayah .translation {
+    font-size: 0.85rem;
+    line-height: 1.25;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
 }
