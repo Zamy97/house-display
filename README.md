@@ -36,6 +36,20 @@ Serve with any static server, e.g.:
 npx serve -s dist/house-display/browser -l 8080
 ```
 
+## Deploy to Vercel
+
+Repo includes `vercel.json` (build + SPA rewrites).
+
+```bash
+npx vercel
+# production:
+npx vercel --prod
+```
+
+Or import `Zamy97/house-display` in the Vercel dashboard (defaults from `vercel.json`).
+
+After deploy, open the URL → **Settings** (gear) to configure the house. Config is stored in that browser’s `localStorage`.
+
 ## Raspberry Pi kiosk
 
 1. Build (on Mac or Pi): `npm run build`
