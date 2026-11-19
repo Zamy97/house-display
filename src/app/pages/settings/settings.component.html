@@ -82,7 +82,26 @@
     <h2>Weather</h2>
     <label>
       OpenWeather API key
-      <input [(ngModel)]="draft.openWeatherApiKey" placeholder="optional" />
+      <input [(ngModel)]="draft.openWeatherApiKey" placeholder="required for current + forecast" />
+    </label>
+    <label>
+      Units
+      <select [(ngModel)]="draft.weatherUnits">
+        <option value="imperial">°F / mph</option>
+        <option value="metric">°C / m/s</option>
+      </select>
+    </label>
+    <label>
+      Hourly slots
+      <input type="number" min="0" max="8" [(ngModel)]="draft.weatherMaxHourlies" />
+    </label>
+    <label>
+      Daily days
+      <input type="number" min="0" max="8" [(ngModel)]="draft.weatherMaxDailies" />
+    </label>
+    <label class="toggle">
+      <input type="checkbox" [(ngModel)]="draft.weatherEffects" />
+      Dynamic weather effects (rain / snow overlay)
     </label>
   </section>
 

@@ -1,9 +1,11 @@
-import { Component, inject } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ConfigService } from '../../core/services/config.service';
+import { WeatherService } from '../../core/services/weather.service';
 import { ClockComponent } from '../../components/clock/clock.component';
 import { PrayerComponent } from '../../components/prayer/prayer.component';
 import { WeatherComponent } from '../../components/weather/weather.component';
+import { WeatherEffectsComponent } from '../../components/weather-effects/weather-effects.component';
 import { HijriComponent } from '../../components/hijri/hijri.component';
 import { DuaComponent } from '../../components/dua/dua.component';
 import { HadithComponent } from '../../components/hadith/hadith.component';
@@ -19,6 +21,7 @@ import { WifiComponent } from '../../components/wifi/wifi.component';
     ClockComponent,
     PrayerComponent,
     WeatherComponent,
+    WeatherEffectsComponent,
     HijriComponent,
     DuaComponent,
     HadithComponent,
@@ -31,5 +34,12 @@ import { WifiComponent } from '../../components/wifi/wifi.component';
 })
 export class DisplayComponent {
   readonly configService = inject(ConfigService);
+  readonly weatherService = inject(WeatherService);
   readonly config = this.configService.config;
+
+  readonly weatherEffect = computed(() => {
+    const cfg = this.config();
+    if (!cfg.modules.weather || !cfg.weatherEffects) return 'none';
+    return this.weatherService.lastBundle()?.effect || 'none';
+  });
 }

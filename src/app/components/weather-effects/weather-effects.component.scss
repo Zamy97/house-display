@@ -1,0 +1,62 @@
+:host {
+  pointer-events: none;
+}
+
+.fx {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.haze {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(180, 200, 220, 0.08),
+    transparent 40%,
+    rgba(120, 140, 160, 0.06)
+  );
+}
+
+.drop {
+  position: absolute;
+  top: -10%;
+  left: calc(4% * var(--i));
+  width: 1px;
+  height: 14px;
+  background: linear-gradient(180deg, transparent, rgba(160, 210, 255, 0.55));
+  animation: fall 1.1s linear infinite;
+  animation-delay: calc(var(--i) * -0.07s);
+  opacity: 0.55;
+}
+
+.flake {
+  position: absolute;
+  top: -10%;
+  left: calc(5.2% * var(--i));
+  font-size: 0.7rem;
+  color: rgba(234, 246, 255, 0.55);
+  animation: drift 4.5s linear infinite;
+  animation-delay: calc(var(--i) * -0.2s);
+}
+
+.fx[data-effect='storm'] .drop {
+  height: 20px;
+  opacity: 0.75;
+  animation-duration: 0.75s;
+}
+
+@keyframes fall {
+  to {
+    transform: translateY(110vh);
+  }
+}
+
+@keyframes drift {
+  to {
+    transform: translateY(110vh) translateX(18px);
+  }
+}

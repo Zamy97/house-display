@@ -26,6 +26,10 @@ export type HouseConfig = {
   prayerMethod: 'ISNA' | 'MWL' | 'Egypt' | 'Makkah' | 'Karachi';
   asr: 'Standard' | 'Hanafi';
   openWeatherApiKey: string;
+  weatherUnits: 'imperial' | 'metric';
+  weatherMaxHourlies: number;
+  weatherMaxDailies: number;
+  weatherEffects: boolean;
   wifi: { ssid: string; password: string; showPassword: boolean };
   worldClocks: WorldClock[];
   modules: HouseModules;
@@ -45,6 +49,10 @@ export const DEFAULT_HOUSE_CONFIG: HouseConfig = {
   prayerMethod: 'ISNA',
   asr: 'Hanafi',
   openWeatherApiKey: '',
+  weatherUnits: 'imperial',
+  weatherMaxHourlies: 2,
+  weatherMaxDailies: 6,
+  weatherEffects: true,
   wifi: { ssid: '', password: '', showPassword: false },
   worldClocks: [
     { title: 'LONDON', timezone: 'Europe/London', flag: 'gb' },
