@@ -11,7 +11,8 @@ export type ModuleId =
   | 'wifi';
 
 export type DisplayLayout = 'mirror' | 'columns';
-export type DisplayOrientation = 'vertical' | 'horizontal';
+/** auto = follow screen; vertical/horizontal = locked choice */
+export type DisplayOrientation = 'auto' | 'vertical' | 'horizontal';
 
 export type HouseModules = Record<ModuleId, boolean>;
 
@@ -111,8 +112,9 @@ export const LAYOUT_LABELS: Record<DisplayLayout, string> = {
 };
 
 export const ORIENTATION_LABELS: Record<DisplayOrientation, string> = {
-  vertical: 'Vertical (portrait TV / standing mirror)',
-  horizontal: 'Horizontal (landscape / wide TV)',
+  vertical: 'Vertical (standing mirror / portrait) — default',
+  horizontal: 'Horizontal (wide / landscape TV)',
+  auto: 'Auto (follow the TV/screen rotation)',
 };
 
 export const DISPLAY_SCALE_OPTIONS: { value: number; label: string }[] = [

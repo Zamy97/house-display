@@ -1,9 +1,9 @@
 import {
   Component,
   computed,
+  effect,
   HostListener,
   inject,
-  OnInit,
   signal,
 } from '@angular/core';
 import { RouterLink } from '@angular/router';
@@ -43,18 +43,22 @@ export type ViewOrientation = 'vertical' | 'horizontal';
   templateUrl: './display.component.html',
   styleUrl: './display.component.scss',
 })
-export class DisplayComponent implements OnInit {
+export class DisplayComponent {
   readonly configService = inject(ConfigService);
   readonly weatherService = inject(WeatherService);
   readonly config = this.configService.config;
 
-  /** Follows the screen — no Settings toggle required. Prefers vertical when tall. */
-  readonly viewOrientation = signal<ViewOrientation>('vertical');
+  private readonly screenOrientation = signal<ViewOrientation>(
+    this.readScreenOrientation()
+  );
 
-  /**
-   * Vertical (portrait TV) can use the full TV size setting.
-   * Horizontal has less height, so scale is capped so modules aren't clipped.
-   */
+  /** Resolved layout: Settings choice, or screen when set to Auto. */
+  readonly viewOrientation = computed<ViewOrientation>(() => {
+    const choice = this.config().orientation || 'vertical';
+    if (choice === 'horizontal' || choice === 'vertical') return choice;
+    return this.screenOrientation();
+  });
+
   readonly effectiveScale = computed(() => {
     const wanted = Number(this.config().displayScale) || 1.55;
     if (this.viewOrientation() === 'horizontal') {
@@ -69,22 +73,25 @@ export class DisplayComponent implements OnInit {
     return this.weatherService.lastBundle()?.effect || 'none';
   });
 
-  ngOnInit(): void {
-    this.refreshOrientation();
+  constructor() {
+    // Keep screen probe fresh when using Auto
+    effect(() => {
+      this.config().orientation;
+      this.screenOrientation.set(this.readScreenOrientation());
+    });
   }
 
   @HostListener('window:resize')
   onResize(): void {
-    this.refreshOrientation();
+    this.screenOrientation.set(this.readScreenOrientation());
   }
 
   @HostListener('window:orientationchange')
   onOrientationChange(): void {
-    this.refreshOrientation();
+    this.screenOrientation.set(this.readScreenOrientation());
   }
 
-  private refreshOrientation(): void {
-    const tall = window.innerHeight >= window.innerWidth;
-    this.viewOrientation.set(tall ? 'vertical' : 'horizontal');
+  private readScreenOrientation(): ViewOrientation {
+    return window.innerHeight >= window.innerWidth ? 'vertical' : 'horizontal';
   }
 }

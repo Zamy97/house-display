@@ -26,6 +26,14 @@
       </select>
     </label>
     <label>
+      Screen layout
+      <select [(ngModel)]="draft.orientation">
+        @for (id of orientationIds; track id) {
+          <option [ngValue]="id">{{ orientationLabels[id] }}</option>
+        }
+      </select>
+    </label>
+    <label>
       Display size (for TV viewing distance)
       <select [(ngModel)]="draft.displayScale">
         @for (opt of scaleOptions; track opt.value) {
@@ -34,8 +42,8 @@
       </select>
     </label>
     <p class="hint">
-      Vertical vs horizontal follows the TV/screen automatically (no setting).
-      Portrait → vertical layout. Landscape → compact horizontal layout.
+      Pick Vertical or Horizontal yourself, or Auto to follow the TV rotation.
+      Default is Vertical. Save &amp; back to apply.
     </p>
   </section>
 

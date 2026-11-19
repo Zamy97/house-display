@@ -4,9 +4,11 @@ import { Router, RouterLink } from '@angular/router';
 import { ConfigService } from '../../core/services/config.service';
 import {
   DISPLAY_SCALE_OPTIONS,
+  DisplayOrientation,
   HouseConfig,
   MODULE_LABELS,
   ModuleId,
+  ORIENTATION_LABELS,
 } from '../../core/models/house-config';
 
 @Component({
@@ -22,6 +24,8 @@ export class SettingsComponent {
   draft: HouseConfig = structuredClone(this.configService.config());
   moduleIds = Object.keys(MODULE_LABELS) as ModuleId[];
   labels = MODULE_LABELS;
+  orientationIds = Object.keys(ORIENTATION_LABELS) as DisplayOrientation[];
+  orientationLabels = ORIENTATION_LABELS;
   scaleOptions = DISPLAY_SCALE_OPTIONS;
   importText = '';
   message = '';
