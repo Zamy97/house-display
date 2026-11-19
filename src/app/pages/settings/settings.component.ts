@@ -4,10 +4,12 @@ import { RouterLink } from '@angular/router';
 import { ConfigService } from '../../core/services/config.service';
 import {
   DisplayLayout,
+  DisplayOrientation,
   HouseConfig,
   LAYOUT_LABELS,
   MODULE_LABELS,
   ModuleId,
+  ORIENTATION_LABELS,
 } from '../../core/models/house-config';
 
 @Component({
@@ -24,6 +26,8 @@ export class SettingsComponent {
   labels = MODULE_LABELS;
   layoutIds = Object.keys(LAYOUT_LABELS) as DisplayLayout[];
   layoutLabels = LAYOUT_LABELS;
+  orientationIds = Object.keys(ORIENTATION_LABELS) as DisplayOrientation[];
+  orientationLabels = ORIENTATION_LABELS;
   importText = '';
   message = '';
 

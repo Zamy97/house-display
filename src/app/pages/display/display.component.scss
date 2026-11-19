@@ -1,52 +1,90 @@
+/* Always one locked viewport — no page scroll on the display */
+:host {
+  display: block;
+  height: 100dvh;
+  max-height: 100dvh;
+  overflow: hidden;
+}
+
 .stage {
-  min-height: 100dvh;
+  height: 100dvh;
+  max-height: 100dvh;
   background: #000;
   display: flex;
   justify-content: center;
-  align-items: stretch;
-}
-
-.stage[data-layout='mirror'] {
   align-items: center;
+  overflow: hidden;
 }
 
 .mirror {
   position: relative;
-  width: 100%;
-  min-height: 100dvh;
   display: flex;
   flex-direction: column;
-  padding: 18px 22px 12px;
+  padding: 14px 18px 10px;
   box-sizing: border-box;
   background: #000;
   overflow: hidden;
-}
-
-.stage[data-layout='mirror'] .mirror {
   height: 100dvh;
   max-height: 100dvh;
 }
 
-/* Portrait kiosk frame on landscape monitors */
-@media (orientation: landscape) and (min-width: 1100px) {
-  .stage[data-layout='mirror'] .mirror {
-    width: min(100vw, calc(100dvh * 9 / 16));
-    max-width: 1200px;
-    height: 100dvh;
-    border-left: 1px solid rgba(118, 215, 196, 0.1);
-    border-right: 1px solid rgba(118, 215, 196, 0.1);
-  }
+/* ── Vertical (portrait standing mirror) ─────────────────── */
+.mirror[data-orientation='vertical'] {
+  width: min(100vw, calc(100dvh * 9 / 16));
+  max-width: 1200px;
+  border-left: 1px solid rgba(118, 215, 196, 0.08);
+  border-right: 1px solid rgba(118, 215, 196, 0.08);
+  --card-width: clamp(260px, 32cqw, 360px);
+  container-type: size;
+}
+
+.mirror[data-orientation='vertical'][data-layout='mirror'] .layout {
+  grid-template-columns: minmax(240px, 34%) minmax(0, 1fr);
+  gap: 16px 22px;
+}
+
+.mirror[data-orientation='vertical'] .footer {
+  max-height: 34%;
+}
+
+/* ── Horizontal (wide / landscape TV) ────────────────────── */
+.mirror[data-orientation='horizontal'] {
+  width: 100vw;
+  max-width: none;
+  border: none;
+  --card-width: clamp(240px, 22vw, 320px);
+  container-type: size;
+  padding: 12px 24px 8px;
+}
+
+.mirror[data-orientation='horizontal'][data-layout='mirror'] .layout {
+  grid-template-columns: minmax(220px, 26%) minmax(0, 1fr) minmax(320px, 42%);
+  gap: 12px 28px;
+}
+
+.mirror[data-orientation='horizontal'][data-layout='columns'] .layout {
+  grid-template-columns: var(--card-width) 1fr minmax(300px, 40%);
+  gap: 12px 24px;
+}
+
+.mirror[data-orientation='horizontal'] .footer {
+  max-height: 28%;
+}
+
+.spacer {
+  min-width: 0;
+  min-height: 0;
 }
 
 .settings-fab {
   position: absolute;
-  top: 12px;
-  right: 16px;
+  top: 10px;
+  right: 14px;
   z-index: 5;
   opacity: 0.18;
   color: var(--text);
   text-decoration: none;
-  font-size: 1.25rem;
+  font-size: 1.2rem;
 }
 
 .settings-fab:hover {
@@ -60,23 +98,21 @@
   flex: 1 1 auto;
   min-height: 0;
   display: grid;
-  gap: 28px 36px;
   align-items: start;
-}
-
-.mirror[data-layout='mirror'] .layout {
-  grid-template-columns: minmax(300px, 360px) minmax(0, 1fr);
+  overflow: hidden;
 }
 
 .mirror[data-layout='columns'] .layout {
-  grid-template-columns: var(--card-width) 1fr minmax(300px, 520px);
+  grid-template-columns: var(--card-width) 1fr minmax(280px, 1fr);
 }
 
 .col {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 8px;
   min-width: 0;
+  min-height: 0;
+  overflow: hidden;
 }
 
 .left {
@@ -85,47 +121,54 @@
 
 .center {
   justify-content: flex-end;
-  padding-bottom: 12px;
-  min-height: 30vh;
+  padding-bottom: 8px;
+  min-height: 0;
+  overflow: hidden;
 }
 
 .right {
   justify-self: stretch;
   width: 100%;
   align-items: flex-end;
+  overflow: hidden;
 }
 
 .footer {
   position: relative;
   z-index: 2;
-  flex: 0 0 auto;
+  flex: 0 1 auto;
   width: 94%;
-  margin: 10px auto 0;
+  margin: 6px auto 0;
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  max-height: 36vh;
+  gap: 4px;
   overflow: hidden;
+  min-height: 0;
 }
 
-@media (max-width: 720px) {
-  .mirror[data-layout='mirror'] .layout,
-  .mirror[data-layout='columns'] .layout {
-    grid-template-columns: 1fr;
-    overflow: auto;
-  }
+/* Compact modules slightly in horizontal so everything fits one screen */
+.mirror[data-orientation='horizontal'] ::ng-deep .clock-panel .time {
+  font-size: 3.4rem;
+}
 
-  .mirror {
-    height: auto;
-    max-height: none;
-    overflow: auto;
-  }
+.mirror[data-orientation='horizontal'] ::ng-deep .temp {
+  font-size: 4rem;
+}
 
-  .right {
-    align-items: stretch;
-  }
+.mirror[data-orientation='horizontal'] ::ng-deep .hero-icon {
+  width: 110px;
+  height: 110px;
+}
 
-  .footer {
-    max-height: none;
-  }
+.mirror[data-orientation='horizontal'] ::ng-deep .qr {
+  width: 100px;
+  height: 100px;
+}
+
+.mirror[data-orientation='vertical'] ::ng-deep .clock-panel .time {
+  font-size: clamp(3.2rem, 8cqh, 4.8rem);
+}
+
+.mirror[data-orientation='vertical'] ::ng-deep .temp {
+  font-size: clamp(3.4rem, 9cqh, 5.2rem);
 }

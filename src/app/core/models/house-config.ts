@@ -11,6 +11,7 @@ export type ModuleId =
   | 'wifi';
 
 export type DisplayLayout = 'mirror' | 'columns';
+export type DisplayOrientation = 'vertical' | 'horizontal';
 
 export type HouseModules = Record<ModuleId, boolean>;
 
@@ -25,6 +26,7 @@ export type HouseConfig = {
   locale: string;
   timeFormat: 12 | 24;
   layout: DisplayLayout;
+  orientation: DisplayOrientation;
   coords: { lat: number; lon: number };
   timezone: string;
   prayerMethod: 'ISNA' | 'MWL' | 'Egypt' | 'Makkah' | 'Karachi';
@@ -50,6 +52,7 @@ export const DEFAULT_HOUSE_CONFIG: HouseConfig = {
   locale: 'en-US',
   timeFormat: 12,
   layout: 'mirror',
+  orientation: 'vertical',
   coords: { lat: 42.4710579, lon: -83.0133362 },
   timezone: 'America/Detroit',
   prayerMethod: 'ISNA',
@@ -102,4 +105,9 @@ export const MODULE_LABELS: Record<ModuleId, string> = {
 export const LAYOUT_LABELS: Record<DisplayLayout, string> = {
   mirror: 'MagicMirror (left modules, right weather, bottom content)',
   columns: 'Three columns (content in center)',
+};
+
+export const ORIENTATION_LABELS: Record<DisplayOrientation, string> = {
+  vertical: 'Vertical (portrait TV / standing mirror)',
+  horizontal: 'Horizontal (landscape / wide TV)',
 };

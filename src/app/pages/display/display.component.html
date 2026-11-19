@@ -1,5 +1,13 @@
-<div class="stage" [attr.data-layout]="config().layout">
-  <div class="mirror" [attr.data-layout]="config().layout">
+<div
+  class="stage"
+  [attr.data-layout]="config().layout"
+  [attr.data-orientation]="config().orientation"
+>
+  <div
+    class="mirror"
+    [attr.data-layout]="config().layout"
+    [attr.data-orientation]="config().orientation"
+  >
     <app-weather-effects [effect]="weatherEffect()" />
     <a class="settings-fab" routerLink="/settings" title="Settings">⚙</a>
 
@@ -38,6 +46,8 @@
             <app-hadith [mode]="config().content.hadithRotation" />
           }
         </main>
+      } @else if (config().orientation === 'horizontal') {
+        <div class="col spacer" aria-hidden="true"></div>
       }
 
       <aside class="col right">
