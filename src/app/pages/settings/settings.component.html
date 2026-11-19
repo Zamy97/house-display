@@ -22,14 +22,6 @@
       </select>
     </label>
     <label>
-      Screen orientation
-      <select [(ngModel)]="draft.orientation">
-        @for (id of orientationIds; track id) {
-          <option [ngValue]="id">{{ orientationLabels[id] }}</option>
-        }
-      </select>
-    </label>
-    <label>
       Display size (for TV viewing distance)
       <select [(ngModel)]="draft.displayScale">
         @for (opt of scaleOptions; track opt.value) {
@@ -38,8 +30,9 @@
       </select>
     </label>
     <p class="hint">
-      Default is TV 43″. Raise to Extra large if you sit farther back. Layout stays
-      one screen with no scrolling.
+      Vertical vs horizontal follows the TV/screen automatically (no setting).
+      Portrait → vertical layout (default for standing mirrors). Landscape → compact
+      horizontal layout. Display size mainly affects vertical/TV scale.
     </p>
   </section>
 

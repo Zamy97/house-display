@@ -1,4 +1,3 @@
-/* Region layout + TV-friendly zoom scale */
 :host {
   display: block;
   height: 100dvh;
@@ -17,13 +16,12 @@
 .mirror {
   --display-scale: 1.55;
   position: relative;
-  display: flex;
-  flex-direction: column;
-  padding: 16px 20px 10px;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  padding: 14px 18px 8px;
   box-sizing: border-box;
   background: #000;
   overflow: hidden;
-  /* Shrink layout box, then zoom up so fonts/icons look big on a 43" TV */
   zoom: var(--display-scale);
   height: calc(100dvh / var(--display-scale));
   max-height: calc(100dvh / var(--display-scale));
@@ -31,13 +29,13 @@
 
 .settings-fab {
   position: absolute;
-  top: 10px;
-  right: 14px;
+  top: 8px;
+  right: 12px;
   z-index: 5;
   opacity: 0.18;
   color: var(--text);
   text-decoration: none;
-  font-size: 1.15rem;
+  font-size: 1.1rem;
 }
 
 .settings-fab:hover {
@@ -48,12 +46,11 @@
 .region.top {
   position: relative;
   z-index: 2;
-  flex: 1 1 auto;
   min-height: 0;
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  gap: 24px;
+  gap: 20px;
   overflow: hidden;
 }
 
@@ -63,6 +60,7 @@
   display: flex;
   flex-direction: column;
   gap: 0;
+  min-height: 0;
   overflow: hidden;
 }
 
@@ -72,6 +70,7 @@
   display: flex;
   flex-direction: column;
   align-items: flex-end;
+  min-height: 0;
   overflow: hidden;
   margin-left: auto;
 }
@@ -79,24 +78,24 @@
 .region.bottom-bar {
   position: relative;
   z-index: 2;
-  flex: 0 0 auto;
   width: 92%;
   margin: 4px auto 0;
-  max-height: 34%;
   overflow: hidden;
   display: flex;
   flex-direction: column;
   gap: 0;
+  min-height: 0;
 }
 
 .region.bottom-right {
   position: absolute;
-  right: 20px;
-  bottom: 10px;
+  right: 18px;
+  bottom: 8px;
   z-index: 3;
   pointer-events: none;
 }
 
+/* ── Vertical (default for tall / portrait screens) ──────── */
 .mirror[data-orientation='vertical'] {
   width: min(
     calc(100vw / var(--display-scale)),
@@ -107,51 +106,239 @@
   border-right: 1px solid rgba(118, 215, 196, 0.08);
 }
 
+.mirror[data-orientation='vertical'] .region.bottom-bar {
+  max-height: 32%;
+}
+
+/* ── Horizontal (auto when screen is wide) ───────────────── */
 .mirror[data-orientation='horizontal'] {
   width: calc(100vw / var(--display-scale));
   max-width: none;
+  padding: 10px 22px 6px;
+  gap: 4px;
+}
+
+.mirror[data-orientation='horizontal'] .region.top {
+  gap: 16px 28px;
+}
+
+.mirror[data-orientation='horizontal'] .region.top-left {
+  --card-width: 260px;
+  width: 260px;
+  flex-basis: 260px;
+}
+
+.mirror[data-orientation='horizontal'] .region.top-right {
+  max-width: 560px;
 }
 
 .mirror[data-orientation='horizontal'] .region.bottom-bar {
-  max-height: 28%;
+  max-height: 24%;
+  width: 90%;
 }
 
 .mirror[data-orientation='horizontal'] ::ng-deep {
+  .panel {
+    padding: 8px 10px;
+    margin-bottom: 6px;
+  }
+
+  .clock-panel {
+    margin-bottom: 2px;
+    padding: 0 2px;
+  }
+
+  .clock-panel .date {
+    font-size: 1rem;
+    margin-bottom: 2px;
+  }
+
   .clock-panel .time {
-    font-size: 3.2rem;
+    font-size: 2.6rem;
   }
 
-  .temp {
-    font-size: 3.8rem;
+  app-prayer h2 {
+    font-size: 0.72rem;
+    margin-bottom: 2px;
+    padding-bottom: 2px;
   }
 
-  .hero-icon {
-    width: 110px;
-    height: 110px;
+  app-prayer td {
+    padding: 3px 6px;
+    font-size: 0.9rem;
+  }
+
+  app-prayer tr.current td {
+    font-size: 0.95rem;
+  }
+
+  app-calendar h2 {
+    font-size: 0.72rem;
+    margin-bottom: 4px;
+  }
+
+  app-calendar .weekdays span {
+    font-size: 0.62rem;
+    padding-bottom: 2px;
+  }
+
+  app-calendar .day {
+    height: 20px;
+    font-size: 0.78rem;
+  }
+
+  app-world-clocks .cell {
+    padding: 2px 4px;
+  }
+
+  app-world-clocks .zone {
+    font-size: 0.6rem;
+  }
+
+  app-world-clocks .time {
+    font-size: 0.85rem;
+  }
+
+  app-world-clocks .flag {
+    width: 14px;
   }
 
   .qr {
+    width: 64px;
+    height: 64px;
+    margin-bottom: 4px;
+  }
+
+  app-wifi .ssid,
+  app-wifi .password {
+    font-size: 0.65rem;
+  }
+
+  .section-title {
+    font-size: 0.9rem;
+    margin-bottom: 4px;
+  }
+
+  .meta {
+    font-size: 1rem;
+    margin: 2px 0 4px;
+    gap: 14px;
+  }
+
+  .hero {
+    margin: 0 0 4px;
+  }
+
+  .hero-icon {
     width: 88px;
     height: 88px;
   }
 
-  app-calendar .day {
-    height: 24px;
+  .temp {
+    font-size: 3rem;
+  }
+
+  .feels {
+    font-size: 0.95rem;
+  }
+
+  .forecast {
+    width: 100%;
+    max-width: 420px;
+  }
+
+  .tiles.daily {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .tiles.daily .tile {
+    width: auto;
+  }
+
+  .tile {
+    padding: 3px 4px;
+  }
+
+  .tile img {
+    width: 34px;
+    height: 34px;
+  }
+
+  .label {
     font-size: 0.85rem;
+  }
+
+  .val {
+    font-size: 1.05rem;
+  }
+
+  .range {
+    font-size: 0.78rem;
+  }
+
+  .hijri-panel {
+    margin-top: 4px;
+  }
+
+  .hijri-panel .value {
+    font-size: 0.95rem;
+  }
+
+  .content-panel {
+    padding: 1px 10px 0;
+  }
+
+  app-dua h2,
+  app-hadith h2 {
+    font-size: 0.65rem;
+    margin-bottom: 1px;
+  }
+
+  app-dua .arabic {
+    font-size: 1rem;
+    line-height: 1.35;
+    margin-bottom: 2px;
   }
 
   app-dua .transliteration,
   app-dua .translation,
   app-dua .bangla {
+    font-size: 0.8rem;
+    line-height: 1.25;
+    margin-bottom: 1px;
     display: -webkit-box;
     -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
 
+  app-dua .repeat,
+  app-dua .ref,
+  app-hadith .ref {
+    font-size: 0.65rem;
+  }
+
   app-hadith .text {
+    font-size: 0.85rem;
+    line-height: 1.25;
     display: -webkit-box;
     -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  app-ayah .arabic {
+    font-size: 1.05rem;
+    line-height: 1.3;
+    margin-bottom: 2px;
+  }
+
+  app-ayah .translation {
+    font-size: 0.8rem;
+    line-height: 1.2;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;
     overflow: hidden;
   }

@@ -1,16 +1,12 @@
-<div
-  class="stage"
-  [attr.data-orientation]="config().orientation"
->
+<div class="stage" [attr.data-orientation]="viewOrientation()">
   <div
     class="mirror"
-    [attr.data-orientation]="config().orientation"
-    [style.--display-scale]="config().displayScale || 1.55"
+    [attr.data-orientation]="viewOrientation()"
+    [style.--display-scale]="effectiveScale()"
   >
     <app-weather-effects [effect]="weatherEffect()" />
     <a class="settings-fab" routerLink="/settings" title="Settings">⚙</a>
 
-    <!-- Example house regions: top_left | top_right | bottom_bar | bottom_right -->
     <div class="region top">
       <aside class="region top-left">
         @if (config().modules.clock) {
@@ -41,6 +37,9 @@
         @if (config().modules.weather) {
           <app-weather [config]="config()" />
         }
+        @if (config().modules.hijri && viewOrientation() === 'horizontal') {
+          <app-hijri [locale]="config().locale" />
+        }
       </aside>
     </div>
 
@@ -56,7 +55,7 @@
       }
     </div>
 
-    @if (config().modules.hijri) {
+    @if (config().modules.hijri && viewOrientation() === 'vertical') {
       <div class="region bottom-right">
         <app-hijri [locale]="config().locale" />
       </div>
