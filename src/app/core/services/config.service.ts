@@ -1,6 +1,7 @@
 import { Injectable, computed, signal } from '@angular/core';
 import {
   DEFAULT_HOUSE_CONFIG,
+  DISPLAY_SCALE_OPTIONS,
   HouseConfig,
   ModuleId,
 } from '../models/house-config';
@@ -66,7 +67,7 @@ export class ConfigService {
   }
 
   private merge(base: HouseConfig, overlay: Partial<HouseConfig>): HouseConfig {
-    return {
+    const merged: HouseConfig = {
       ...base,
       ...overlay,
       coords: { ...base.coords, ...(overlay.coords || {}) },
@@ -83,5 +84,16 @@ export class ConfigService {
         ? overlay.worldClocks
         : base.worldClocks,
     };
+    merged.displayScale = this.snapDisplayScale(merged.displayScale);
+    return merged;
+  }
+
+  /** Keep the select from going blank when an old saved scale isn't in the list. */
+  private snapDisplayScale(value: number): number {
+    const options = DISPLAY_SCALE_OPTIONS.map((o) => o.value);
+    if (options.includes(value)) return value;
+    return options.reduce((best, cur) =>
+      Math.abs(cur - value) < Math.abs(best - value) ? cur : best
+    );
   }
 }
