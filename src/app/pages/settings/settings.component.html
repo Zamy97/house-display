@@ -80,130 +80,128 @@
       </table>
     </section>
 
-    <div class="side">
-      <section class="panel">
-        <h2>House</h2>
-        <div class="fields">
-          <label>Name <input [(ngModel)]="draft.houseName" /></label>
-          <label>Timezone <input [(ngModel)]="draft.timezone" /></label>
-          <label>Lat <input type="number" step="any" [(ngModel)]="draft.coords.lat" /></label>
-          <label>Lon <input type="number" step="any" [(ngModel)]="draft.coords.lon" /></label>
-          <label>
-            Time
-            <select [(ngModel)]="draft.timeFormat">
-              <option [ngValue]="12">12-hour</option>
-              <option [ngValue]="24">24-hour</option>
-            </select>
-          </label>
-          <label>
-            Layout
-            <select [(ngModel)]="draft.orientation">
-              @for (id of orientationIds; track id) {
-                <option [ngValue]="id">{{ orientationLabels[id] }}</option>
-              }
-            </select>
-          </label>
-          <label class="span-2">
-            Display size
-            <select [(ngModel)]="draft.displayScale">
-              @for (opt of scaleOptions; track opt.value) {
-                <option [ngValue]="opt.value">{{ opt.label }}</option>
-              }
-            </select>
-          </label>
-        </div>
-      </section>
+    <section class="panel house-panel">
+      <h2>House</h2>
+      <div class="fields">
+        <label>Name <input [(ngModel)]="draft.houseName" /></label>
+        <label>Timezone <input [(ngModel)]="draft.timezone" /></label>
+        <label>Lat <input type="number" step="any" [(ngModel)]="draft.coords.lat" /></label>
+        <label>Lon <input type="number" step="any" [(ngModel)]="draft.coords.lon" /></label>
+        <label>
+          Time
+          <select [(ngModel)]="draft.timeFormat">
+            <option [ngValue]="12">12-hour</option>
+            <option [ngValue]="24">24-hour</option>
+          </select>
+        </label>
+        <label>
+          Layout
+          <select [(ngModel)]="draft.orientation">
+            @for (id of orientationIds; track id) {
+              <option [ngValue]="id">{{ orientationLabels[id] }}</option>
+            }
+          </select>
+        </label>
+        <label class="span-2">
+          Display size
+          <select [(ngModel)]="draft.displayScale">
+            @for (opt of scaleOptions; track opt.value) {
+              <option [ngValue]="opt.value">{{ opt.label }}</option>
+            }
+          </select>
+        </label>
+      </div>
+    </section>
 
-      <section class="panel">
-        <h2>Prayer &amp; content</h2>
-        <div class="fields">
-          <label>
-            Method
-            <select [(ngModel)]="draft.prayerMethod">
-              <option value="ISNA">ISNA</option>
-              <option value="MWL">MWL</option>
-              <option value="Egypt">Egypt</option>
-              <option value="Makkah">Makkah</option>
-              <option value="Karachi">Karachi</option>
-            </select>
-          </label>
-          <label>
-            Asr
-            <select [(ngModel)]="draft.asr">
-              <option value="Hanafi">Hanafi</option>
-              <option value="Standard">Standard</option>
-            </select>
-          </label>
-          <label>
-            Dua
-            <select [(ngModel)]="draft.content.duaLanguage">
-              <option value="en">English</option>
-              <option value="bn">Bangla</option>
-            </select>
-          </label>
-          <label>
-            Hadith
-            <select [(ngModel)]="draft.content.hadithRotation">
-              <option value="daily">Daily</option>
-              <option value="random">Random</option>
-            </select>
-          </label>
-          <label>
-            Ayah ms
-            <input type="number" [(ngModel)]="draft.content.ayahIntervalMs" />
-          </label>
-          <label class="toggle inline">
-            <input type="checkbox" [(ngModel)]="draft.prayerShowSunrise" />
-            Sunrise
-          </label>
-        </div>
-      </section>
+    <section class="panel prayer-panel">
+      <h2>Prayer &amp; content</h2>
+      <div class="fields">
+        <label>
+          Method
+          <select [(ngModel)]="draft.prayerMethod">
+            <option value="ISNA">ISNA</option>
+            <option value="MWL">MWL</option>
+            <option value="Egypt">Egypt</option>
+            <option value="Makkah">Makkah</option>
+            <option value="Karachi">Karachi</option>
+          </select>
+        </label>
+        <label>
+          Asr
+          <select [(ngModel)]="draft.asr">
+            <option value="Hanafi">Hanafi</option>
+            <option value="Standard">Standard</option>
+          </select>
+        </label>
+        <label>
+          Dua
+          <select [(ngModel)]="draft.content.duaLanguage">
+            <option value="en">English</option>
+            <option value="bn">Bangla</option>
+          </select>
+        </label>
+        <label>
+          Hadith
+          <select [(ngModel)]="draft.content.hadithRotation">
+            <option value="daily">Daily</option>
+            <option value="random">Random</option>
+          </select>
+        </label>
+        <label>
+          Ayah ms
+          <input type="number" [(ngModel)]="draft.content.ayahIntervalMs" />
+        </label>
+        <label class="toggle inline">
+          <input type="checkbox" [(ngModel)]="draft.prayerShowSunrise" />
+          Sunrise
+        </label>
+      </div>
+    </section>
 
-      <section class="panel">
-        <h2>Weather</h2>
-        <div class="fields">
-          <label class="span-2">
-            API key
-            <input [(ngModel)]="draft.openWeatherApiKey" placeholder="OpenWeather key" />
-          </label>
-          <label>
-            Units
-            <select [(ngModel)]="draft.weatherUnits">
-              <option value="imperial">°F</option>
-              <option value="metric">°C</option>
-            </select>
-          </label>
-          <label>
-            Hourly
-            <input type="number" min="0" max="8" [(ngModel)]="draft.weatherMaxHourlies" />
-          </label>
-          <label>
-            Daily
-            <input type="number" min="0" max="8" [(ngModel)]="draft.weatherMaxDailies" />
-          </label>
-          <label class="toggle inline">
-            <input type="checkbox" [(ngModel)]="draft.weatherEffects" />
-            Effects
-          </label>
-        </div>
-      </section>
+    <section class="panel weather-panel">
+      <h2>Weather</h2>
+      <div class="fields">
+        <label class="span-2">
+          API key
+          <input [(ngModel)]="draft.openWeatherApiKey" placeholder="OpenWeather key" />
+        </label>
+        <label>
+          Units
+          <select [(ngModel)]="draft.weatherUnits">
+            <option value="imperial">°F</option>
+            <option value="metric">°C</option>
+          </select>
+        </label>
+        <label>
+          Hourly
+          <input type="number" min="0" max="8" [(ngModel)]="draft.weatherMaxHourlies" />
+        </label>
+        <label>
+          Daily
+          <input type="number" min="0" max="8" [(ngModel)]="draft.weatherMaxDailies" />
+        </label>
+        <label class="toggle inline">
+          <input type="checkbox" [(ngModel)]="draft.weatherEffects" />
+          Effects
+        </label>
+      </div>
+    </section>
 
-      <section class="panel">
-        <h2>Wi‑Fi</h2>
-        <div class="fields">
-          <label>SSID <input [(ngModel)]="draft.wifi.ssid" /></label>
-          <label>Password <input [(ngModel)]="draft.wifi.password" /></label>
-          <label class="toggle inline span-2">
-            <input type="checkbox" [(ngModel)]="draft.wifi.showPassword" />
-            Show password on display
-          </label>
-        </div>
-      </section>
+    <section class="panel wifi-panel">
+      <h2>Wi‑Fi</h2>
+      <div class="fields">
+        <label>SSID <input [(ngModel)]="draft.wifi.ssid" /></label>
+        <label>Password <input [(ngModel)]="draft.wifi.password" /></label>
+        <label class="toggle inline span-2">
+          <input type="checkbox" [(ngModel)]="draft.wifi.showPassword" />
+          Show password on display
+        </label>
+      </div>
+    </section>
 
-      <section class="panel transfer">
-        <h2>Import / export JSON</h2>
-        <textarea rows="3" [(ngModel)]="importText" placeholder="Paste config JSON here, then Import"></textarea>
-      </section>
-    </div>
+    <section class="panel transfer">
+      <h2>Import / export JSON</h2>
+      <textarea rows="2" [(ngModel)]="importText" placeholder="Paste config JSON, then Import"></textarea>
+    </section>
   </div>
 </div>

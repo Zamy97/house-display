@@ -170,17 +170,17 @@ export const LAYOUT_LABELS: Record<DisplayLayout, string> = {
 };
 
 export const ORIENTATION_LABELS: Record<DisplayOrientation, string> = {
-  vertical: 'Vertical (standing mirror / portrait) — default',
-  horizontal: 'Horizontal (wide / landscape TV)',
-  auto: 'Auto (follow the TV/screen rotation)',
+  vertical: 'Vertical (default)',
+  horizontal: 'Horizontal',
+  auto: 'Auto (follow screen)',
 };
 
 export const DISPLAY_SCALE_OPTIONS: { value: number; label: string }[] = [
-  { value: 1.0, label: 'Compact (desktop / close up)' },
+  { value: 1.0, label: 'Compact' },
   { value: 1.2, label: 'Comfortable' },
   { value: 1.4, label: 'TV (default)' },
   { value: 1.6, label: 'Large TV' },
-  { value: 1.8, label: 'Extra large / far away' },
+  { value: 1.8, label: 'Extra large' },
 ];
 
 export const MODULE_SCALE_OPTIONS: { value: number; label: string }[] = [
