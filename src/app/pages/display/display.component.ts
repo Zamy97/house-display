@@ -6,6 +6,7 @@ import {
   inject,
   signal,
 } from '@angular/core';
+import { NgTemplateOutlet } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { ConfigService } from '../../core/services/config.service';
 import { WeatherService } from '../../core/services/weather.service';
@@ -20,8 +21,11 @@ import { HadithComponent } from '../../components/hadith/hadith.component';
 import { AyahComponent } from '../../components/ayah/ayah.component';
 import { WorldClocksComponent } from '../../components/world-clocks/world-clocks.component';
 import { WifiComponent } from '../../components/wifi/wifi.component';
-
-import { ModuleId } from '../../core/models/house-config';
+import {
+  ALL_MODULE_IDS,
+  ModuleId,
+  ModuleRegion,
+} from '../../core/models/house-config';
 
 export type ViewOrientation = 'vertical' | 'horizontal';
 
@@ -29,6 +33,7 @@ export type ViewOrientation = 'vertical' | 'horizontal';
   selector: 'app-display',
   standalone: true,
   imports: [
+    NgTemplateOutlet,
     RouterLink,
     ClockComponent,
     PrayerComponent,
@@ -62,7 +67,7 @@ export class DisplayComponent {
   });
 
   readonly effectiveScale = computed(() => {
-    const wanted = Number(this.config().displayScale) || 1.55;
+    const wanted = Number(this.config().displayScale) || 1.4;
     if (this.viewOrientation() === 'horizontal') {
       return Math.min(wanted, 1.2);
     }
@@ -75,13 +80,16 @@ export class DisplayComponent {
     return this.weatherService.lastBundle()?.effect || 'none';
   });
 
+  readonly leftModules = computed(() => this.modulesIn('left'));
+  readonly rightModules = computed(() => this.modulesIn('right'));
+  readonly bottomModules = computed(() => this.modulesIn('bottom'));
+
   /** Per-module size multiplier set in Settings. */
   scale(id: ModuleId): number {
     return this.config().moduleScales?.[id] || 1;
   }
 
   constructor() {
-    // Keep screen probe fresh when using Auto
     effect(() => {
       this.config().orientation;
       this.screenOrientation.set(this.readScreenOrientation());
@@ -96,6 +104,15 @@ export class DisplayComponent {
   @HostListener('window:orientationchange')
   onOrientationChange(): void {
     this.screenOrientation.set(this.readScreenOrientation());
+  }
+
+  private modulesIn(region: ModuleRegion): ModuleId[] {
+    const cfg = this.config();
+    const regions = cfg.moduleRegions || {};
+    const order = cfg.moduleOrder || {};
+    return ALL_MODULE_IDS.filter(
+      (id) => cfg.modules[id] && (regions[id] || 'left') === region
+    ).sort((a, b) => (order[a] ?? 99) - (order[b] ?? 99));
   }
 
   private readScreenOrientation(): ViewOrientation {

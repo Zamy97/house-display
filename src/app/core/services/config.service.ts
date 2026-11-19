@@ -74,6 +74,11 @@ export class ConfigService {
       content: { ...base.content, ...(overlay.content || {}) },
       modules: { ...base.modules, ...(overlay.modules || {}) },
       moduleScales: { ...base.moduleScales, ...(overlay.moduleScales || {}) },
+      moduleRegions: {
+        ...base.moduleRegions,
+        ...(overlay.moduleRegions || {}),
+      },
+      moduleOrder: { ...base.moduleOrder, ...(overlay.moduleOrder || {}) },
       worldClocks: overlay.worldClocks?.length
         ? overlay.worldClocks
         : base.worldClocks,

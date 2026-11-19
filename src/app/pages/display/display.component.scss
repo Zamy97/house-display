@@ -97,14 +97,6 @@
   min-height: 0;
 }
 
-.region.bottom-right {
-  position: absolute;
-  right: 18px;
-  bottom: 8px;
-  z-index: 3;
-  pointer-events: none;
-}
-
 /* ── Vertical (default for tall / portrait screens) ──────── */
 .mirror[data-orientation='vertical'] {
   width: min(

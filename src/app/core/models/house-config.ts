@@ -10,11 +10,27 @@ export type ModuleId =
   | 'worldClocks'
   | 'wifi';
 
+/** Where a module stacks on the mirror. */
+export type ModuleRegion = 'left' | 'right' | 'bottom';
+
 export type DisplayLayout = 'mirror' | 'columns';
 /** auto = follow screen; vertical/horizontal = locked choice */
 export type DisplayOrientation = 'auto' | 'vertical' | 'horizontal';
 
 export type HouseModules = Record<ModuleId, boolean>;
+
+export const ALL_MODULE_IDS: ModuleId[] = [
+  'clock',
+  'prayer',
+  'calendar',
+  'weather',
+  'hijri',
+  'dua',
+  'hadith',
+  'ayah',
+  'worldClocks',
+  'wifi',
+];
 
 export type WorldClock = {
   title: string;
@@ -32,6 +48,10 @@ export type HouseConfig = {
   displayScale: number;
   /** Per-module size multiplier (1 = normal). Lets each house tune each widget. */
   moduleScales: Record<ModuleId, number>;
+  /** Which column/band each module stacks in. */
+  moduleRegions: Record<ModuleId, ModuleRegion>;
+  /** Sort order within a region (lower = higher up). */
+  moduleOrder: Record<ModuleId, number>;
   coords: { lat: number; lon: number };
   timezone: string;
   prayerMethod: 'ISNA' | 'MWL' | 'Egypt' | 'Makkah' | 'Karachi';
@@ -70,6 +90,30 @@ export const DEFAULT_HOUSE_CONFIG: HouseConfig = {
     ayah: 1,
     worldClocks: 1,
     wifi: 1,
+  },
+  moduleRegions: {
+    clock: 'left',
+    prayer: 'left',
+    calendar: 'left',
+    worldClocks: 'left',
+    wifi: 'left',
+    weather: 'right',
+    hijri: 'right',
+    dua: 'bottom',
+    hadith: 'bottom',
+    ayah: 'bottom',
+  },
+  moduleOrder: {
+    clock: 10,
+    prayer: 20,
+    calendar: 30,
+    worldClocks: 40,
+    wifi: 50,
+    weather: 10,
+    hijri: 20,
+    dua: 10,
+    hadith: 20,
+    ayah: 30,
   },
   coords: { lat: 42.4710579, lon: -83.0133362 },
   timezone: 'America/Detroit',
@@ -147,3 +191,13 @@ export const MODULE_SCALE_OPTIONS: { value: number; label: string }[] = [
   { value: 1.3, label: 'Bigger' },
   { value: 1.5, label: 'Huge' },
 ];
+
+export const MODULE_REGION_LABELS: Record<ModuleRegion, string> = {
+  left: 'Left column',
+  right: 'Right column',
+  bottom: 'Bottom band',
+};
+
+export const MODULE_REGION_OPTIONS = Object.keys(
+  MODULE_REGION_LABELS
+) as ModuleRegion[];

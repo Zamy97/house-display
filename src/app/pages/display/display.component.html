@@ -9,76 +9,70 @@
 
     <div class="region top">
       <aside class="region top-left">
-        @if (config().modules.clock) {
-          <div class="mod" [style.zoom]="scale('clock')">
-            <app-clock [timeFormat]="config().timeFormat" />
-          </div>
-        }
-        @if (config().modules.prayer) {
-          <div class="mod" [style.zoom]="scale('prayer')">
-            <app-prayer [config]="config()" />
-          </div>
-        }
-        @if (config().modules.calendar) {
-          <div class="mod" [style.zoom]="scale('calendar')">
-            <app-calendar />
-          </div>
-        }
-        @if (config().modules.worldClocks) {
-          <div class="mod" [style.zoom]="scale('worldClocks')">
-            <app-world-clocks
-              [clocks]="config().worldClocks"
-              [timeFormat]="config().timeFormat"
-            />
-          </div>
-        }
-        @if (config().modules.wifi) {
-          <div class="mod" [style.zoom]="scale('wifi')">
-            <app-wifi
-              [ssid]="config().wifi.ssid"
-              [password]="config().wifi.password"
-              [showPassword]="config().wifi.showPassword"
-            />
+        @for (id of leftModules(); track id) {
+          <div class="mod" [style.zoom]="scale(id)">
+            <ng-container *ngTemplateOutlet="mod; context: { $implicit: id }" />
           </div>
         }
       </aside>
 
       <aside class="region top-right">
-        @if (config().modules.weather) {
-          <div class="mod" [style.zoom]="scale('weather')">
-            <app-weather [config]="config()" />
-          </div>
-        }
-        @if (config().modules.hijri && viewOrientation() === 'horizontal') {
-          <div class="mod" [style.zoom]="scale('hijri')">
-            <app-hijri [locale]="config().locale" />
+        @for (id of rightModules(); track id) {
+          <div class="mod" [style.zoom]="scale(id)">
+            <ng-container *ngTemplateOutlet="mod; context: { $implicit: id }" />
           </div>
         }
       </aside>
     </div>
 
     <div class="region bottom-bar">
-      @if (config().modules.dua) {
-        <div class="mod" [style.zoom]="scale('dua')">
-          <app-dua [preferBn]="config().content.duaLanguage === 'bn'" />
-        </div>
-      }
-      @if (config().modules.hadith) {
-        <div class="mod" [style.zoom]="scale('hadith')">
-          <app-hadith [mode]="config().content.hadithRotation" />
-        </div>
-      }
-      @if (config().modules.ayah) {
-        <div class="mod" [style.zoom]="scale('ayah')">
-          <app-ayah [intervalMs]="config().content.ayahIntervalMs" />
+      @for (id of bottomModules(); track id) {
+        <div class="mod" [style.zoom]="scale(id)">
+          <ng-container *ngTemplateOutlet="mod; context: { $implicit: id }" />
         </div>
       }
     </div>
-
-    @if (config().modules.hijri && viewOrientation() === 'vertical') {
-      <div class="region bottom-right" [style.zoom]="scale('hijri')">
-        <app-hijri [locale]="config().locale" />
-      </div>
-    }
   </div>
 </div>
+
+<ng-template #mod let-id>
+  @switch (id) {
+    @case ('clock') {
+      <app-clock [timeFormat]="config().timeFormat" />
+    }
+    @case ('prayer') {
+      <app-prayer [config]="config()" />
+    }
+    @case ('calendar') {
+      <app-calendar />
+    }
+    @case ('weather') {
+      <app-weather [config]="config()" />
+    }
+    @case ('hijri') {
+      <app-hijri [locale]="config().locale" />
+    }
+    @case ('dua') {
+      <app-dua [preferBn]="config().content.duaLanguage === 'bn'" />
+    }
+    @case ('hadith') {
+      <app-hadith [mode]="config().content.hadithRotation" />
+    }
+    @case ('ayah') {
+      <app-ayah [intervalMs]="config().content.ayahIntervalMs" />
+    }
+    @case ('worldClocks') {
+      <app-world-clocks
+        [clocks]="config().worldClocks"
+        [timeFormat]="config().timeFormat"
+      />
+    }
+    @case ('wifi') {
+      <app-wifi
+        [ssid]="config().wifi.ssid"
+        [password]="config().wifi.password"
+        [showPassword]="config().wifi.showPassword"
+      />
+    }
+  }
+</ng-template>
