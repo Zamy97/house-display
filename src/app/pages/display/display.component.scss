@@ -1,4 +1,4 @@
-/* Region layout modeled on MagicMirror Example house (config + custom.css) */
+/* Region layout + TV-friendly zoom scale */
 :host {
   display: block;
   height: 100dvh;
@@ -15,15 +15,18 @@
 }
 
 .mirror {
+  --display-scale: 1.55;
   position: relative;
-  height: 100dvh;
-  max-height: 100dvh;
   display: flex;
   flex-direction: column;
   padding: 16px 20px 10px;
   box-sizing: border-box;
   background: #000;
   overflow: hidden;
+  /* Shrink layout box, then zoom up so fonts/icons look big on a 43" TV */
+  zoom: var(--display-scale);
+  height: calc(100dvh / var(--display-scale));
+  max-height: calc(100dvh / var(--display-scale));
 }
 
 .settings-fab {
@@ -79,7 +82,7 @@
   flex: 0 0 auto;
   width: 92%;
   margin: 4px auto 0;
-  max-height: 34dvh;
+  max-height: 34%;
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -94,27 +97,23 @@
   pointer-events: none;
 }
 
-/* Vertical = portrait standing mirror frame */
 .mirror[data-orientation='vertical'] {
-  width: min(100vw, calc(100dvh * 9 / 16));
-  max-width: 1080px;
+  width: min(
+    calc(100vw / var(--display-scale)),
+    calc((100dvh / var(--display-scale)) * 9 / 16)
+  );
+  max-width: calc(1080px / var(--display-scale));
   border-left: 1px solid rgba(118, 215, 196, 0.08);
   border-right: 1px solid rgba(118, 215, 196, 0.08);
 }
 
-/* Horizontal = full landscape, same regions */
 .mirror[data-orientation='horizontal'] {
-  width: 100vw;
+  width: calc(100vw / var(--display-scale));
   max-width: none;
 }
 
 .mirror[data-orientation='horizontal'] .region.bottom-bar {
-  max-height: 28dvh;
-}
-
-.mirror[data-orientation='horizontal'] .region.top-left {
-  /* Slightly denser so QR still fits under calendar */
-  transform-origin: top left;
+  max-height: 28%;
 }
 
 .mirror[data-orientation='horizontal'] ::ng-deep {

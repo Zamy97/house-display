@@ -27,6 +27,8 @@ export type HouseConfig = {
   timeFormat: 12 | 24;
   layout: DisplayLayout;
   orientation: DisplayOrientation;
+  /** Overall UI scale for TV viewing distance (1 = Example CSS, ~1.55 for 43"). */
+  displayScale: number;
   coords: { lat: number; lon: number };
   timezone: string;
   prayerMethod: 'ISNA' | 'MWL' | 'Egypt' | 'Makkah' | 'Karachi';
@@ -53,6 +55,7 @@ export const DEFAULT_HOUSE_CONFIG: HouseConfig = {
   timeFormat: 12,
   layout: 'mirror',
   orientation: 'vertical',
+  displayScale: 1.55,
   coords: { lat: 42.4710579, lon: -83.0133362 },
   timezone: 'America/Detroit',
   prayerMethod: 'ISNA',
@@ -111,3 +114,10 @@ export const ORIENTATION_LABELS: Record<DisplayOrientation, string> = {
   vertical: 'Vertical (portrait TV / standing mirror)',
   horizontal: 'Horizontal (landscape / wide TV)',
 };
+
+export const DISPLAY_SCALE_OPTIONS: { value: number; label: string }[] = [
+  { value: 1.15, label: 'Comfortable (near / desktop)' },
+  { value: 1.35, label: 'Large' },
+  { value: 1.55, label: 'TV 43″ (default)' },
+  { value: 1.75, label: 'TV far / extra large' },
+];

@@ -5,6 +5,7 @@
   <div
     class="mirror"
     [attr.data-orientation]="config().orientation"
+    [style.--display-scale]="config().displayScale || 1.55"
   >
     <app-weather-effects [effect]="weatherEffect()" />
     <a class="settings-fab" routerLink="/settings" title="Settings">⚙</a>

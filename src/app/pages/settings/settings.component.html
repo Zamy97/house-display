@@ -29,10 +29,17 @@
         }
       </select>
     </label>
+    <label>
+      Display size (for TV viewing distance)
+      <select [(ngModel)]="draft.displayScale">
+        @for (opt of scaleOptions; track opt.value) {
+          <option [ngValue]="opt.value">{{ opt.label }}</option>
+        }
+      </select>
+    </label>
     <p class="hint">
-      Layout follows the Example MagicMirror house (top-left modules, top-right weather,
-      bottom dua/hadith/ayah). Orientation only changes portrait vs landscape framing —
-      both stay on one screen with no scrolling.
+      Default is TV 43″. Raise to Extra large if you sit farther back. Layout stays
+      one screen with no scrolling.
     </p>
   </section>
 
