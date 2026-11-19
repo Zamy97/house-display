@@ -1,191 +1,169 @@
+/* Same structure as Home_Prayer_Times_Display settings: full viewport, 3 edge-to-edge columns. */
+
 :host {
   display: block;
   height: 100dvh;
+  max-height: 100dvh;
   overflow: hidden;
-  background: #000;
-}
-
-.settings {
   box-sizing: border-box;
-  height: 100dvh;
-  width: 100%;
-  padding: 10px 16px 12px;
-  color: var(--text);
+  background: #061018;
+  color: #e8f4f1;
+}
+
+.page {
+  height: 100%;
+  max-height: 100dvh;
+  box-sizing: border-box;
   display: grid;
-  grid-template-rows: auto minmax(0, 1fr);
-  gap: 10px;
+  grid-template-rows: auto minmax(0, 1fr) auto;
   overflow: hidden;
 }
 
-.topbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 10px;
+.head {
+  background: linear-gradient(135deg, #0a2a32 0%, #0d3d48 55%, #125a5f 100%);
+  color: #fff;
+  padding: 10px clamp(14px, 2vw, 28px);
+  border-bottom: 1px solid rgba(118, 215, 196, 0.25);
 }
 
-.title-block {
+.head-inner {
   display: flex;
   align-items: baseline;
-  gap: 12px;
-  min-width: 0;
-}
-
-.top-actions {
-  display: flex;
+  gap: 14px;
   flex-wrap: wrap;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 8px;
 }
 
-h1 {
+.head h1 {
   margin: 0;
-  font-weight: 400;
-  font-size: 1.2rem;
-  color: var(--accent);
-}
-
-h2 {
-  margin: 0 0 8px;
-  font-size: 0.68rem;
-  color: var(--accent-2);
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
+  font-size: clamp(1.1rem, 1.8vw, 1.4rem);
   font-weight: 600;
+  color: #76d7c4;
 }
 
-a {
-  color: var(--accent);
-  text-decoration: none;
-  white-space: nowrap;
-  font-size: 0.9rem;
+.muted {
+  margin: 0;
+  font-size: 0.8rem;
+  color: rgba(232, 244, 241, 0.7);
 }
 
-a:hover {
-  color: var(--gold);
-}
-
-/*
-  Modules on top (full width — nothing clipped).
-  House / Prayer / Weather / Wifi in one row under it.
-  Import as a thin bottom strip.
-*/
-.board {
-  min-height: 0;
+/* THREE full-height columns — uses the entire page like home-prayer settings */
+.main {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  grid-template-rows: minmax(0, 1.15fr) minmax(0, 1fr) auto;
-  grid-template-areas:
-    'modules modules modules modules'
-    'house prayer weather wifi'
-    'transfer transfer transfer transfer';
-  gap: 10px;
+  grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr) minmax(0, 1fr);
+  min-height: 0;
   overflow: hidden;
 }
 
-.modules-panel { grid-area: modules; }
-.house-panel { grid-area: house; }
-.prayer-panel { grid-area: prayer; }
-.weather-panel { grid-area: weather; }
-.wifi-panel { grid-area: wifi; }
-.transfer { grid-area: transfer; }
-
 .panel {
-  background: rgba(10, 28, 36, 0.92);
-  border: 1px solid rgba(118, 215, 196, 0.35);
-  border-radius: 10px;
-  padding: 10px 12px;
+  padding: clamp(10px, 1.4vh, 16px) clamp(12px, 1.6vw, 20px);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  border-right: 1px solid rgba(118, 215, 196, 0.18);
+}
+
+.panel:last-child {
+  border-right: none;
+}
+
+.panel-modules {
+  background: linear-gradient(165deg, rgba(20, 60, 70, 0.55) 0%, rgba(8, 24, 32, 0.95) 100%);
+  border-top: 3px solid #76d7c4;
+}
+
+.panel-house {
+  background: linear-gradient(165deg, rgba(30, 50, 70, 0.55) 0%, rgba(8, 20, 32, 0.95) 100%);
+  border-top: 3px solid #4dd0e1;
+}
+
+.panel-content {
+  background: linear-gradient(165deg, rgba(50, 45, 30, 0.45) 0%, rgba(18, 16, 10, 0.95) 100%);
+  border-top: 3px solid #f4d03f;
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  flex-shrink: 0;
+  color: #76d7c4;
+}
+
+.panel-house .section-title {
+  color: #4dd0e1;
+}
+
+.panel-content .section-title {
+  color: #f4d03f;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: currentColor;
+  flex-shrink: 0;
+}
+
+.panel-hint {
+  margin: -2px 0 4px;
+  font-size: 0.75rem;
+  color: rgba(232, 244, 241, 0.55);
+  flex-shrink: 0;
+}
+
+.group-title {
+  margin: 10px 0 4px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(118, 215, 196, 0.85);
+  flex-shrink: 0;
+}
+
+.fields {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
   min-height: 0;
   overflow: auto;
 }
 
-.modules-panel {
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-}
-
-/* 2-column module cards so show/stack/size/order are all visible */
-.module-grid {
-  flex: 1;
-  min-height: 0;
+.grid-2 {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-auto-rows: minmax(0, 1fr);
-  gap: 6px 14px;
-  align-content: stretch;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px 10px;
+  align-content: start;
 }
 
-.module-row {
-  display: grid;
-  grid-template-columns: minmax(0, 1.4fr) minmax(88px, 0.7fr) minmax(88px, 0.7fr) auto;
-  gap: 8px;
-  align-items: center;
-  padding: 6px 8px;
-  border: 1px solid rgba(118, 215, 196, 0.18);
-  border-radius: 8px;
-  background: rgba(0, 0, 0, 0.25);
-  min-width: 0;
-}
-
-.module-row.off {
-  opacity: 0.55;
-}
-
-.module-row .show {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin: 0;
-  color: var(--text);
-  font-size: 0.88rem;
-  font-weight: 500;
-  min-width: 0;
-}
-
-.module-row .show span {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.module-row .show input {
-  width: auto;
-  margin: 0;
-  flex: 0 0 auto;
-}
-
-.module-row select {
-  margin: 0;
-  min-width: 0;
-  width: 100%;
-  padding: 5px 6px;
-  font-size: 0.8rem;
-}
-
-.order-btns {
-  display: flex;
-  gap: 4px;
-  white-space: nowrap;
-}
-
-.fields {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 7px 10px;
-}
-
-.fields .span-2 {
+.span-2 {
   grid-column: 1 / -1;
 }
 
-label {
-  display: block;
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
   margin: 0;
-  color: var(--text-dim);
-  font-size: 0.72rem;
-  line-height: 1.2;
+  min-width: 0;
+}
+
+.label {
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: rgba(232, 244, 241, 0.55);
 }
 
 input,
@@ -193,24 +171,32 @@ select,
 textarea {
   display: block;
   width: 100%;
-  margin-top: 3px;
   box-sizing: border-box;
-  background: rgba(0, 0, 0, 0.45);
-  border: 1px solid rgba(118, 215, 196, 0.28);
-  border-radius: 6px;
-  color: var(--text);
-  padding: 6px 8px;
-  font-size: 0.84rem;
+  margin: 0;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(118, 215, 196, 0.3);
+  border-radius: 7px;
+  color: #e8f4f1;
+  padding: 7px 9px;
+  font-size: 0.88rem;
+}
+
+.transfer {
+  flex: 1;
+  min-height: 72px;
+  resize: none;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.75rem;
 }
 
 .toggle {
   display: flex;
   align-items: center;
-  gap: 6px;
-}
-
-.toggle.inline {
-  margin-top: 16px;
+  gap: 8px;
+  margin: 0;
+  font-size: 0.85rem;
+  color: rgba(232, 244, 241, 0.85);
+  padding-top: 18px;
 }
 
 .toggle input {
@@ -218,76 +204,164 @@ textarea {
   margin: 0;
 }
 
-.transfer {
-  display: flex;
-  flex-direction: column;
-  max-height: 88px;
-}
-
-.transfer textarea {
+/* Modules table fills its column — every control visible */
+.module-table-wrap {
   flex: 1;
-  min-height: 40px;
-  resize: none;
-  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-size: 0.72rem;
+  min-height: 0;
+  overflow: auto;
 }
 
-button {
-  background: var(--accent);
-  color: #062018;
-  border: none;
-  border-radius: 7px;
-  padding: 7px 11px;
-  font-weight: 600;
-  cursor: pointer;
-  font-size: 0.85rem;
+.module-table {
+  width: 100%;
+  height: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+  font-size: 0.9rem;
 }
 
-button.ghost {
-  background: transparent;
-  color: var(--accent);
-  border: 1px solid rgba(118, 215, 196, 0.4);
+.col-show {
+  width: 44px;
 }
 
-button.tiny {
-  padding: 2px 8px;
-  min-width: 30px;
-  font-size: 0.8rem;
+.col-name {
+  width: 28%;
 }
 
-button:disabled {
-  opacity: 0.35;
-  cursor: not-allowed;
+.col-stack {
+  width: 22%;
 }
 
-.msg {
-  color: var(--mint);
-  font-size: 0.8rem;
+.col-size {
+  width: 22%;
+}
+
+.col-order {
+  width: 90px;
+}
+
+.module-table th,
+.module-table td {
+  text-align: left;
+  padding: 8px 6px;
+  border-bottom: 1px solid rgba(118, 215, 196, 0.14);
+  vertical-align: middle;
+  overflow: hidden;
+}
+
+.module-table th {
+  font-size: 0.62rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #76d7c4;
+  font-weight: 700;
+  position: sticky;
+  top: 0;
+  background: #0a2228;
+  z-index: 1;
+}
+
+.module-table td.name {
+  font-weight: 560;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-@media (max-width: 1100px) {
+.module-table tr.off td.name {
+  color: rgba(232, 244, 241, 0.4);
+}
+
+.module-table input[type='checkbox'] {
+  width: auto;
+  display: inline-block;
+}
+
+.module-table select {
+  width: 100%;
+  min-width: 0;
+  padding: 6px 7px;
+  font-size: 0.84rem;
+}
+
+.module-table .order {
+  white-space: nowrap;
+}
+
+.inline-actions {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 10px clamp(14px, 2vw, 28px);
+  background: #07141c;
+  border-top: 1px solid rgba(118, 215, 196, 0.22);
+}
+
+.btn {
+  border-radius: 8px;
+  padding: 9px 14px;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 0.88rem;
+  border: none;
+}
+
+.btn.primary {
+  background: #76d7c4;
+  color: #062018;
+}
+
+.btn.ghost {
+  background: transparent;
+  color: #76d7c4;
+  border: 1px solid rgba(118, 215, 196, 0.45);
+}
+
+.btn.tiny {
+  padding: 3px 9px;
+  min-width: 32px;
+  font-size: 0.82rem;
+}
+
+.btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.link {
+  color: #76d7c4;
+  text-decoration: none;
+  margin-right: auto;
+  font-size: 0.9rem;
+}
+
+.link:hover {
+  color: #f4d03f;
+}
+
+@media (max-width: 980px) {
   :host,
-  .settings {
+  .page {
     height: auto;
-    min-height: 100dvh;
+    max-height: none;
     overflow: auto;
   }
 
-  .board {
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: auto;
-    grid-template-areas:
-      'modules modules'
-      'house prayer'
-      'weather wifi'
-      'transfer transfer';
+  .main {
+    grid-template-columns: 1fr;
     overflow: visible;
   }
 
-  .module-grid {
-    grid-template-columns: 1fr;
+  .panel {
+    border-right: none;
+    border-bottom: 1px solid rgba(118, 215, 196, 0.18);
+    overflow: visible;
   }
 }

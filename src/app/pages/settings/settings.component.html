@@ -1,196 +1,250 @@
-<div class="settings">
-  <header class="topbar">
-    <div class="title-block">
+<div class="page">
+  <header class="head">
+    <div class="head-inner">
       <h1>Settings</h1>
       @if (message) {
-        <span class="msg">{{ message }}</span>
+        <p class="muted">{{ message }}</p>
+      } @else {
+        <p class="muted">Saved on this device · use the whole screen, no scrolling</p>
       }
-    </div>
-    <div class="top-actions">
-      <button type="button" class="ghost" (click)="reset()">Reset</button>
-      <button type="button" class="ghost" (click)="exportConfig()">Export</button>
-      <button type="button" class="ghost" (click)="importConfig()">Import</button>
-      <button type="button" class="ghost" (click)="save()">Save</button>
-      <button type="button" (click)="saveAndBack()">Save &amp; back</button>
-      <a routerLink="/">← Display</a>
     </div>
   </header>
 
-  <div class="board">
-    <section class="panel modules-panel">
-      <h2>Modules — show, stack, size, order</h2>
-      <div class="module-grid">
-        @for (id of moduleIds; track id) {
-          <div class="module-row" [class.off]="!draft.modules[id]">
-            <label class="show">
-              <input type="checkbox" [(ngModel)]="draft.modules[id]" />
-              <span>{{ labels[id] }}</span>
-            </label>
-            <select
-              [ngModel]="moduleRegion(id)"
-              (ngModelChange)="setModuleRegion(id, $event)"
-              title="Stack position"
-            >
-              @for (r of regionOptions; track r) {
-                <option [ngValue]="r">{{ regionLabels[r] }}</option>
+  <main class="main">
+    <section class="panel panel-modules">
+      <h2 class="section-title"><span class="dot"></span> Modules</h2>
+      <p class="panel-hint">Show · stack (Left / Right / Bottom) · size · order</p>
+      <div class="module-table-wrap">
+        <table class="module-table">
+          <colgroup>
+            <col class="col-show" />
+            <col class="col-name" />
+            <col class="col-stack" />
+            <col class="col-size" />
+            <col class="col-order" />
+          </colgroup>
+          <thead>
+            <tr>
+              <th>On</th>
+              <th>Module</th>
+              <th>Stack</th>
+              <th>Size</th>
+              <th>Order</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (id of moduleIds; track id) {
+              <tr [class.off]="!draft.modules[id]">
+                <td>
+                  <input type="checkbox" [(ngModel)]="draft.modules[id]" [name]="'mod-' + id" />
+                </td>
+                <td class="name">{{ labels[id] }}</td>
+                <td>
+                  <select
+                    [ngModel]="moduleRegion(id)"
+                    (ngModelChange)="setModuleRegion(id, $event)"
+                    [name]="'region-' + id"
+                  >
+                    @for (r of regionOptions; track r) {
+                      <option [ngValue]="r">{{ regionLabels[r] }}</option>
+                    }
+                  </select>
+                </td>
+                <td>
+                  <select
+                    [ngModel]="moduleScale(id)"
+                    (ngModelChange)="setModuleScale(id, $event)"
+                    [name]="'scale-' + id"
+                  >
+                    @for (opt of moduleScaleOptions; track opt.value) {
+                      <option [ngValue]="opt.value">{{ opt.label }}</option>
+                    }
+                  </select>
+                </td>
+                <td class="order">
+                  <button
+                    type="button"
+                    class="btn ghost tiny"
+                    [disabled]="!canMove(id, -1)"
+                    (click)="moveModule(id, -1)"
+                  >
+                    ↑
+                  </button>
+                  <button
+                    type="button"
+                    class="btn ghost tiny"
+                    [disabled]="!canMove(id, 1)"
+                    (click)="moveModule(id, 1)"
+                  >
+                    ↓
+                  </button>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="panel panel-house">
+      <h2 class="section-title"><span class="dot"></span> House</h2>
+      <div class="fields">
+        <div class="grid-2">
+          <label class="field">
+            <span class="label">Name</span>
+            <input [(ngModel)]="draft.houseName" name="houseName" />
+          </label>
+          <label class="field">
+            <span class="label">Timezone</span>
+            <input [(ngModel)]="draft.timezone" name="timezone" />
+          </label>
+          <label class="field">
+            <span class="label">Latitude</span>
+            <input type="number" step="any" [(ngModel)]="draft.coords.lat" name="lat" />
+          </label>
+          <label class="field">
+            <span class="label">Longitude</span>
+            <input type="number" step="any" [(ngModel)]="draft.coords.lon" name="lon" />
+          </label>
+          <label class="field">
+            <span class="label">Time format</span>
+            <select [(ngModel)]="draft.timeFormat" name="timeFormat">
+              <option [ngValue]="12">12-hour</option>
+              <option [ngValue]="24">24-hour</option>
+            </select>
+          </label>
+          <label class="field">
+            <span class="label">Screen layout</span>
+            <select [(ngModel)]="draft.orientation" name="orientation">
+              @for (id of orientationIds; track id) {
+                <option [ngValue]="id">{{ orientationLabels[id] }}</option>
               }
             </select>
-            <select
-              [ngModel]="moduleScale(id)"
-              (ngModelChange)="setModuleScale(id, $event)"
-              title="Size"
-            >
-              @for (opt of moduleScaleOptions; track opt.value) {
+          </label>
+          <label class="field span-2">
+            <span class="label">Display size</span>
+            <select [(ngModel)]="draft.displayScale" name="displayScale">
+              @for (opt of scaleOptions; track opt.value) {
                 <option [ngValue]="opt.value">{{ opt.label }}</option>
               }
             </select>
-            <div class="order-btns">
-              <button
-                type="button"
-                class="ghost tiny"
-                [disabled]="!canMove(id, -1)"
-                (click)="moveModule(id, -1)"
-                title="Move up"
-              >
-                ↑
-              </button>
-              <button
-                type="button"
-                class="ghost tiny"
-                [disabled]="!canMove(id, 1)"
-                (click)="moveModule(id, 1)"
-                title="Move down"
-              >
-                ↓
-              </button>
-            </div>
-          </div>
-        }
+          </label>
+        </div>
+
+        <h3 class="group-title">Wi‑Fi</h3>
+        <div class="grid-2">
+          <label class="field">
+            <span class="label">SSID</span>
+            <input [(ngModel)]="draft.wifi.ssid" name="ssid" />
+          </label>
+          <label class="field">
+            <span class="label">Password</span>
+            <input [(ngModel)]="draft.wifi.password" name="wifiPass" />
+          </label>
+          <label class="toggle span-2">
+            <input type="checkbox" [(ngModel)]="draft.wifi.showPassword" name="showPass" />
+            Show password on display
+          </label>
+        </div>
+
+        <h3 class="group-title">Import / export</h3>
+        <textarea
+          class="transfer"
+          rows="4"
+          [(ngModel)]="importText"
+          name="importText"
+          placeholder="Paste config JSON, then Import"
+        ></textarea>
+        <div class="inline-actions">
+          <button type="button" class="btn ghost" (click)="exportConfig()">Export</button>
+          <button type="button" class="btn ghost" (click)="importConfig()">Import</button>
+        </div>
       </div>
     </section>
 
-    <section class="panel house-panel">
-      <h2>House</h2>
+    <section class="panel panel-content">
+      <h2 class="section-title"><span class="dot"></span> Prayer &amp; content</h2>
       <div class="fields">
-        <label>Name <input [(ngModel)]="draft.houseName" /></label>
-        <label>Timezone <input [(ngModel)]="draft.timezone" /></label>
-        <label>Lat <input type="number" step="any" [(ngModel)]="draft.coords.lat" /></label>
-        <label>Lon <input type="number" step="any" [(ngModel)]="draft.coords.lon" /></label>
-        <label>
-          Time
-          <select [(ngModel)]="draft.timeFormat">
-            <option [ngValue]="12">12-hour</option>
-            <option [ngValue]="24">24-hour</option>
-          </select>
-        </label>
-        <label>
-          Layout
-          <select [(ngModel)]="draft.orientation">
-            @for (id of orientationIds; track id) {
-              <option [ngValue]="id">{{ orientationLabels[id] }}</option>
-            }
-          </select>
-        </label>
-        <label class="span-2">
-          Display size
-          <select [(ngModel)]="draft.displayScale">
-            @for (opt of scaleOptions; track opt.value) {
-              <option [ngValue]="opt.value">{{ opt.label }}</option>
-            }
-          </select>
-        </label>
+        <div class="grid-2">
+          <label class="field">
+            <span class="label">Method</span>
+            <select [(ngModel)]="draft.prayerMethod" name="prayerMethod">
+              <option value="ISNA">ISNA</option>
+              <option value="MWL">MWL</option>
+              <option value="Egypt">Egypt</option>
+              <option value="Makkah">Makkah</option>
+              <option value="Karachi">Karachi</option>
+            </select>
+          </label>
+          <label class="field">
+            <span class="label">Asr</span>
+            <select [(ngModel)]="draft.asr" name="asr">
+              <option value="Hanafi">Hanafi</option>
+              <option value="Standard">Standard</option>
+            </select>
+          </label>
+          <label class="field">
+            <span class="label">Dua language</span>
+            <select [(ngModel)]="draft.content.duaLanguage" name="duaLang">
+              <option value="en">English</option>
+              <option value="bn">Bangla</option>
+            </select>
+          </label>
+          <label class="field">
+            <span class="label">Hadith</span>
+            <select [(ngModel)]="draft.content.hadithRotation" name="hadith">
+              <option value="daily">Daily</option>
+              <option value="random">Random</option>
+            </select>
+          </label>
+          <label class="field">
+            <span class="label">Ayah interval (ms)</span>
+            <input type="number" [(ngModel)]="draft.content.ayahIntervalMs" name="ayahMs" />
+          </label>
+          <label class="toggle">
+            <input type="checkbox" [(ngModel)]="draft.prayerShowSunrise" name="sunrise" />
+            Show Sunrise
+          </label>
+        </div>
+
+        <h3 class="group-title">Weather</h3>
+        <div class="grid-2">
+          <label class="field span-2">
+            <span class="label">OpenWeather API key</span>
+            <input
+              [(ngModel)]="draft.openWeatherApiKey"
+              name="owmKey"
+              placeholder="required for current + forecast"
+            />
+          </label>
+          <label class="field">
+            <span class="label">Units</span>
+            <select [(ngModel)]="draft.weatherUnits" name="units">
+              <option value="imperial">°F / mph</option>
+              <option value="metric">°C / m/s</option>
+            </select>
+          </label>
+          <label class="field">
+            <span class="label">Hourly slots</span>
+            <input type="number" min="0" max="8" [(ngModel)]="draft.weatherMaxHourlies" name="hourly" />
+          </label>
+          <label class="field">
+            <span class="label">Daily days</span>
+            <input type="number" min="0" max="8" [(ngModel)]="draft.weatherMaxDailies" name="daily" />
+          </label>
+          <label class="toggle">
+            <input type="checkbox" [(ngModel)]="draft.weatherEffects" name="effects" />
+            Rain / snow effects
+          </label>
+        </div>
       </div>
     </section>
+  </main>
 
-    <section class="panel prayer-panel">
-      <h2>Prayer &amp; content</h2>
-      <div class="fields">
-        <label>
-          Method
-          <select [(ngModel)]="draft.prayerMethod">
-            <option value="ISNA">ISNA</option>
-            <option value="MWL">MWL</option>
-            <option value="Egypt">Egypt</option>
-            <option value="Makkah">Makkah</option>
-            <option value="Karachi">Karachi</option>
-          </select>
-        </label>
-        <label>
-          Asr
-          <select [(ngModel)]="draft.asr">
-            <option value="Hanafi">Hanafi</option>
-            <option value="Standard">Standard</option>
-          </select>
-        </label>
-        <label>
-          Dua
-          <select [(ngModel)]="draft.content.duaLanguage">
-            <option value="en">English</option>
-            <option value="bn">Bangla</option>
-          </select>
-        </label>
-        <label>
-          Hadith
-          <select [(ngModel)]="draft.content.hadithRotation">
-            <option value="daily">Daily</option>
-            <option value="random">Random</option>
-          </select>
-        </label>
-        <label>
-          Ayah ms
-          <input type="number" [(ngModel)]="draft.content.ayahIntervalMs" />
-        </label>
-        <label class="toggle inline">
-          <input type="checkbox" [(ngModel)]="draft.prayerShowSunrise" />
-          Sunrise
-        </label>
-      </div>
-    </section>
-
-    <section class="panel weather-panel">
-      <h2>Weather</h2>
-      <div class="fields">
-        <label class="span-2">
-          API key
-          <input [(ngModel)]="draft.openWeatherApiKey" placeholder="OpenWeather key" />
-        </label>
-        <label>
-          Units
-          <select [(ngModel)]="draft.weatherUnits">
-            <option value="imperial">°F</option>
-            <option value="metric">°C</option>
-          </select>
-        </label>
-        <label>
-          Hourly
-          <input type="number" min="0" max="8" [(ngModel)]="draft.weatherMaxHourlies" />
-        </label>
-        <label>
-          Daily
-          <input type="number" min="0" max="8" [(ngModel)]="draft.weatherMaxDailies" />
-        </label>
-        <label class="toggle inline">
-          <input type="checkbox" [(ngModel)]="draft.weatherEffects" />
-          Effects
-        </label>
-      </div>
-    </section>
-
-    <section class="panel wifi-panel">
-      <h2>Wi‑Fi</h2>
-      <div class="fields">
-        <label>SSID <input [(ngModel)]="draft.wifi.ssid" /></label>
-        <label>Password <input [(ngModel)]="draft.wifi.password" /></label>
-        <label class="toggle inline span-2">
-          <input type="checkbox" [(ngModel)]="draft.wifi.showPassword" />
-          Show password on display
-        </label>
-      </div>
-    </section>
-
-    <section class="panel transfer">
-      <h2>Import / export JSON</h2>
-      <textarea rows="2" [(ngModel)]="importText" placeholder="Paste config JSON, then Import"></textarea>
-    </section>
-  </div>
+  <footer class="footer">
+    <button type="button" class="btn ghost" (click)="reset()">Reset defaults</button>
+    <button type="button" class="btn ghost" (click)="save()">Save</button>
+    <a class="link" routerLink="/">← Back to display</a>
+    <button type="button" class="btn primary" (click)="saveAndBack()">Save &amp; return</button>
+  </footer>
 </div>
