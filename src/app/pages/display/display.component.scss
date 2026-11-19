@@ -1,11 +1,42 @@
+/* Portrait stage: on landscape desktops, letterbox a vertical mirror frame */
+.stage {
+  min-height: 100dvh;
+  background: #000;
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+}
+
+.stage[data-layout='mirror'] {
+  align-items: center;
+}
+
 .mirror {
-  min-height: 100vh;
+  position: relative;
+  width: 100%;
+  min-height: 100dvh;
   display: flex;
   flex-direction: column;
-  padding: 16px 20px 8px;
+  padding: 14px 16px 10px;
   box-sizing: border-box;
-  position: relative;
   background: #000;
+  overflow: hidden;
+}
+
+/* Vertical kiosk composition (matches MagicMirror portrait TV) */
+.stage[data-layout='mirror'] .mirror {
+  height: 100dvh;
+  max-height: 100dvh;
+}
+
+@media (orientation: landscape) and (min-width: 1100px) {
+  .stage[data-layout='mirror'] .mirror {
+    width: min(100vw, calc(100dvh * 9 / 16));
+    max-width: 1080px;
+    height: 100dvh;
+    border-left: 1px solid rgba(118, 215, 196, 0.12);
+    border-right: 1px solid rgba(118, 215, 196, 0.12);
+  }
 }
 
 .settings-fab {
@@ -27,68 +58,80 @@
 .layout {
   position: relative;
   z-index: 2;
-  flex: 1;
+  flex: 1 1 auto;
+  min-height: 0;
   display: grid;
-  grid-template-columns: var(--card-width) 1fr minmax(280px, 520px);
-  gap: 20px 28px;
+  gap: 18px 22px;
   align-items: start;
+}
+
+.mirror[data-layout='mirror'] .layout {
+  grid-template-columns: minmax(240px, 300px) minmax(0, 1fr);
+}
+
+.mirror[data-layout='columns'] .layout {
+  grid-template-columns: var(--card-width) 1fr minmax(260px, 480px);
 }
 
 .col {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
+  min-width: 0;
 }
 
 .left {
-  width: var(--card-width);
+  width: 100%;
 }
 
 .center {
   justify-content: flex-end;
   padding-bottom: 12px;
-  min-height: 42vh;
-}
-
-.spacer {
-  min-height: 1px;
+  min-height: 30vh;
 }
 
 .right {
-  justify-self: end;
+  justify-self: stretch;
   width: 100%;
-  max-width: 520px;
+  align-items: stretch;
+}
+
+.mirror[data-layout='mirror'] .right {
   align-items: flex-end;
 }
 
 .footer {
   position: relative;
   z-index: 2;
-  width: 92%;
-  margin: 4px auto 0;
+  flex: 0 0 auto;
+  width: 94%;
+  margin: 6px auto 0;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 4px;
+  max-height: 34vh;
+  overflow: hidden;
 }
 
-.mirror[data-layout='mirror'] .footer {
-  margin-top: auto;
-  padding-top: 8px;
-}
-
-@media (max-width: 960px) {
-  .layout {
+/* Only collapse on very narrow phones — keep 2-col on portrait TVs (~1080 wide) */
+@media (max-width: 720px) {
+  .mirror[data-layout='mirror'] .layout,
+  .mirror[data-layout='columns'] .layout {
     grid-template-columns: 1fr;
+    overflow: auto;
   }
 
-  .left,
+  .mirror {
+    height: auto;
+    max-height: none;
+    overflow: auto;
+  }
+
   .right {
-    width: 100%;
-    max-width: none;
     align-items: stretch;
   }
 
-  .spacer {
-    display: none;
+  .footer {
+    max-height: none;
   }
 }

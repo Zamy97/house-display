@@ -1,7 +1,7 @@
 <section class="weather-stack">
   @if (weather; as w) {
     <section class="current panel-open">
-      <h2 class="section-title">Current Weather {{ w.city }}</h2>
+      <h2 class="section-title">Current Weather{{ w.city ? ' ' + w.city : '' }}</h2>
       <div class="meta">
         <span class="meta-item">
           <span class="wi wind" aria-hidden="true">🌬</span>

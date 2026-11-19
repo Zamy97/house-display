@@ -57,14 +57,16 @@ export class WeatherService {
     const units = config.weatherUnits || 'imperial';
     const key = config.openWeatherApiKey;
     const { lat, lon } = config.coords;
-    const base = `https://api.openweathermap.org/data/2.5`;
     const qs = `lat=${lat}&lon=${lon}&units=${units}&appid=${key}`;
 
-    return forkJoin({
-      current: this.http.get<any>(`${base}/weather?${qs}`),
-      forecast: this.http.get<any>(`${base}/forecast?${qs}`),
-    }).pipe(
-      map(({ current, forecast }) => this.buildBundle(current, forecast, config)),
+    // Prefer One Call 3.0 (same as MMM-OpenWeatherMapForecast) for full daily rows.
+    const oneCallUrl =
+      `https://api.openweathermap.org/data/3.0/onecall?${qs}` +
+      `&exclude=minutely,alerts`;
+
+    return this.http.get<any>(oneCallUrl).pipe(
+      map((oneCall) => this.buildFromOneCall(oneCall, config)),
+      catchError(() => this.fetchFromFreeApis(qs, config)),
       tap((bundle) => this.lastBundle.set(bundle)),
       catchError(() => {
         this.lastBundle.set(null);
@@ -77,9 +79,73 @@ export class WeatherService {
     return `https://openweathermap.org/img/wn/${icon}@${size}.png`;
   }
 
-  private buildBundle(current: any, forecast: any, config: HouseConfig): WeatherBundle {
-    const units = config.weatherUnits || 'imperial';
-    const unitsLabel = units === 'metric' ? 'C' : 'F';
+  private fetchFromFreeApis(qs: string, config: HouseConfig): Observable<WeatherBundle | null> {
+    const base = `https://api.openweathermap.org/data/2.5`;
+    return forkJoin({
+      current: this.http.get<any>(`${base}/weather?${qs}`),
+      forecast: this.http.get<any>(`${base}/forecast?${qs}`),
+    }).pipe(
+      map(({ current, forecast }) => this.buildFromForecast25(current, forecast, config)),
+      catchError(() => of(null))
+    );
+  }
+
+  private buildFromOneCall(data: any, config: HouseConfig): WeatherBundle {
+    const unitsLabel = (config.weatherUnits || 'imperial') === 'metric' ? 'C' : 'F';
+    const timeFormat = config.timeFormat === 12 ? '12' : '24';
+    const maxHourlies = config.weatherMaxHourlies ?? 2;
+    const maxDailies = config.weatherMaxDailies ?? 6;
+    const current = data.current || {};
+    const now = Date.now() / 1000;
+    const sunrise = Number(current.sunrise || 0);
+    const sunset = Number(current.sunset || 0);
+    const showSunset = sunrise < now && sunset > now;
+    const sunTs = (showSunset ? sunset : sunrise) * 1000;
+
+    const hourlies: any[] = Array.isArray(data.hourly) ? data.hourly : [];
+    // Match MM default: every 3 hours, skip "now"
+    const hourly: HourlyForecast[] = [];
+    for (let i = 3; i < hourlies.length && hourly.length < maxHourlies; i += 3) {
+      const item = hourlies[i];
+      hourly.push({
+        time: this.formatHour(item.dt * 1000, timeFormat),
+        temp: Math.round(item.temp ?? 0),
+        icon: String(item.weather?.[0]?.icon ?? '01d'),
+        description: String(item.weather?.[0]?.description ?? ''),
+      });
+    }
+
+    const dailies: any[] = Array.isArray(data.daily) ? data.daily : [];
+    // Skip today (index 0) like MagicMirror unless we need the count
+    const start = dailies.length - 1 >= maxDailies ? 1 : 0;
+    const daily = dailies.slice(start, start + maxDailies).map((item: any) => ({
+      day: DAYS[new Date(item.dt * 1000).getDay()],
+      high: Math.round(item.temp?.max ?? item.temp?.day ?? 0),
+      low: Math.round(item.temp?.min ?? item.temp?.night ?? 0),
+      icon: String(item.weather?.[0]?.icon ?? '01d'),
+      description: String(item.weather?.[0]?.description ?? ''),
+    }));
+
+    const weatherId = Number(current.weather?.[0]?.id ?? 800);
+    return {
+      city: '',
+      temp: Number(current.temp ?? 0),
+      feelsLike: Math.round(Number(current.feels_like ?? current.temp ?? 0)),
+      description: String(current.weather?.[0]?.description ?? ''),
+      icon: String(current.weather?.[0]?.icon ?? '01d'),
+      windSpeed: Math.round(Number(current.wind_speed ?? 0)),
+      windDir: this.degToCardinal(Number(current.wind_deg ?? 0)),
+      sunLabel: showSunset ? 'sunset' : 'sunrise',
+      sunTime: this.formatHour(sunTs, timeFormat, true),
+      unitsLabel,
+      effect: this.effectFromId(weatherId),
+      hourly,
+      daily,
+    };
+  }
+
+  private buildFromForecast25(current: any, forecast: any, config: HouseConfig): WeatherBundle {
+    const unitsLabel = (config.weatherUnits || 'imperial') === 'metric' ? 'C' : 'F';
     const timeFormat = config.timeFormat === 12 ? '12' : '24';
     const maxHourlies = config.weatherMaxHourlies ?? 2;
     const maxDailies = config.weatherMaxDailies ?? 6;
@@ -98,37 +164,39 @@ export class WeatherService {
       description: String(item.weather?.[0]?.description ?? ''),
     }));
 
-    const daily = this.aggregateDaily(list, maxDailies);
-    const weatherId = Number(current.weather?.[0]?.id ?? 800);
-    const icon = String(current.weather?.[0]?.icon ?? '01d');
-
     return {
       city: String(current.name ?? ''),
       temp: Number(current.main?.temp ?? 0),
       feelsLike: Math.round(Number(current.main?.feels_like ?? current.main?.temp ?? 0)),
       description: String(current.weather?.[0]?.description ?? ''),
-      icon,
+      icon: String(current.weather?.[0]?.icon ?? '01d'),
       windSpeed: Math.round(Number(current.wind?.speed ?? 0)),
       windDir: this.degToCardinal(Number(current.wind?.deg ?? 0)),
       sunLabel: showSunset ? 'sunset' : 'sunrise',
       sunTime: this.formatHour(sunTs, timeFormat, true),
       unitsLabel,
-      effect: this.effectFromId(weatherId),
+      effect: this.effectFromId(Number(current.weather?.[0]?.id ?? 800)),
       hourly,
-      daily,
+      daily: this.aggregateDaily(list, maxDailies),
     };
   }
 
+  /**
+   * Build up to maxDays from 3-hour slots.
+   * Prefer upcoming days (skip today when possible), but include today
+   * when needed so a request for 6 days is filled from whatever the API returns.
+   */
   private aggregateDaily(list: any[], maxDays: number): DailyForecast[] {
     const byDay = new Map<
       string,
-      { highs: number[]; lows: number[]; icons: string[]; descriptions: string[]; day: string }
+      { sort: number; highs: number[]; lows: number[]; icons: string[]; descriptions: string[]; day: string }
     >();
 
     for (const item of list) {
       const date = new Date(item.dt * 1000);
       const key = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
       const entry = byDay.get(key) || {
+        sort: new Date(date.getFullYear(), date.getMonth(), date.getDate()).getTime(),
         highs: [],
         lows: [],
         icons: [],
@@ -142,24 +210,27 @@ export class WeatherService {
       byDay.set(key, entry);
     }
 
-    const todayKey = (() => {
-      const d = new Date();
-      return `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;
-    })();
+    const today = new Date();
+    const todayKey = `${today.getFullYear()}-${today.getMonth()}-${today.getDate()}`;
+    const ordered = [...byDay.entries()].sort((a, b) => a[1].sort - b[1].sort);
 
-    return [...byDay.entries()]
-      .filter(([key]) => key !== todayKey)
-      .slice(0, maxDays)
-      .map(([, entry]) => {
-        const mid = entry.icons[Math.min(2, entry.icons.length - 1)] || entry.icons[0];
-        return {
-          day: entry.day,
-          high: Math.round(Math.max(...entry.highs)),
-          low: Math.round(Math.min(...entry.lows)),
-          icon: mid,
-          description: entry.descriptions[Math.min(2, entry.descriptions.length - 1)] || '',
-        };
-      });
+    const future = ordered.filter(([key]) => key !== todayKey);
+    const todayEntry = ordered.find(([key]) => key === todayKey);
+    const selected =
+      future.length >= maxDays
+        ? future.slice(0, maxDays)
+        : [...(todayEntry ? [todayEntry] : []), ...future].slice(0, maxDays);
+
+    return selected.map(([, entry]) => {
+      const mid = entry.icons[Math.min(2, entry.icons.length - 1)] || entry.icons[0];
+      return {
+        day: entry.day,
+        high: Math.round(Math.max(...entry.highs)),
+        low: Math.round(Math.min(...entry.lows)),
+        icon: mid,
+        description: entry.descriptions[Math.min(2, entry.descriptions.length - 1)] || '',
+      };
+    });
   }
 
   private formatHour(ts: number, format: '12' | '24', withMinutes = false): string {
