@@ -1,69 +1,32 @@
 <div class="settings">
   <header class="topbar">
-    <div>
-      <h1>House Display Settings</h1>
+    <div class="title-block">
+      <h1>Settings</h1>
       @if (message) {
-        <p class="msg">{{ message }}</p>
+        <span class="msg">{{ message }}</span>
       }
     </div>
     <div class="top-actions">
+      <button type="button" class="ghost" (click)="reset()">Reset</button>
+      <button type="button" class="ghost" (click)="exportConfig()">Export</button>
+      <button type="button" class="ghost" (click)="importConfig()">Import</button>
+      <button type="button" class="ghost" (click)="save()">Save</button>
       <button type="button" (click)="saveAndBack()">Save &amp; back</button>
-      <a routerLink="/">← Back to display</a>
+      <a routerLink="/">← Display</a>
     </div>
   </header>
 
-  <section>
-    <h2>House</h2>
-    <div class="grid-2">
-      <label>Name <input [(ngModel)]="draft.houseName" /></label>
-      <label>Timezone <input [(ngModel)]="draft.timezone" /></label>
-      <label>Latitude <input type="number" step="any" [(ngModel)]="draft.coords.lat" /></label>
-      <label>Longitude <input type="number" step="any" [(ngModel)]="draft.coords.lon" /></label>
-      <label>
-        Time format
-        <select [(ngModel)]="draft.timeFormat">
-          <option [ngValue]="12">12-hour</option>
-          <option [ngValue]="24">24-hour</option>
-        </select>
-      </label>
-      <label>
-        Screen layout
-        <select [(ngModel)]="draft.orientation">
-          @for (id of orientationIds; track id) {
-            <option [ngValue]="id">{{ orientationLabels[id] }}</option>
-          }
-        </select>
-      </label>
-      <label>
-        Display size (TV viewing distance)
-        <select [(ngModel)]="draft.displayScale">
-          @for (opt of scaleOptions; track opt.value) {
-            <option [ngValue]="opt.value">{{ opt.label }}</option>
-          }
-        </select>
-      </label>
-    </div>
-    <p class="hint">
-      Vertical / Horizontal locks the layout. Auto follows the TV rotation.
-    </p>
-  </section>
-
-  <section>
-    <h2>Modules — show, stack, and size</h2>
-    <p class="hint">
-      Pick where each module stacks (left column, right column, or bottom band),
-      how big it is, and use ↑ ↓ to reorder within that stack. Islamic date is no
-      longer stuck in a corner — put it wherever you want.
-    </p>
-    <div class="module-table-wrap">
+  <div class="board">
+    <section class="panel modules-panel">
+      <h2>Modules</h2>
       <table class="module-table">
         <thead>
           <tr>
-            <th>Show</th>
+            <th></th>
             <th>Module</th>
             <th>Stack</th>
             <th>Size</th>
-            <th>Order</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
@@ -99,7 +62,6 @@
                   class="ghost tiny"
                   [disabled]="!canMove(id, -1)"
                   (click)="moveModule(id, -1)"
-                  title="Move up in stack"
                 >
                   ↑
                 </button>
@@ -108,7 +70,6 @@
                   class="ghost tiny"
                   [disabled]="!canMove(id, 1)"
                   (click)="moveModule(id, 1)"
-                  title="Move down in stack"
                 >
                   ↓
                 </button>
@@ -117,111 +78,132 @@
           }
         </tbody>
       </table>
+    </section>
+
+    <div class="side">
+      <section class="panel">
+        <h2>House</h2>
+        <div class="fields">
+          <label>Name <input [(ngModel)]="draft.houseName" /></label>
+          <label>Timezone <input [(ngModel)]="draft.timezone" /></label>
+          <label>Lat <input type="number" step="any" [(ngModel)]="draft.coords.lat" /></label>
+          <label>Lon <input type="number" step="any" [(ngModel)]="draft.coords.lon" /></label>
+          <label>
+            Time
+            <select [(ngModel)]="draft.timeFormat">
+              <option [ngValue]="12">12-hour</option>
+              <option [ngValue]="24">24-hour</option>
+            </select>
+          </label>
+          <label>
+            Layout
+            <select [(ngModel)]="draft.orientation">
+              @for (id of orientationIds; track id) {
+                <option [ngValue]="id">{{ orientationLabels[id] }}</option>
+              }
+            </select>
+          </label>
+          <label class="span-2">
+            Display size
+            <select [(ngModel)]="draft.displayScale">
+              @for (opt of scaleOptions; track opt.value) {
+                <option [ngValue]="opt.value">{{ opt.label }}</option>
+              }
+            </select>
+          </label>
+        </div>
+      </section>
+
+      <section class="panel">
+        <h2>Prayer &amp; content</h2>
+        <div class="fields">
+          <label>
+            Method
+            <select [(ngModel)]="draft.prayerMethod">
+              <option value="ISNA">ISNA</option>
+              <option value="MWL">MWL</option>
+              <option value="Egypt">Egypt</option>
+              <option value="Makkah">Makkah</option>
+              <option value="Karachi">Karachi</option>
+            </select>
+          </label>
+          <label>
+            Asr
+            <select [(ngModel)]="draft.asr">
+              <option value="Hanafi">Hanafi</option>
+              <option value="Standard">Standard</option>
+            </select>
+          </label>
+          <label>
+            Dua
+            <select [(ngModel)]="draft.content.duaLanguage">
+              <option value="en">English</option>
+              <option value="bn">Bangla</option>
+            </select>
+          </label>
+          <label>
+            Hadith
+            <select [(ngModel)]="draft.content.hadithRotation">
+              <option value="daily">Daily</option>
+              <option value="random">Random</option>
+            </select>
+          </label>
+          <label>
+            Ayah ms
+            <input type="number" [(ngModel)]="draft.content.ayahIntervalMs" />
+          </label>
+          <label class="toggle inline">
+            <input type="checkbox" [(ngModel)]="draft.prayerShowSunrise" />
+            Sunrise
+          </label>
+        </div>
+      </section>
+
+      <section class="panel">
+        <h2>Weather</h2>
+        <div class="fields">
+          <label class="span-2">
+            API key
+            <input [(ngModel)]="draft.openWeatherApiKey" placeholder="OpenWeather key" />
+          </label>
+          <label>
+            Units
+            <select [(ngModel)]="draft.weatherUnits">
+              <option value="imperial">°F</option>
+              <option value="metric">°C</option>
+            </select>
+          </label>
+          <label>
+            Hourly
+            <input type="number" min="0" max="8" [(ngModel)]="draft.weatherMaxHourlies" />
+          </label>
+          <label>
+            Daily
+            <input type="number" min="0" max="8" [(ngModel)]="draft.weatherMaxDailies" />
+          </label>
+          <label class="toggle inline">
+            <input type="checkbox" [(ngModel)]="draft.weatherEffects" />
+            Effects
+          </label>
+        </div>
+      </section>
+
+      <section class="panel">
+        <h2>Wi‑Fi</h2>
+        <div class="fields">
+          <label>SSID <input [(ngModel)]="draft.wifi.ssid" /></label>
+          <label>Password <input [(ngModel)]="draft.wifi.password" /></label>
+          <label class="toggle inline span-2">
+            <input type="checkbox" [(ngModel)]="draft.wifi.showPassword" />
+            Show password on display
+          </label>
+        </div>
+      </section>
+
+      <section class="panel transfer">
+        <h2>Import / export JSON</h2>
+        <textarea rows="3" [(ngModel)]="importText" placeholder="Paste config JSON here, then Import"></textarea>
+      </section>
     </div>
-  </section>
-
-  <section>
-    <h2>Prayer</h2>
-    <div class="grid-2">
-      <label>
-        Method
-        <select [(ngModel)]="draft.prayerMethod">
-          <option value="ISNA">ISNA</option>
-          <option value="MWL">MWL</option>
-          <option value="Egypt">Egypt</option>
-          <option value="Makkah">Makkah</option>
-          <option value="Karachi">Karachi</option>
-        </select>
-      </label>
-      <label>
-        Asr
-        <select [(ngModel)]="draft.asr">
-          <option value="Hanafi">Hanafi</option>
-          <option value="Standard">Standard</option>
-        </select>
-      </label>
-    </div>
-    <label class="toggle">
-      <input type="checkbox" [(ngModel)]="draft.prayerShowSunrise" />
-      Show Sunrise row
-    </label>
-  </section>
-
-  <section>
-    <h2>Content</h2>
-    <div class="grid-2">
-      <label>
-        Dua language
-        <select [(ngModel)]="draft.content.duaLanguage">
-          <option value="en">English</option>
-          <option value="bn">Bangla</option>
-        </select>
-      </label>
-      <label>
-        Hadith rotation
-        <select [(ngModel)]="draft.content.hadithRotation">
-          <option value="daily">Daily</option>
-          <option value="random">Random</option>
-        </select>
-      </label>
-      <label>
-        Ayah interval (ms)
-        <input type="number" [(ngModel)]="draft.content.ayahIntervalMs" />
-      </label>
-    </div>
-  </section>
-
-  <section>
-    <h2>Weather</h2>
-    <div class="grid-2">
-      <label>
-        OpenWeather API key
-        <input [(ngModel)]="draft.openWeatherApiKey" placeholder="required for current + forecast" />
-      </label>
-      <label>
-        Units
-        <select [(ngModel)]="draft.weatherUnits">
-          <option value="imperial">°F / mph</option>
-          <option value="metric">°C / m/s</option>
-        </select>
-      </label>
-      <label>
-        Hourly slots
-        <input type="number" min="0" max="8" [(ngModel)]="draft.weatherMaxHourlies" />
-      </label>
-      <label>
-        Daily days
-        <input type="number" min="0" max="8" [(ngModel)]="draft.weatherMaxDailies" />
-      </label>
-    </div>
-    <label class="toggle">
-      <input type="checkbox" [(ngModel)]="draft.weatherEffects" />
-      Dynamic weather effects (rain / snow overlay)
-    </label>
-  </section>
-
-  <section>
-    <h2>Wi‑Fi</h2>
-    <div class="grid-2">
-      <label>SSID <input [(ngModel)]="draft.wifi.ssid" /></label>
-      <label>Password <input [(ngModel)]="draft.wifi.password" /></label>
-    </div>
-    <label class="toggle">
-      <input type="checkbox" [(ngModel)]="draft.wifi.showPassword" />
-      Show password on display
-    </label>
-  </section>
-
-  <section class="actions">
-    <button type="button" (click)="saveAndBack()">Save &amp; back to display</button>
-    <button type="button" class="ghost" (click)="save()">Save</button>
-    <button type="button" class="ghost" (click)="reset()">Reset defaults</button>
-    <button type="button" class="ghost" (click)="exportConfig()">Export JSON</button>
-    <button type="button" class="ghost" (click)="importConfig()">Import JSON</button>
-  </section>
-
-  <section>
-    <h2>Import / export</h2>
-    <textarea rows="10" [(ngModel)]="importText" placeholder="Paste house config JSON here"></textarea>
-  </section>
+  </div>
 </div>
