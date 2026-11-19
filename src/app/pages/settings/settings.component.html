@@ -1,12 +1,16 @@
 <div class="settings">
-  <header>
-    <h1>House Display Settings</h1>
-    <a routerLink="/">← Back to display</a>
+  <header class="topbar">
+    <div>
+      <h1>House Display Settings</h1>
+      @if (message) {
+        <p class="msg">{{ message }}</p>
+      }
+    </div>
+    <div class="top-actions">
+      <button type="button" (click)="saveAndBack()">Save &amp; back</button>
+      <a routerLink="/">← Back to display</a>
+    </div>
   </header>
-
-  @if (message) {
-    <p class="msg">{{ message }}</p>
-  }
 
   <section>
     <h2>House</h2>
@@ -31,8 +35,7 @@
     </label>
     <p class="hint">
       Vertical vs horizontal follows the TV/screen automatically (no setting).
-      Portrait → vertical layout (default for standing mirrors). Landscape → compact
-      horizontal layout. Display size mainly affects vertical/TV scale.
+      Portrait → vertical layout. Landscape → compact horizontal layout.
     </p>
   </section>
 
@@ -133,7 +136,8 @@
   </section>
 
   <section class="actions">
-    <button type="button" (click)="save()">Save</button>
+    <button type="button" (click)="saveAndBack()">Save &amp; back to display</button>
+    <button type="button" class="ghost" (click)="save()">Save</button>
     <button type="button" class="ghost" (click)="reset()">Reset defaults</button>
     <button type="button" class="ghost" (click)="exportConfig()">Export JSON</button>
     <button type="button" class="ghost" (click)="importConfig()">Import JSON</button>

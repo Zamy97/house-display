@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { ConfigService } from '../../core/services/config.service';
 import {
   DISPLAY_SCALE_OPTIONS,
@@ -18,6 +18,7 @@ import {
 })
 export class SettingsComponent {
   private readonly configService = inject(ConfigService);
+  private readonly router = inject(Router);
   draft: HouseConfig = structuredClone(this.configService.config());
   moduleIds = Object.keys(MODULE_LABELS) as ModuleId[];
   labels = MODULE_LABELS;
@@ -28,6 +29,11 @@ export class SettingsComponent {
   save(): void {
     this.configService.update(this.draft);
     this.message = 'Saved. Open the display to see changes.';
+  }
+
+  saveAndBack(): void {
+    this.configService.update(this.draft);
+    void this.router.navigateByUrl('/');
   }
 
   reset(): void {
