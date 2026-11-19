@@ -10,53 +10,73 @@
     <div class="region top">
       <aside class="region top-left">
         @if (config().modules.clock) {
-          <app-clock [timeFormat]="config().timeFormat" />
+          <div class="mod" [style.zoom]="scale('clock')">
+            <app-clock [timeFormat]="config().timeFormat" />
+          </div>
         }
         @if (config().modules.prayer) {
-          <app-prayer [config]="config()" />
+          <div class="mod" [style.zoom]="scale('prayer')">
+            <app-prayer [config]="config()" />
+          </div>
         }
         @if (config().modules.calendar) {
-          <app-calendar />
+          <div class="mod" [style.zoom]="scale('calendar')">
+            <app-calendar />
+          </div>
         }
         @if (config().modules.worldClocks) {
-          <app-world-clocks
-            [clocks]="config().worldClocks"
-            [timeFormat]="config().timeFormat"
-          />
+          <div class="mod" [style.zoom]="scale('worldClocks')">
+            <app-world-clocks
+              [clocks]="config().worldClocks"
+              [timeFormat]="config().timeFormat"
+            />
+          </div>
         }
         @if (config().modules.wifi) {
-          <app-wifi
-            [ssid]="config().wifi.ssid"
-            [password]="config().wifi.password"
-            [showPassword]="config().wifi.showPassword"
-          />
+          <div class="mod" [style.zoom]="scale('wifi')">
+            <app-wifi
+              [ssid]="config().wifi.ssid"
+              [password]="config().wifi.password"
+              [showPassword]="config().wifi.showPassword"
+            />
+          </div>
         }
       </aside>
 
       <aside class="region top-right">
         @if (config().modules.weather) {
-          <app-weather [config]="config()" />
+          <div class="mod" [style.zoom]="scale('weather')">
+            <app-weather [config]="config()" />
+          </div>
         }
         @if (config().modules.hijri && viewOrientation() === 'horizontal') {
-          <app-hijri [locale]="config().locale" />
+          <div class="mod" [style.zoom]="scale('hijri')">
+            <app-hijri [locale]="config().locale" />
+          </div>
         }
       </aside>
     </div>
 
     <div class="region bottom-bar">
       @if (config().modules.dua) {
-        <app-dua [preferBn]="config().content.duaLanguage === 'bn'" />
+        <div class="mod" [style.zoom]="scale('dua')">
+          <app-dua [preferBn]="config().content.duaLanguage === 'bn'" />
+        </div>
       }
       @if (config().modules.hadith) {
-        <app-hadith [mode]="config().content.hadithRotation" />
+        <div class="mod" [style.zoom]="scale('hadith')">
+          <app-hadith [mode]="config().content.hadithRotation" />
+        </div>
       }
       @if (config().modules.ayah) {
-        <app-ayah [intervalMs]="config().content.ayahIntervalMs" />
+        <div class="mod" [style.zoom]="scale('ayah')">
+          <app-ayah [intervalMs]="config().content.ayahIntervalMs" />
+        </div>
       }
     </div>
 
     @if (config().modules.hijri && viewOrientation() === 'vertical') {
-      <div class="region bottom-right">
+      <div class="region bottom-right" [style.zoom]="scale('hijri')">
         <app-hijri [locale]="config().locale" />
       </div>
     }

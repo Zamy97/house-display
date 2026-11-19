@@ -4,11 +4,33 @@
       <h2 class="section-title">Current Weather{{ w.city ? ' ' + w.city : '' }}</h2>
       <div class="meta">
         <span class="meta-item">
-          <span class="wi" aria-hidden="true">🌬</span>
+          <svg class="wi" viewBox="0 0 24 24" aria-hidden="true">
+            <path
+              d="M3 8h11a2.5 2.5 0 1 0-2.5-2.5M3 12h15a2.5 2.5 0 1 1-2.5 2.5M3 16h9a2 2 0 1 1-2 2"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.6"
+              stroke-linecap="round"
+            />
+          </svg>
           {{ w.windSpeed }} {{ w.windDir }}
         </span>
         <span class="meta-item">
-          <span class="wi" aria-hidden="true">{{ w.sunLabel === 'sunset' ? '☀️' : '🌅' }}</span>
+          <svg class="wi" viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="12" cy="13" r="3.4" fill="none" stroke="currentColor" stroke-width="1.6" />
+            <path
+              d="M12 3v3M4.6 7.6l2 2M19.4 7.6l-2 2M3 17h18"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.6"
+              stroke-linecap="round"
+            />
+            @if (w.sunLabel === 'sunset') {
+              <path d="M9.5 20.5l2.5-2.5 2.5 2.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+            } @else {
+              <path d="M14.5 20.5L12 18l-2.5 2.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+            }
+          </svg>
           {{ w.sunTime }}
         </span>
       </div>

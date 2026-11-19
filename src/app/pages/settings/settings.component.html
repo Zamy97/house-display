@@ -85,6 +85,28 @@
   </section>
 
   <section>
+    <h2>Module sizes</h2>
+    <p class="hint">Make each widget bigger or smaller to taste.</p>
+    <div class="module-sizes">
+      @for (id of moduleIds; track id) {
+        @if (draft.modules[id]) {
+          <label>
+            {{ labels[id] }}
+            <select
+              [ngModel]="moduleScale(id)"
+              (ngModelChange)="setModuleScale(id, $event)"
+            >
+              @for (opt of moduleScaleOptions; track opt.value) {
+                <option [ngValue]="opt.value">{{ opt.label }}</option>
+              }
+            </select>
+          </label>
+        }
+      }
+    </div>
+  </section>
+
+  <section>
     <h2>Content</h2>
     <label>
       Dua language

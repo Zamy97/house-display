@@ -21,6 +21,8 @@ import { AyahComponent } from '../../components/ayah/ayah.component';
 import { WorldClocksComponent } from '../../components/world-clocks/world-clocks.component';
 import { WifiComponent } from '../../components/wifi/wifi.component';
 
+import { ModuleId } from '../../core/models/house-config';
+
 export type ViewOrientation = 'vertical' | 'horizontal';
 
 @Component({
@@ -72,6 +74,11 @@ export class DisplayComponent {
     if (!cfg.modules.weather || !cfg.weatherEffects) return 'none';
     return this.weatherService.lastBundle()?.effect || 'none';
   });
+
+  /** Per-module size multiplier set in Settings. */
+  scale(id: ModuleId): number {
+    return this.config().moduleScales?.[id] || 1;
+  }
 
   constructor() {
     // Keep screen probe fresh when using Auto

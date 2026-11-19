@@ -98,6 +98,19 @@ textarea {
   gap: 8px;
 }
 
+.module-sizes {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 12px;
+}
+
+.module-sizes label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.9rem;
+}
+
 .toggle {
   display: flex;
   align-items: center;

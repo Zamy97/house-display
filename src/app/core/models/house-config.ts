@@ -30,6 +30,8 @@ export type HouseConfig = {
   orientation: DisplayOrientation;
   /** Overall UI scale for TV viewing distance (1 = Example CSS, ~1.55 for 43"). */
   displayScale: number;
+  /** Per-module size multiplier (1 = normal). Lets each house tune each widget. */
+  moduleScales: Record<ModuleId, number>;
   coords: { lat: number; lon: number };
   timezone: string;
   prayerMethod: 'ISNA' | 'MWL' | 'Egypt' | 'Makkah' | 'Karachi';
@@ -56,7 +58,19 @@ export const DEFAULT_HOUSE_CONFIG: HouseConfig = {
   timeFormat: 12,
   layout: 'mirror',
   orientation: 'vertical',
-  displayScale: 1.55,
+  displayScale: 1.4,
+  moduleScales: {
+    clock: 1,
+    prayer: 1,
+    calendar: 1,
+    weather: 1,
+    hijri: 1,
+    dua: 1,
+    hadith: 1,
+    ayah: 1,
+    worldClocks: 1,
+    wifi: 1,
+  },
   coords: { lat: 42.4710579, lon: -83.0133362 },
   timezone: 'America/Detroit',
   prayerMethod: 'ISNA',
@@ -118,8 +132,18 @@ export const ORIENTATION_LABELS: Record<DisplayOrientation, string> = {
 };
 
 export const DISPLAY_SCALE_OPTIONS: { value: number; label: string }[] = [
-  { value: 1.15, label: 'Comfortable (near / desktop)' },
-  { value: 1.35, label: 'Large' },
-  { value: 1.55, label: 'TV 43″ (default)' },
-  { value: 1.75, label: 'TV far / extra large' },
+  { value: 1.0, label: 'Compact (desktop / close up)' },
+  { value: 1.2, label: 'Comfortable' },
+  { value: 1.4, label: 'TV (default)' },
+  { value: 1.6, label: 'Large TV' },
+  { value: 1.8, label: 'Extra large / far away' },
+];
+
+export const MODULE_SCALE_OPTIONS: { value: number; label: string }[] = [
+  { value: 0.8, label: 'Smaller' },
+  { value: 0.9, label: 'Small' },
+  { value: 1.0, label: 'Normal' },
+  { value: 1.15, label: 'Big' },
+  { value: 1.3, label: 'Bigger' },
+  { value: 1.5, label: 'Huge' },
 ];

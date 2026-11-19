@@ -7,6 +7,7 @@ import {
   DisplayOrientation,
   HouseConfig,
   MODULE_LABELS,
+  MODULE_SCALE_OPTIONS,
   ModuleId,
   ORIENTATION_LABELS,
 } from '../../core/models/house-config';
@@ -27,8 +28,17 @@ export class SettingsComponent {
   orientationIds = Object.keys(ORIENTATION_LABELS) as DisplayOrientation[];
   orientationLabels = ORIENTATION_LABELS;
   scaleOptions = DISPLAY_SCALE_OPTIONS;
+  moduleScaleOptions = MODULE_SCALE_OPTIONS;
   importText = '';
   message = '';
+
+  moduleScale(id: ModuleId): number {
+    return this.draft.moduleScales?.[id] ?? 1;
+  }
+
+  setModuleScale(id: ModuleId, value: number): void {
+    this.draft.moduleScales = { ...this.draft.moduleScales, [id]: Number(value) };
+  }
 
   save(): void {
     this.configService.update(this.draft);

@@ -73,6 +73,7 @@ export class ConfigService {
       wifi: { ...base.wifi, ...(overlay.wifi || {}) },
       content: { ...base.content, ...(overlay.content || {}) },
       modules: { ...base.modules, ...(overlay.modules || {}) },
+      moduleScales: { ...base.moduleScales, ...(overlay.moduleScales || {}) },
       worldClocks: overlay.worldClocks?.length
         ? overlay.worldClocks
         : base.worldClocks,
