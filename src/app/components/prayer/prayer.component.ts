@@ -7,7 +7,7 @@ import { HouseConfig } from '../../core/models/house-config';
   standalone: true,
   template: `
     <section class="panel">
-      <h2>Prayer Times</h2>
+      <h2>Today</h2>
       <table>
         @for (row of rows; track row.name) {
           <tr [class.current]="row.name === current">

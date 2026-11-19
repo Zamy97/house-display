@@ -50,6 +50,10 @@
   min-height: 42vh;
 }
 
+.spacer {
+  min-height: 1px;
+}
+
 .right {
   justify-self: end;
   width: 100%;
@@ -62,6 +66,14 @@
   z-index: 2;
   width: 92%;
   margin: 4px auto 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.mirror[data-layout='mirror'] .footer {
+  margin-top: auto;
+  padding-top: 8px;
 }
 
 @media (max-width: 960px) {
@@ -74,5 +86,9 @@
     width: 100%;
     max-width: none;
     align-items: stretch;
+  }
+
+  .spacer {
+    display: none;
   }
 }

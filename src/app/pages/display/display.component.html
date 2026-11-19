@@ -1,4 +1,4 @@
-<div class="mirror">
+<div class="mirror" [attr.data-layout]="config().layout">
   <app-weather-effects [effect]="weatherEffect()" />
   <a class="settings-fab" routerLink="/settings" title="Settings">⚙</a>
 
@@ -9,6 +9,9 @@
       }
       @if (config().modules.prayer) {
         <app-prayer [config]="config()" />
+      }
+      @if (config().modules.calendar) {
+        <app-calendar />
       }
       @if (config().modules.worldClocks) {
         <app-world-clocks
@@ -25,14 +28,18 @@
       }
     </aside>
 
-    <main class="col center">
-      @if (config().modules.dua) {
-        <app-dua [preferBn]="config().content.duaLanguage === 'bn'" />
-      }
-      @if (config().modules.hadith) {
-        <app-hadith [mode]="config().content.hadithRotation" />
-      }
-    </main>
+    @if (config().layout === 'columns') {
+      <main class="col center">
+        @if (config().modules.dua) {
+          <app-dua [preferBn]="config().content.duaLanguage === 'bn'" />
+        }
+        @if (config().modules.hadith) {
+          <app-hadith [mode]="config().content.hadithRotation" />
+        }
+      </main>
+    } @else {
+      <div class="col spacer" aria-hidden="true"></div>
+    }
 
     <aside class="col right">
       @if (config().modules.weather) {
@@ -44,9 +51,17 @@
     </aside>
   </div>
 
-  @if (config().modules.ayah) {
-    <footer class="footer">
+  <footer class="footer">
+    @if (config().layout === 'mirror') {
+      @if (config().modules.dua) {
+        <app-dua [preferBn]="config().content.duaLanguage === 'bn'" />
+      }
+      @if (config().modules.hadith) {
+        <app-hadith [mode]="config().content.hadithRotation" />
+      }
+    }
+    @if (config().modules.ayah) {
       <app-ayah [intervalMs]="config().content.ayahIntervalMs" />
-    </footer>
-  }
+    }
+  </footer>
 </div>

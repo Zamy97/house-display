@@ -3,7 +3,9 @@ import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { ConfigService } from '../../core/services/config.service';
 import {
+  DisplayLayout,
   HouseConfig,
+  LAYOUT_LABELS,
   MODULE_LABELS,
   ModuleId,
 } from '../../core/models/house-config';
@@ -20,6 +22,8 @@ export class SettingsComponent {
   draft: HouseConfig = structuredClone(this.configService.config());
   moduleIds = Object.keys(MODULE_LABELS) as ModuleId[];
   labels = MODULE_LABELS;
+  layoutIds = Object.keys(LAYOUT_LABELS) as DisplayLayout[];
+  layoutLabels = LAYOUT_LABELS;
   importText = '';
   message = '';
 

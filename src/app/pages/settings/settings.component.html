@@ -21,6 +21,14 @@
         <option [ngValue]="24">24-hour</option>
       </select>
     </label>
+    <label>
+      Display layout
+      <select [(ngModel)]="draft.layout">
+        @for (id of layoutIds; track id) {
+          <option [ngValue]="id">{{ layoutLabels[id] }}</option>
+        }
+      </select>
+    </label>
   </section>
 
   <section>
@@ -41,6 +49,10 @@
         <option value="Hanafi">Hanafi</option>
         <option value="Standard">Standard</option>
       </select>
+    </label>
+    <label class="toggle">
+      <input type="checkbox" [(ngModel)]="draft.prayerShowSunrise" />
+      Show Sunrise row
     </label>
   </section>
 

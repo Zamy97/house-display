@@ -7,17 +7,18 @@
   box-shadow: none;
 }
 
+.date {
+  color: var(--accent-2);
+  font-size: 1.15rem;
+  letter-spacing: 0.03em;
+  margin-bottom: 4px;
+}
+
 .time {
   color: var(--accent);
   font-weight: 200;
-  font-size: 3.6rem;
+  font-size: 3.4rem;
   line-height: 1;
   letter-spacing: 0.02em;
-}
-
-.date {
-  color: var(--accent-2);
-  font-size: 1.2rem;
-  margin-top: 4px;
-  letter-spacing: 0.03em;
+  text-transform: lowercase;
 }

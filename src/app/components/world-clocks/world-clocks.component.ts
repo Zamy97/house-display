@@ -9,7 +9,18 @@ import { WorldClock } from '../../core/models/house-config';
       <div class="grid">
         @for (row of rows; track row.title) {
           <div class="cell">
-            <div class="zone">{{ row.title }}</div>
+            <div class="zone">
+              @if (row.flag) {
+                <img
+                  class="flag"
+                  [src]="'https://flagcdn.com/w40/' + row.flag + '.png'"
+                  [alt]="row.title"
+                  width="18"
+                  height="12"
+                />
+              }
+              {{ row.title }}
+            </div>
             <div class="time">{{ row.time }}</div>
           </div>
         }
@@ -21,7 +32,7 @@ import { WorldClock } from '../../core/models/house-config';
 export class WorldClocksComponent implements OnInit, OnChanges, OnDestroy {
   @Input() clocks: WorldClock[] = [];
   @Input() timeFormat: 12 | 24 = 12;
-  rows: { title: string; time: string }[] = [];
+  rows: { title: string; time: string; flag?: string }[] = [];
   private timer?: number;
 
   ngOnInit(): void {
@@ -46,6 +57,7 @@ export class WorldClocksComponent implements OnInit, OnChanges, OnDestroy {
     };
     this.rows = (this.clocks || []).map((clock) => ({
       title: clock.title,
+      flag: clock.flag,
       time: new Intl.DateTimeFormat('en-US', {
         ...options,
         timeZone: clock.timezone,

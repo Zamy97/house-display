@@ -14,7 +14,7 @@ export class PrayerService {
       .adjust({ asr: config.asr });
     prayTime.location([config.coords.lat, config.coords.lon]).timezone(config.timezone);
     const times = prayTime.times(new Date());
-    return [
+    const rows: PrayerRow[] = [
       { name: 'Fajr', time: String(times.fajr) },
       { name: 'Sunrise', time: String(times.sunrise) },
       { name: 'Dhuhr', time: String(times.dhuhr) },
@@ -22,12 +22,14 @@ export class PrayerService {
       { name: 'Maghrib', time: String(times.maghrib) },
       { name: 'Isha', time: String(times.isha) },
     ];
+    return config.prayerShowSunrise ? rows : rows.filter((r) => r.name !== 'Sunrise');
   }
 
   /** Highlight the active prayer window (after this prayer, before the next). */
   getCurrentName(rows: PrayerRow[]): string {
     const minutes = new Date().getHours() * 60 + new Date().getMinutes();
     const parsed = rows
+      .filter((row) => row.name !== 'Sunrise')
       .map((row) => ({ name: row.name, mins: this.parseToMinutes(row.time) }))
       .filter((r) => r.mins >= 0);
 

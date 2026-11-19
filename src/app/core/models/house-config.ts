@@ -1,6 +1,7 @@
 export type ModuleId =
   | 'clock'
   | 'prayer'
+  | 'calendar'
   | 'weather'
   | 'hijri'
   | 'dua'
@@ -8,6 +9,8 @@ export type ModuleId =
   | 'ayah'
   | 'worldClocks'
   | 'wifi';
+
+export type DisplayLayout = 'mirror' | 'columns';
 
 export type HouseModules = Record<ModuleId, boolean>;
 
@@ -21,10 +24,12 @@ export type HouseConfig = {
   houseName: string;
   locale: string;
   timeFormat: 12 | 24;
+  layout: DisplayLayout;
   coords: { lat: number; lon: number };
   timezone: string;
   prayerMethod: 'ISNA' | 'MWL' | 'Egypt' | 'Makkah' | 'Karachi';
   asr: 'Standard' | 'Hanafi';
+  prayerShowSunrise: boolean;
   openWeatherApiKey: string;
   weatherUnits: 'imperial' | 'metric';
   weatherMaxHourlies: number;
@@ -44,10 +49,12 @@ export const DEFAULT_HOUSE_CONFIG: HouseConfig = {
   houseName: 'Home',
   locale: 'en-US',
   timeFormat: 12,
+  layout: 'mirror',
   coords: { lat: 42.4710579, lon: -83.0133362 },
   timezone: 'America/Detroit',
   prayerMethod: 'ISNA',
   asr: 'Hanafi',
+  prayerShowSunrise: false,
   openWeatherApiKey: '',
   weatherUnits: 'imperial',
   weatherMaxHourlies: 2,
@@ -63,6 +70,7 @@ export const DEFAULT_HOUSE_CONFIG: HouseConfig = {
   modules: {
     clock: true,
     prayer: true,
+    calendar: true,
     weather: true,
     hijri: true,
     dua: true,
@@ -81,6 +89,7 @@ export const DEFAULT_HOUSE_CONFIG: HouseConfig = {
 export const MODULE_LABELS: Record<ModuleId, string> = {
   clock: 'Clock',
   prayer: 'Prayer times',
+  calendar: 'Monthly calendar',
   weather: 'Weather',
   hijri: 'Islamic date',
   dua: 'Daily dua',
@@ -88,4 +97,9 @@ export const MODULE_LABELS: Record<ModuleId, string> = {
   ayah: 'Quran ayah',
   worldClocks: 'World clocks',
   wifi: 'Wi‑Fi QR',
+};
+
+export const LAYOUT_LABELS: Record<DisplayLayout, string> = {
+  mirror: 'MagicMirror (left modules, right weather, bottom content)',
+  columns: 'Three columns (content in center)',
 };

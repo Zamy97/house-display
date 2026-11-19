@@ -4,6 +4,7 @@ import { ConfigService } from '../../core/services/config.service';
 import { WeatherService } from '../../core/services/weather.service';
 import { ClockComponent } from '../../components/clock/clock.component';
 import { PrayerComponent } from '../../components/prayer/prayer.component';
+import { CalendarComponent } from '../../components/calendar/calendar.component';
 import { WeatherComponent } from '../../components/weather/weather.component';
 import { WeatherEffectsComponent } from '../../components/weather-effects/weather-effects.component';
 import { HijriComponent } from '../../components/hijri/hijri.component';
@@ -20,6 +21,7 @@ import { WifiComponent } from '../../components/wifi/wifi.component';
     RouterLink,
     ClockComponent,
     PrayerComponent,
+    CalendarComponent,
     WeatherComponent,
     WeatherEffectsComponent,
     HijriComponent,

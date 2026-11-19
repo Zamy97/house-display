@@ -7,8 +7,8 @@ import { DatePipe } from '@angular/common';
   imports: [DatePipe],
   template: `
     <section class="panel clock-panel">
-      <div class="time">{{ now | date: timeFormat === 12 ? 'h:mm:ss a' : 'HH:mm:ss' }}</div>
       <div class="date">{{ now | date: 'EEEE, MMMM d' }}</div>
+      <div class="time">{{ now | date: timeFormat === 12 ? 'h:mm:ss a' : 'HH:mm:ss' }}</div>
     </section>
   `,
   styleUrl: './clock.component.scss',

@@ -1,0 +1,49 @@
+:host {
+  display: block;
+}
+
+h2 {
+  margin: 0 0 8px;
+  color: var(--accent-2);
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: 600;
+  text-align: center;
+}
+
+.weekdays,
+.grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+  text-align: center;
+}
+
+.weekdays span {
+  color: var(--text-faint);
+  font-size: 0.68rem;
+  letter-spacing: 0.04em;
+  padding: 2px 0 6px;
+}
+
+.day {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 26px;
+  font-size: 0.82rem;
+  color: var(--text-dim);
+  border-radius: 4px;
+}
+
+.day.empty {
+  visibility: hidden;
+}
+
+.day.today {
+  background: rgba(244, 208, 63, 0.28);
+  color: var(--gold);
+  font-weight: 700;
+  border-radius: 50%;
+}
