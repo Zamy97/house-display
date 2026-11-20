@@ -11,6 +11,9 @@ import { ContentService, AyahItem } from '../../core/services/content.service';
         <div class="translation">
           {{ a.translation }} (QS. {{ a.surahNameEnglish }}:{{ a.ayahNumberInSurah }})
         </div>
+        @if (a.translationBn) {
+          <div class="bangla">{{ a.translationBn }}</div>
+        }
       }
     </section>
   `,

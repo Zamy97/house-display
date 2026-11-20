@@ -132,7 +132,8 @@
     overflow: hidden;
   }
 
-  app-ayah .translation {
+  app-ayah .translation,
+  app-ayah .bangla {
     display: -webkit-box;
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
@@ -380,7 +381,8 @@
     margin-bottom: 2px;
   }
 
-  app-ayah .translation {
+  app-ayah .translation,
+  app-ayah .bangla {
     font-size: 0.8rem;
     line-height: 1.2;
     display: -webkit-box;

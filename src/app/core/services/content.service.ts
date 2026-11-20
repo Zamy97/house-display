@@ -26,6 +26,7 @@ export type HadithItem = {
 export type AyahItem = {
   arabic: string;
   translation: string;
+  translationBn?: string;
   surahNameEnglish: string;
   surahNameArabic: string;
   ayahNumberInSurah: number;
