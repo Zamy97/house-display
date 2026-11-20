@@ -56,7 +56,9 @@
             "styles": [
               "src/styles.scss"
             ],
-            "scripts": []
+            "scripts": [
+              "src/app/core/lib/skycons.js"
+            ]
           },
           "configurations": {
             "production": {
@@ -115,7 +117,9 @@
             "styles": [
               "src/styles.scss"
             ],
-            "scripts": []
+            "scripts": [
+              "src/app/core/lib/skycons.js"
+            ]
           }
         }
       }

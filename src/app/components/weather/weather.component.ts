@@ -3,11 +3,12 @@ import { DecimalPipe } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { WeatherBundle, WeatherService } from '../../core/services/weather.service';
 import { HouseConfig } from '../../core/models/house-config';
+import { SkyconComponent } from './skycon.component';
 
 @Component({
   selector: 'app-weather',
   standalone: true,
-  imports: [DecimalPipe],
+  imports: [DecimalPipe, SkyconComponent],
   templateUrl: './weather.component.html',
   styleUrl: './weather.component.scss',
 })
@@ -28,10 +29,6 @@ export class WeatherComponent implements OnChanges, OnDestroy {
   ngOnDestroy(): void {
     this.sub?.unsubscribe();
     if (this.refreshTimer) clearInterval(this.refreshTimer);
-  }
-
-  iconUrl(icon: string, size: '2x' | '4x' = '2x'): string {
-    return this.weatherService.iconUrl(icon, size);
   }
 
   extraIcon(name: 'wind' | 'sunrise' | 'sunset'): string {

@@ -13,7 +13,7 @@
         </span>
       </div>
       <div class="hero">
-        <img class="hero-icon" [src]="iconUrl(w.icon, '4x')" [alt]="w.description" />
+        <app-skycon class="hero-icon" [code]="w.icon" [label]="w.description" />
         <div class="hero-temps">
           <div class="temp">{{ w.temp | number: '1.0-1' }}°{{ w.unitsLabel }}</div>
           <div class="feels">Feels like {{ w.feelsLike }}°{{ w.unitsLabel }}</div>
@@ -28,7 +28,7 @@
           @for (h of w.hourly; track h.time) {
             <div class="tile">
               <div class="label">{{ h.time }}</div>
-              <img [src]="iconUrl(h.icon)" [alt]="h.description" />
+              <app-skycon [code]="h.icon" [label]="h.description" />
               <div class="val">{{ h.temp }}°</div>
             </div>
           }
@@ -39,7 +39,7 @@
           @for (d of w.daily; track d.day) {
             <div class="tile">
               <div class="label">{{ d.day }}</div>
-              <img [src]="iconUrl(d.icon)" [alt]="d.description" />
+              <app-skycon [code]="d.icon" [label]="d.description" />
               <div class="range">H {{ d.high }}° / L {{ d.low }}°</div>
             </div>
           }
