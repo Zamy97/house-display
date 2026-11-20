@@ -35,6 +35,16 @@ export class SettingsComponent {
   moduleScaleOptions = MODULE_SCALE_OPTIONS;
   regionOptions = MODULE_REGION_OPTIONS;
   regionLabels = MODULE_REGION_LABELS;
+  stackTitles: Record<ModuleRegion, string> = {
+    left: 'Left',
+    bottom: 'Middle',
+    right: 'Right',
+  };
+  stackNotes: Record<ModuleRegion, string> = {
+    left: 'Top to bottom',
+    bottom: 'Center, top to bottom',
+    right: 'Top to bottom',
+  };
   importText = '';
   message = '';
 
@@ -54,7 +64,14 @@ export class SettingsComponent {
   }
 
   setModuleRegion(id: ModuleId, value: ModuleRegion): void {
+    if (this.moduleRegion(id) === value) return;
+    const others = this.modulesInRegion(value);
+    const max = others.reduce(
+      (highest, other) => Math.max(highest, this.draft.moduleOrder?.[other] ?? 0),
+      0
+    );
     this.draft.moduleRegions = { ...this.draft.moduleRegions, [id]: value };
+    this.draft.moduleOrder = { ...this.draft.moduleOrder, [id]: max + 10 };
   }
 
   /** Modules currently assigned to a region, sorted by order. */

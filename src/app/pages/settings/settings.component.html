@@ -11,35 +11,20 @@
   </header>
 
   <main class="main">
-    <section class="sheet sheet-modules">
-      <h2 class="section-title"><span class="dot"></span> Modules</h2>
-      <p class="panel-hint">Show · stack (Left / Right / Bottom) · size · order</p>
-      <div class="module-table-wrap">
-        <table class="module-table">
-          <colgroup>
-            <col class="col-show" />
-            <col class="col-name" />
-            <col class="col-stack" />
-            <col class="col-size" />
-            <col class="col-order" />
-          </colgroup>
-          <thead>
-            <tr>
-              <th>On</th>
-              <th>Module</th>
-              <th>Stack</th>
-              <th>Size</th>
-              <th>Order</th>
-            </tr>
-          </thead>
-          <tbody>
-            @for (id of moduleIds; track id) {
-              <tr [class.off]="!draft.modules[id]">
-                <td>
-                  <input type="checkbox" [(ngModel)]="draft.modules[id]" [name]="'mod-' + id" />
-                </td>
-                <td class="name">{{ labels[id] }}</td>
-                <td>
+    @for (region of regionOptions; track region) {
+      <section class="sheet sheet-place" [class]="'sheet sheet-place sheet-place-' + region">
+        <h2 class="section-title"><span class="dot"></span> {{ stackTitles[region] }}</h2>
+        <p class="panel-hint">{{ stackNotes[region] }}</p>
+        <div class="module-table-wrap">
+          @for (id of modulesInRegion(region); track id) {
+            <div class="mod-card" [class.off]="!draft.modules[id]">
+              <label class="mod-name">
+                <input type="checkbox" [(ngModel)]="draft.modules[id]" [name]="'mod-' + id" />
+                {{ labels[id] }}
+              </label>
+              <div class="mod-controls">
+                <label class="field">
+                  <span class="label">Place</span>
                   <select
                     [ngModel]="moduleRegion(id)"
                     (ngModelChange)="setModuleRegion(id, $event)"
@@ -49,8 +34,9 @@
                       <option [ngValue]="r">{{ regionLabels[r] }}</option>
                     }
                   </select>
-                </td>
-                <td>
+                </label>
+                <label class="field">
+                  <span class="label">Size</span>
                   <select
                     [ngModel]="moduleScale(id)"
                     (ngModelChange)="setModuleScale(id, $event)"
@@ -60,31 +46,33 @@
                       <option [ngValue]="opt.value">{{ opt.label }}</option>
                     }
                   </select>
-                </td>
-                <td class="order">
-                  <button
-                    type="button"
-                    class="btn ghost tiny"
-                    [disabled]="!canMove(id, -1)"
-                    (click)="moveModule(id, -1)"
-                  >
-                    ↑
-                  </button>
-                  <button
-                    type="button"
-                    class="btn ghost tiny"
-                    [disabled]="!canMove(id, 1)"
-                    (click)="moveModule(id, 1)"
-                  >
-                    ↓
-                  </button>
-                </td>
-              </tr>
-            }
-          </tbody>
-        </table>
-      </div>
-    </section>
+                </label>
+              </div>
+              <div class="order">
+                <button
+                  type="button"
+                  class="btn ghost tiny"
+                  [disabled]="!canMove(id, -1)"
+                  (click)="moveModule(id, -1)"
+                >
+                  Top
+                </button>
+                <button
+                  type="button"
+                  class="btn ghost tiny"
+                  [disabled]="!canMove(id, 1)"
+                  (click)="moveModule(id, 1)"
+                >
+                  Bottom
+                </button>
+              </div>
+            </div>
+          } @empty {
+            <p class="stack-empty">Nothing here</p>
+          }
+        </div>
+      </section>
+    }
 
     <section class="sheet sheet-house">
       <h2 class="section-title"><span class="dot"></span> House</h2>

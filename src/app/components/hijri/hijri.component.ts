@@ -5,7 +5,7 @@ import { HijriService } from '../../core/services/hijri.service';
   selector: 'app-hijri',
   standalone: true,
   template: `
-    <section class="panel hijri-panel">
+    <section class="hijri-panel">
       <div class="value">{{ value }}</div>
     </section>
   `,

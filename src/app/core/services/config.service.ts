@@ -85,7 +85,16 @@ export class ConfigService {
         : base.worldClocks,
     };
     merged.displayScale = this.snapDisplayScale(merged.displayScale);
+    this.placeHijriAboveDua(merged);
     return merged;
+  }
+
+  /** Old default kept the Islamic date under weather. Sit it just above the dua. */
+  private placeHijriAboveDua(merged: HouseConfig): void {
+    if (merged.moduleRegions.hijri !== 'right') return;
+    if ((merged.moduleOrder.hijri ?? 20) !== 20) return;
+    merged.moduleRegions.hijri = 'bottom';
+    merged.moduleOrder.hijri = (merged.moduleOrder.dua ?? 10) - 5;
   }
 
   /** Keep the select from going blank when an old saved scale isn't in the list. */

@@ -1,11 +1,20 @@
+:host {
+  display: block;
+  width: 100%;
+  max-width: var(--weather-wide);
+  margin-left: auto;
+}
+
 .hijri-panel {
   background: none;
   border: none;
   box-shadow: none;
-  padding: 0 8px;
+  padding: 2px 4px 0;
   margin: 0;
   text-align: right;
-  width: auto;
+  width: 100%;
+  max-width: none;
+  border-radius: 0;
 }
 
 .value {

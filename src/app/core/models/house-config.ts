@@ -98,7 +98,7 @@ export const DEFAULT_HOUSE_CONFIG: HouseConfig = {
     worldClocks: 'left',
     wifi: 'left',
     weather: 'right',
-    hijri: 'right',
+    hijri: 'bottom',
     dua: 'bottom',
     hadith: 'bottom',
     ayah: 'bottom',
@@ -110,7 +110,7 @@ export const DEFAULT_HOUSE_CONFIG: HouseConfig = {
     worldClocks: 40,
     wifi: 50,
     weather: 10,
-    hijri: 20,
+    hijri: 5,
     dua: 10,
     hadith: 20,
     ayah: 30,
@@ -194,8 +194,8 @@ export const MODULE_SCALE_OPTIONS: { value: number; label: string }[] = [
 
 export const MODULE_REGION_LABELS: Record<ModuleRegion, string> = {
   left: 'Left',
+  bottom: 'Middle',
   right: 'Right',
-  bottom: 'Bottom',
 };
 
 export const MODULE_REGION_OPTIONS = Object.keys(
