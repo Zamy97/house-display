@@ -101,7 +101,9 @@
   max-width: min(100%, var(--forecast-width));
   margin-left: auto;
   margin-right: 0;
-  padding: 4px 0 4px 4px;
+  margin-top: 8px;
+  padding: 10px 0 4px 4px;
+  border-top: 1px solid rgba(234, 246, 255, 0.22);
   box-sizing: border-box;
 }
 

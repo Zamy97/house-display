@@ -10,9 +10,11 @@
 
 .date {
   color: var(--accent-2);
-  font-size: 1.2rem;
+  font-size: 1.55rem;
+  font-weight: 600;
   margin-bottom: 4px;
-  letter-spacing: 0.03em;
+  letter-spacing: 0.02em;
+  line-height: 1.2;
 }
 
 .time {
@@ -20,9 +22,15 @@
   font-weight: 700;
   font-size: 3.6rem;
   line-height: 1;
-  letter-spacing: 0.02em;
+  letter-spacing: 0;
   text-transform: lowercase;
+  white-space: nowrap;
   text-shadow:
     0 0 18px rgba(244, 208, 63, 0.55),
     0 1px 3px rgba(0, 0, 0, 0.9);
+}
+
+.secs {
+  font-size: 0.58em;
+  font-weight: 600;
 }
