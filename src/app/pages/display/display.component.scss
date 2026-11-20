@@ -110,13 +110,8 @@
 
 /* ── Vertical (default for tall / portrait screens) ──────── */
 .mirror[data-orientation='vertical'] {
-  width: min(
-    calc(100vw / var(--display-scale)),
-    calc((100dvh / var(--display-scale)) * 9 / 16)
-  );
-  max-width: calc(1080px / var(--display-scale));
-  border-left: 1px solid rgba(118, 215, 196, 0.08);
-  border-right: 1px solid rgba(118, 215, 196, 0.08);
+  width: calc(100vw / var(--display-scale));
+  max-width: none;
 }
 
 /* Vertical: keep bottom content tidy so nothing clips off the frame */
