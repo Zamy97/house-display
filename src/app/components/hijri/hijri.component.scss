@@ -10,7 +10,7 @@
   border: none;
   box-shadow: none;
   padding: 2px 4px 0;
-  margin: 0;
+  margin: 0 0 10px;
   text-align: right;
   width: 100%;
   max-width: none;
@@ -18,7 +18,12 @@
 }
 
 .value {
-  color: var(--gold);
-  font-size: 1rem;
-  letter-spacing: 0.04em;
+  color: #fff;
+  font-size: 1.65rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  line-height: 1.15;
+  text-shadow:
+    0 0 18px rgba(244, 208, 63, 0.55),
+    0 1px 3px rgba(0, 0, 0, 0.9);
 }

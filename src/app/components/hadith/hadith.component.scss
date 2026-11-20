@@ -1,6 +1,14 @@
-.panel {
-  border-top: 1px solid rgba(118, 215, 196, 0.15);
+:host {
+  display: block;
+  width: 100%;
   margin-top: 2px;
+  border-top: 1px solid rgba(118, 215, 196, 0.15);
+  border-radius: 0;
+}
+
+.panel {
+  border: none;
+  border-radius: 0;
   padding-top: 4px;
 }
 
