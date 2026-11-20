@@ -108,6 +108,12 @@
   grid-template-columns: repeat(2, max-content);
   column-gap: 14px;
   justify-items: center;
+  margin-bottom: 16px;
+}
+
+.tiles.daily {
+  margin-bottom: 0;
+  row-gap: 14px;
 }
 
 .tile {
