@@ -29,6 +29,11 @@
   white-space: nowrap;
 }
 
+.current .section-title {
+  padding-bottom: 6px;
+  border-bottom: 1px solid rgba(234, 246, 255, 0.22);
+}
+
 .forecast .section-title {
   font-size: 1.35rem;
   letter-spacing: 0.08em;
