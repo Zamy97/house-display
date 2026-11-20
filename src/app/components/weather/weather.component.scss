@@ -20,7 +20,7 @@
 
 .section-title {
   color: var(--accent-2);
-  font-size: 1rem;
+  font-size: 1.25rem;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   margin: 0 0 10px;
@@ -30,7 +30,7 @@
 }
 
 .forecast .section-title {
-  font-size: 1.1rem;
+  font-size: 1.35rem;
   letter-spacing: 0.08em;
   margin-bottom: 8px;
 }
@@ -40,7 +40,7 @@
   justify-content: flex-end;
   gap: 20px;
   color: var(--text-dim);
-  font-size: 1.25rem;
+  font-size: 1.55rem;
   margin: 4px 0 8px;
   line-height: 1.4;
 }
@@ -88,7 +88,7 @@
 
 .feels {
   margin-top: 6px;
-  font-size: 1.25rem;
+  font-size: 1.55rem;
   color: var(--text-dim);
 }
 
@@ -131,20 +131,20 @@
 
 .label {
   color: var(--text-dim);
-  font-size: 1.1rem;
+  font-size: 1.35rem;
   text-transform: uppercase;
   letter-spacing: 0.04em;
 }
 
 .val {
   color: var(--accent);
-  font-size: 1.35rem;
+  font-size: 1.65rem;
   font-weight: 500;
 }
 
 .range {
   color: var(--text-dim);
-  font-size: 1.05rem;
+  font-size: 1.3rem;
   white-space: nowrap;
 }
 
