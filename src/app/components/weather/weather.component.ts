@@ -34,6 +34,10 @@ export class WeatherComponent implements OnChanges, OnDestroy {
     return this.weatherService.iconUrl(icon, size);
   }
 
+  extraIcon(name: 'wind' | 'sunrise' | 'sunset'): string {
+    return this.weatherService.extraIcon(name);
+  }
+
   private load(): void {
     if (!this.config) return;
     this.sub?.unsubscribe();

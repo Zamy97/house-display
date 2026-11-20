@@ -43,6 +43,28 @@ const ORDINALS = [
 
 const DAYS = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
 
+/** OpenWeather icon ids → MMM-OpenWeatherForecast icons/1c filenames. */
+const OPEN_WEATHER_ICON_FILES: Record<string, string> = {
+  '01d': 'clear-day',
+  '01n': 'clear-night',
+  '02d': 'partly-cloudy-day',
+  '02n': 'partly-cloudy-night',
+  '03d': 'cloudy',
+  '03n': 'cloudy',
+  '04d': 'cloudy',
+  '04n': 'cloudy',
+  '09d': 'rain',
+  '09n': 'rain',
+  '10d': 'rain',
+  '10n': 'rain',
+  '11d': 'thunderstorm',
+  '11n': 'thunderstorm',
+  '13d': 'snow',
+  '13n': 'snow',
+  '50d': 'fog',
+  '50n': 'fog',
+};
+
 @Injectable({ providedIn: 'root' })
 export class WeatherService {
   private readonly http = inject(HttpClient);
@@ -75,8 +97,14 @@ export class WeatherService {
     );
   }
 
-  iconUrl(icon: string, size: '2x' | '4x' = '2x'): string {
-    return `https://openweathermap.org/img/wn/${icon}@${size}.png`;
+  /** OpenWeather icon ids mapped to the MMM-OpenWeatherForecast 1c set. */
+  iconUrl(icon: string, _size: '2x' | '4x' = '2x'): string {
+    const file = OPEN_WEATHER_ICON_FILES[icon] ?? 'cloudy';
+    return `/weather-icons/1c/${file}.svg`;
+  }
+
+  extraIcon(name: 'wind' | 'sunrise' | 'sunset'): string {
+    return `/weather-icons/1c/i-${name}.svg`;
   }
 
   private fetchFromFreeApis(qs: string, config: HouseConfig): Observable<WeatherBundle | null> {

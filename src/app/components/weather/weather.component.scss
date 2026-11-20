@@ -55,7 +55,7 @@
 .wi {
   width: 1.4em;
   height: 1.4em;
-  color: var(--accent-2);
+  object-fit: contain;
   flex: 0 0 auto;
 }
 
@@ -71,7 +71,6 @@
   width: 132px;
   height: 132px;
   object-fit: contain;
-  filter: drop-shadow(0 0 10px rgba(118, 215, 196, 0.4));
 }
 
 .hero-temps {
