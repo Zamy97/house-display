@@ -65,6 +65,28 @@ const OPEN_WEATHER_ICON_FILES: Record<string, string> = {
   '50n': 'fog',
 };
 
+/** OpenWeather icon ids → MMM-OpenmapWeather color images for current conditions. */
+const CURRENT_ICON_FILES: Record<string, string> = {
+  '01d': 'sunny',
+  '02d': 'partlysunny',
+  '03d': 'partlycloudy',
+  '04d': 'cloudy',
+  '09d': 'sleet',
+  '10d': 'rain',
+  '11d': 'tstorms',
+  '13d': 'snow',
+  '50d': 'fog',
+  '01n': 'nt_clear',
+  '02n': 'nt_cloudy',
+  '03n': 'nt_mostlycloudy',
+  '04n': 'cloudy',
+  '09n': 'nt_sleet',
+  '10n': 'nt_rain',
+  '11n': 'nt_tstorms',
+  '13n': 'nt_snow',
+  '50n': 'nt-alt-cloudy-windy',
+};
+
 @Injectable({ providedIn: 'root' })
 export class WeatherService {
   private readonly http = inject(HttpClient);
@@ -103,8 +125,14 @@ export class WeatherService {
     return `/weather-icons/1c/${file}.svg`;
   }
 
+  currentIconUrl(icon: string): string {
+    const file = CURRENT_ICON_FILES[icon] ?? 'cloudy';
+    return `/weather-icons/current/${file}.png`;
+  }
+
   extraIcon(name: 'wind' | 'sunrise' | 'sunset'): string {
-    return `/weather-icons/1c/i-${name}.svg`;
+    const file = name === 'wind' ? 'wi-strong-wind' : name === 'sunset' ? 'wi-sunset' : 'wi-sunrise';
+    return `/weather-icons/current/${file}.svg`;
   }
 
   private fetchFromFreeApis(qs: string, config: HouseConfig): Observable<WeatherBundle | null> {

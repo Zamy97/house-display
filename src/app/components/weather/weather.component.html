@@ -13,7 +13,7 @@
         </span>
       </div>
       <div class="hero">
-        <app-skycon class="hero-icon" [code]="w.icon" [label]="w.description" />
+        <img class="hero-icon" [src]="currentIcon(w.icon)" [alt]="w.description" />
         <div class="hero-temps">
           <div class="temp">{{ w.temp | number: '1.0-1' }}°{{ w.unitsLabel }}</div>
           <div class="feels">Feels like {{ w.feelsLike }}°{{ w.unitsLabel }}</div>

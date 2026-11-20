@@ -31,6 +31,10 @@ export class WeatherComponent implements OnChanges, OnDestroy {
     if (this.refreshTimer) clearInterval(this.refreshTimer);
   }
 
+  currentIcon(icon: string): string {
+    return this.weatherService.currentIconUrl(icon);
+  }
+
   extraIcon(name: 'wind' | 'sunrise' | 'sunset'): string {
     return this.weatherService.extraIcon(name);
   }
