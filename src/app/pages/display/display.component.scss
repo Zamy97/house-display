@@ -125,7 +125,8 @@
     overflow: hidden;
   }
 
-  app-hadith .text {
+  app-hadith .text,
+  app-hadith .bangla {
     display: -webkit-box;
     -webkit-line-clamp: 4;
     -webkit-box-orient: vertical;
@@ -366,7 +367,8 @@
     font-size: 0.65rem;
   }
 
-  app-hadith .text {
+  app-hadith .text,
+  app-hadith .bangla {
     font-size: 0.85rem;
     line-height: 1.25;
     display: -webkit-box;

@@ -9,6 +9,9 @@ import { ContentService, HadithItem } from '../../core/services/content.service'
       <h2>Hadith of the Day</h2>
       @if (hadith; as h) {
         <div class="text">{{ h.text }}</div>
+        @if (h.textBn) {
+          <div class="bangla">{{ h.textBn }}</div>
+        }
         @if (h.reference) {
           <div class="ref">{{ h.reference }}</div>
         }

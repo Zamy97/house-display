@@ -17,6 +17,7 @@ export type DuaItem = {
 
 export type HadithItem = {
   text?: string;
+  textBn?: string;
   arabic?: string;
   reference?: string;
   narrator?: string;
