@@ -28,7 +28,7 @@
           @for (h of w.hourly; track h.time) {
             <div class="tile">
               <div class="label">{{ h.time }}</div>
-              <app-skycon [code]="h.icon" [label]="h.description" />
+              <img class="forecast-icon" [src]="forecastIcon(h.icon)" [alt]="h.description" />
               <div class="val">{{ h.temp }}°</div>
             </div>
           }
@@ -39,7 +39,7 @@
           @for (d of w.daily; track d.day) {
             <div class="tile">
               <div class="label">{{ d.day }}</div>
-              <app-skycon [code]="d.icon" [label]="d.description" />
+              <img class="forecast-icon" [src]="forecastIcon(d.icon)" [alt]="d.description" />
               <div class="range">H {{ d.high }}° / L {{ d.low }}°</div>
             </div>
           }

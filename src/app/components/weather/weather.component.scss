@@ -175,11 +175,12 @@
   pointer-events: none;
 }
 
-.tile app-skycon {
+.tile .forecast-icon {
   width: 44px;
   height: 44px;
   display: block;
   margin: 2px auto;
+  object-fit: contain;
 }
 
 .label {
