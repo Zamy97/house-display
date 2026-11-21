@@ -43,7 +43,7 @@ const ORDINALS = [
 
 const DAYS = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
 
-/** OpenWeather icon ids → MMM-OpenWeatherForecast icons/1c filenames. */
+/** OpenWeather icon ids → MMM-OpenWeatherMapForecast animated icons/6fa filenames. */
 const OPEN_WEATHER_ICON_FILES: Record<string, string> = {
   '01d': 'clear-day',
   '01n': 'clear-night',
@@ -119,10 +119,10 @@ export class WeatherService {
     );
   }
 
-  /** OpenWeather icon ids mapped to the MMM-OpenWeatherForecast 1c set. */
+  /** OpenWeather icon ids mapped to the animated 6fa set. */
   iconUrl(icon: string, _size: '2x' | '4x' = '2x'): string {
     const file = OPEN_WEATHER_ICON_FILES[icon] ?? 'cloudy';
-    return `/weather-icons/1c/${file}.svg`;
+    return `/weather-icons/6fa/${file}.svg`;
   }
 
   currentIconUrl(icon: string): string {
