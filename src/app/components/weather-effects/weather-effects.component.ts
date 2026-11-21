@@ -12,6 +12,35 @@ type RainDrop = {
   slant: number;
 };
 
+type SnowFlake = {
+  i: number;
+  left: number;
+  size: number;
+  delay: number;
+  duration: number;
+  jiggleDelay: number;
+  jiggleDuration: number;
+  image: number;
+};
+
+/** Scattered flakes that sway as they fall, same idea as MMM-DynamicWeather snow. */
+function snowFlakes(count: number): SnowFlake[] {
+  return Array.from({ length: count }, (_, i) => {
+    const size = 0.35 + Math.random() * 0.75;
+    const duration = 16 + Math.random() * 18 * (1.15 - size);
+    return {
+      i,
+      left: Math.random() * 110 - 8,
+      size,
+      delay: -Math.random() * duration,
+      duration,
+      jiggleDelay: -Math.random() * 14,
+      jiggleDuration: 9 + Math.random() * 11,
+      image: 1 + Math.floor(Math.random() * 3),
+    };
+  });
+}
+
 /** Scattered streaks, same idea as MMM-DynamicWeather's makeItRain. */
 function rainDrops(count: number): RainDrop[] {
   return Array.from({ length: count }, (_, i) => {
@@ -50,8 +79,25 @@ function rainDrops(count: number): RainDrop[] {
           }
         }
         @if (effect === 'snow') {
-          @for (i of flakes; track i) {
-            <span class="flake" [style.--i]="i">❄</span>
+          @for (f of flakes; track f.i) {
+            <span
+              class="flake"
+              [style.--left]="f.left"
+              [style.--delay]="f.delay + 's'"
+              [style.--dur]="f.duration + 's'"
+            >
+              <span
+                class="jiggle"
+                [style.--size]="f.size"
+                [style.--jdelay]="f.jiggleDelay + 's'"
+                [style.--jdur]="f.jiggleDuration + 's'"
+              >
+                <span
+                  class="crystal"
+                  [style.background-image]="'url(/weather-effects/snow' + f.image + '.png)'"
+                ></span>
+              </span>
+            </span>
           }
         }
         @if (effect === 'clouds' || effect === 'storm') {
@@ -65,5 +111,5 @@ function rainDrops(count: number): RainDrop[] {
 export class WeatherEffectsComponent {
   @Input() effect: WeatherEffect = 'none';
   readonly drops = rainDrops(42);
-  readonly flakes = Array.from({ length: 18 }, (_, i) => i);
+  readonly flakes = snowFlakes(40);
 }

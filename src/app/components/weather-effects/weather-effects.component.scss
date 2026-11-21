@@ -39,12 +39,28 @@
 
 .flake {
   position: absolute;
-  top: -10%;
-  left: calc(5.2% * var(--i));
-  font-size: 0.7rem;
-  color: rgba(234, 246, 255, 0.55);
-  animation: drift 4.5s linear infinite;
-  animation-delay: calc(var(--i) * -0.2s);
+  top: -40px;
+  left: calc(var(--left) * 1%);
+  animation: flake-down linear infinite;
+  animation-delay: var(--delay);
+  animation-duration: var(--dur);
+}
+
+.jiggle {
+  display: block;
+  opacity: var(--size);
+  animation: flake-jiggle linear infinite;
+  animation-delay: var(--jdelay);
+  animation-duration: var(--jdur);
+}
+
+.crystal {
+  display: block;
+  width: 22px;
+  height: 22px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
 }
 
 .fx[data-effect='storm'] .drop {
@@ -61,8 +77,35 @@
   }
 }
 
-@keyframes drift {
+@keyframes flake-down {
+  from {
+    transform: translateY(0);
+  }
   to {
-    transform: translateY(110vh) translateX(18px);
+    transform: translateY(115vh);
+  }
+}
+
+@keyframes flake-jiggle {
+  0% {
+    transform: translateX(0) scale(var(--size));
+  }
+  20% {
+    transform: translateX(8vw) scale(var(--size));
+  }
+  30% {
+    transform: translateX(2vw) scale(var(--size));
+  }
+  50% {
+    transform: translateX(11vw) scale(var(--size));
+  }
+  70% {
+    transform: translateX(-1vw) scale(var(--size));
+  }
+  85% {
+    transform: translateX(6vw) scale(var(--size));
+  }
+  100% {
+    transform: translateX(0) scale(var(--size));
   }
 }
