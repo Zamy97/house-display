@@ -184,11 +184,13 @@
   grid-column: 2;
   grid-row: 1;
   width: auto;
+  height: 100%;
   max-width: 100%;
-  margin: 0;
-  align-self: center;
-  justify-self: stretch;
   max-height: 100%;
+  margin: 0;
+  align-self: end;
+  justify-self: stretch;
+  justify-content: flex-end;
 }
 
 .mirror[data-orientation='horizontal'] ::ng-deep {
