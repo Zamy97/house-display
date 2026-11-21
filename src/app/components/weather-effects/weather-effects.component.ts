@@ -136,6 +136,8 @@ function rainDrops(count: number): RainDrop[] {
         }
         @if (effect === 'storm') {
           <div class="haze"></div>
+          <div class="bolt bolt-1"></div>
+          <div class="bolt bolt-2"></div>
         }
       </div>
     }
