@@ -41,6 +41,28 @@ function snowFlakes(count: number): SnowFlake[] {
   });
 }
 
+type CloudPuff = {
+  i: number;
+  top: number;
+  scale: number;
+  delay: number;
+  duration: number;
+};
+
+/** A few shapes crossing left to right, same idea as MMM-DynamicWeather's makeItCloudy. */
+function cloudPuffs(count: number): CloudPuff[] {
+  return Array.from({ length: count }, (_, i) => {
+    const duration = 20 + Math.random() * 14;
+    return {
+      i,
+      top: 6 + (i * 78) / count + Math.random() * 8,
+      scale: 0.42 + Math.random() * 0.28,
+      delay: -((i + Math.random() * 0.4) / count) * duration,
+      duration,
+    };
+  });
+}
+
 /** Scattered streaks, same idea as MMM-DynamicWeather's makeItRain. */
 function rainDrops(count: number): RainDrop[] {
   return Array.from({ length: count }, (_, i) => {
@@ -100,7 +122,19 @@ function rainDrops(count: number): RainDrop[] {
             </span>
           }
         }
-        @if (effect === 'clouds' || effect === 'storm') {
+        @if (effect === 'clouds') {
+          @for (c of clouds; track c.i) {
+            <span
+              class="cloud-base"
+              [style.--top]="c.top"
+              [style.--delay]="c.delay + 's'"
+              [style.--dur]="c.duration + 's'"
+            >
+              <span class="cloud" [style.--scale]="c.scale"></span>
+            </span>
+          }
+        }
+        @if (effect === 'storm') {
           <div class="haze"></div>
         }
       </div>
@@ -112,4 +146,5 @@ export class WeatherEffectsComponent {
   @Input() effect: WeatherEffect = 'none';
   readonly drops = rainDrops(42);
   readonly flakes = snowFlakes(40);
+  readonly clouds = cloudPuffs(4);
 }
