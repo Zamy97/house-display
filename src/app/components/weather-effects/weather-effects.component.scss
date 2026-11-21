@@ -23,14 +23,18 @@
 
 .drop {
   position: absolute;
-  top: -10%;
-  left: calc(4% * var(--i));
-  width: 1px;
-  height: 14px;
-  background: linear-gradient(180deg, transparent, rgba(160, 210, 255, 0.55));
-  animation: fall 1.1s linear infinite;
-  animation-delay: calc(var(--i) * -0.07s);
-  opacity: 0.55;
+  top: -18%;
+  left: calc(var(--left) * 1%);
+  width: 2px;
+  height: calc(var(--h) * 1px);
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(220, 236, 255, 0.8));
+  border-radius: 2px;
+  opacity: var(--o);
+  animation-name: fall;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-delay: var(--delay);
+  animation-duration: var(--dur);
 }
 
 .flake {
@@ -44,14 +48,16 @@
 }
 
 .fx[data-effect='storm'] .drop {
-  height: 20px;
-  opacity: 0.75;
-  animation-duration: 0.75s;
+  animation-duration: calc(var(--dur) * 0.62);
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(236, 246, 255, 0.95));
 }
 
 @keyframes fall {
+  from {
+    transform: translate3d(0, 0, 0) rotate(var(--slant));
+  }
   to {
-    transform: translateY(110vh);
+    transform: translate3d(var(--drift), 125vh, 0) rotate(var(--slant));
   }
 }
 
