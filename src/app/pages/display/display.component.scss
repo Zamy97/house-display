@@ -143,29 +143,52 @@
 }
 
 /* ── Horizontal (auto when screen is wide) ───────────────── */
+/* Three columns so the center text stays between the side modules. */
 .mirror[data-orientation='horizontal'] {
   width: calc(100vw / var(--display-scale));
   max-width: none;
   padding: 10px 22px 6px;
-  gap: 4px;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  grid-template-rows: minmax(0, 1fr);
+  column-gap: 20px;
+  row-gap: 0;
+  align-items: start;
 }
 
 .mirror[data-orientation='horizontal'] .region.top {
-  gap: 16px 28px;
+  display: contents;
 }
 
 .mirror[data-orientation='horizontal'] .region.top-left {
   --card-width: 260px;
+  grid-column: 1;
+  grid-row: 1;
   width: 260px;
   flex-basis: 260px;
+  align-self: start;
+  max-height: 100%;
 }
 
 .mirror[data-orientation='horizontal'] .region.top-right {
+  grid-column: 3;
+  grid-row: 1;
   max-width: 560px;
+  margin-left: 0;
+  align-self: start;
+  justify-self: end;
+  max-height: 100%;
 }
 
 .mirror[data-orientation='horizontal'] .region.bottom-bar {
-  width: 90%;
+  grid-column: 2;
+  grid-row: 1;
+  width: auto;
+  max-width: 100%;
+  margin: 0;
+  align-self: center;
+  justify-self: stretch;
+  max-height: 100%;
 }
 
 .mirror[data-orientation='horizontal'] ::ng-deep {
