@@ -52,20 +52,13 @@ After deploy, open the URL → **Settings** (gear) to configure the house. Confi
 
 ## Raspberry Pi kiosk
 
-1. Build (on Mac or Pi): `npm run build`
-2. Copy `dist/house-display/browser` to the Pi (e.g. `~/house-display`)
-3. Serve + Chromium:
+Full steps: **[PI-SETUP.md](./PI-SETUP.md)**. The Pi opens [house-display.vercel.app](https://house-display.vercel.app) full screen on desktop login. Wi-Fi stays on.
 
 ```bash
-# simple static server
-npx --yes serve -s ~/house-display -l 8080 &
-
-# labwc autostart
-# wlr-randr ...
-# chromium --kiosk --incognito --noerrdialogs http://localhost:8080 &
+cd ~/house-display
+chmod +x scripts/pi-kiosk/*.sh
+./scripts/pi-kiosk/install.sh
 ```
-
-Prefer waiting until the port is up before launching Chromium (same pattern as our old kiosk wait script).
 
 ## Module toggles
 
