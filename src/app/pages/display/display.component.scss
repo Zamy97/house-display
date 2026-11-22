@@ -180,49 +180,73 @@
   max-height: 100%;
 }
 
+/* The bar covers the mirror. Lines that fit use the full width under the
+   side modules; lines that do not stay centered between them. */
 .mirror[data-orientation='horizontal'] .region.bottom-bar {
-  grid-column: 2;
-  grid-row: 1;
-  width: auto;
-  height: 100%;
-  max-width: 100%;
-  max-height: 100%;
-  margin: 0;
-  align-self: end;
-  justify-self: stretch;
-  justify-content: flex-end;
-}
-
-/* Wide text under the side modules, only when that block fits there. */
-.mirror[data-orientation='horizontal'][data-bottom-span='full'] {
-  grid-template-rows: auto minmax(0, 1fr);
-}
-
-.mirror[data-orientation='horizontal'][data-bottom-span='full'] .region.top-left,
-.mirror[data-orientation='horizontal'][data-bottom-span='full'] .region.top-right {
-  grid-row: 1;
-  align-self: start;
-  max-height: none;
-}
-
-.mirror[data-orientation='horizontal'][data-bottom-span='full'] .region.bottom-bar {
   grid-column: 1 / -1;
-  grid-row: 2;
+  grid-row: 1;
+  z-index: 1;
   width: 100%;
   height: 100%;
+  max-width: none;
   max-height: 100%;
+  margin: 0;
+  gap: 0;
   align-self: stretch;
+  justify-self: stretch;
   justify-content: flex-end;
+  align-items: stretch;
 }
 
-.mirror[data-orientation='horizontal'][data-bottom-span='full'] .region.bottom-bar ::ng-deep {
+.mirror[data-orientation='horizontal'] .region.bottom-bar ::ng-deep {
+  .mod,
+  app-dua,
+  app-hadith,
+  app-ayah,
   .content-panel,
+  .ayah-panel {
+    display: contents !important;
+  }
+
+  app-hijri,
+  h2,
   .arabic,
   .transliteration,
   .translation,
   .bangla,
-  .text {
-    max-width: none;
+  .text,
+  .repeat,
+  .ref {
+    box-sizing: border-box;
+    width: var(--center-track) !important;
+    max-width: var(--center-track) !important;
+    min-width: 0;
+    margin-left: var(--lane-left) !important;
+    margin-right: auto !important;
+    flex: 0 1 auto;
+    min-height: 0;
+    overflow: hidden;
+    text-align: center;
+  }
+
+  app-hijri {
+    display: block !important;
+    flex: 0 0 auto;
+    overflow: visible;
+  }
+
+  app-hadith h2,
+  app-ayah .arabic {
+    border-top: 1px solid rgba(118, 215, 196, 0.15);
+    padding-top: 4px;
+  }
+
+  .span-full {
+    width: 100% !important;
+    max-width: none !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    flex: 0 0 auto;
   }
 }
 
