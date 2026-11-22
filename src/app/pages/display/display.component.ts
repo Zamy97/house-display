@@ -1,5 +1,9 @@
 import {
+  AfterViewInit,
   Component,
+  ElementRef,
+  NgZone,
+  OnDestroy,
   computed,
   effect,
   HostListener,
@@ -50,10 +54,20 @@ export type ViewOrientation = 'vertical' | 'horizontal';
   templateUrl: './display.component.html',
   styleUrl: './display.component.scss',
 })
-export class DisplayComponent {
+export class DisplayComponent implements AfterViewInit, OnDestroy {
   readonly configService = inject(ConfigService);
   readonly weatherService = inject(WeatherService);
   readonly config = this.configService.config;
+  private readonly host = inject(ElementRef<HTMLElement>);
+  private readonly zone = inject(NgZone);
+
+  /** Full width under the side modules, or the center column when that would cover them. */
+  readonly bottomSpan = signal<'center' | 'full'>('center');
+  private resizeObserver?: ResizeObserver;
+  private declinedFull = false;
+  private lastSide = -1;
+  private lastMirror = -1;
+  private pendingSpan = false;
 
   private readonly screenOrientation = signal<ViewOrientation>(
     this.readScreenOrientation()
@@ -91,9 +105,32 @@ export class DisplayComponent {
 
   constructor() {
     effect(() => {
-      this.config().orientation;
+      this.config();
+      this.viewOrientation();
       this.screenOrientation.set(this.readScreenOrientation());
+      if (this.resizeObserver) this.fitBottomSpan();
     });
+  }
+
+  ngAfterViewInit(): void {
+    const root = this.host.nativeElement;
+    const mirror = root.querySelector('.mirror');
+    this.resizeObserver = new ResizeObserver(() => {
+      this.zone.run(() => this.fitBottomSpan());
+    });
+    for (const el of [
+      mirror,
+      root.querySelector('.region.top-left'),
+      root.querySelector('.region.top-right'),
+      root.querySelector('.region.bottom-bar'),
+    ]) {
+      if (el) this.resizeObserver.observe(el);
+    }
+    this.fitBottomSpan();
+  }
+
+  ngOnDestroy(): void {
+    this.resizeObserver?.disconnect();
   }
 
   @HostListener('window:resize')
@@ -117,5 +154,54 @@ export class DisplayComponent {
 
   private readScreenOrientation(): ViewOrientation {
     return window.innerHeight >= window.innerWidth ? 'vertical' : 'horizontal';
+  }
+
+  private contentHeight(el: HTMLElement | null): number {
+    if (!el) return 0;
+    let total = 0;
+    for (const child of Array.from(el.children) as HTMLElement[]) {
+      total += child.offsetHeight;
+    }
+    return total;
+  }
+
+  /** Stretch the bottom text when it fits under the side modules. */
+  private fitBottomSpan(): void {
+    const root = this.host.nativeElement;
+    const mirror = root.querySelector('.mirror') as HTMLElement | null;
+    const left = root.querySelector('.region.top-left') as HTMLElement | null;
+    const right = root.querySelector('.region.top-right') as HTMLElement | null;
+    const bar = root.querySelector('.region.bottom-bar') as HTMLElement | null;
+    if (!mirror || !bar) return;
+
+    const side = Math.max(this.contentHeight(left), this.contentHeight(right));
+    const mirrorH = mirror.clientHeight;
+    if (side !== this.lastSide || mirrorH !== this.lastMirror) {
+      this.declinedFull = false;
+      this.lastSide = side;
+      this.lastMirror = mirrorH;
+    }
+
+    if (this.viewOrientation() !== 'horizontal') {
+      if (this.bottomSpan() !== 'center') this.bottomSpan.set('center');
+      return;
+    }
+
+    if (this.bottomSpan() === 'full') {
+      const clipped = bar.scrollHeight > bar.clientHeight + 4;
+      if (clipped) {
+        this.declinedFull = true;
+        this.bottomSpan.set('center');
+      }
+      return;
+    }
+
+    if (this.declinedFull || this.pendingSpan) return;
+    this.pendingSpan = true;
+    this.bottomSpan.set('full');
+    requestAnimationFrame(() => {
+      this.pendingSpan = false;
+      this.fitBottomSpan();
+    });
   }
 }
