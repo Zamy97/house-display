@@ -111,7 +111,7 @@ URL="https://house-display.vercel.app/"
 PROFILE_DIR="/home/pi/.config/house-display-kiosk/chromium"
 mkdir -p "$PROFILE_DIR"
 
-# Desktop login and labwc can both start this. Only one browser should open.
+# Only one browser should open if login starts this twice.
 exec 9>"/home/pi/.config/house-display-kiosk/kiosk.lock"
 flock -n 9 || exit 0
 
@@ -158,23 +158,7 @@ X-GNOME-Autostart-enabled=true
 EOF
 ```
 
-### B4. labwc autostart
-
-Current Raspberry Pi OS starts login programs from this file. Add the same script here too. The lock in B2 keeps it from opening a second browser.
-
-```bash
-mkdir -p /home/pi/.config/labwc
-nano /home/pi/.config/labwc/autostart
-```
-
-Add:
-
-```bash
-sleep 3
-/home/pi/bin/house-display-kiosk.sh &
-```
-
-### B5. Configure the house in Settings
+### B4. Configure the house in Settings
 
 Reboot so the browser opens on the screen:
 
@@ -195,7 +179,7 @@ pkill -f house-display-kiosk.sh
 pkill -f house-display-kiosk/chromium
 ```
 
-Reboot brings the display back. To stop that for good, delete `/home/pi/.config/autostart/house-display-kiosk.desktop` and remove the two lines you added to `/home/pi/.config/labwc/autostart`.
+Reboot brings the display back. To stop that for good, delete `/home/pi/.config/autostart/house-display-kiosk.desktop`.
 
 ---
 
@@ -204,7 +188,7 @@ Reboot brings the display back. To stop that for good, delete `/home/pi/.config/
 | What you see | What to do |
 | --- | --- |
 | Username / paths wrong | Run `whoami` and `echo $HOME`. Use that home instead of `/home/pi`. |
-| Black screen / no browser after reboot | Confirm **Desktop Autologin**. Check `/home/pi/.config/autostart/house-display-kiosk.desktop` and `/home/pi/.config/labwc/autostart`. |
+| Black screen / no browser after reboot | Confirm **Desktop Autologin**. Check `/home/pi/.config/autostart/house-display-kiosk.desktop`. If that file is correct and Chromium still does not open, add `/home/pi/bin/house-display-kiosk.sh &` to `/home/pi/.config/labwc/autostart`. Some Pi OS versions start programs from that file instead of the desktop login list. |
 | Browser opens then closes | On the Pi desktop, run `/home/pi/bin/house-display-kiosk.sh` and read the errors. Confirm Chromium is installed. |
 | Blank page | The Pi needs Wi-Fi. Open `https://house-display.vercel.app` in a normal browser first. |
 | Calendar cut off on the left | Settings → Orientation → **Horizontal** for a wide screen. |
