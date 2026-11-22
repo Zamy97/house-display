@@ -33,8 +33,6 @@ export class PrayerComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnChanges(): void {
-    if (!this.config) return;
-    this.rows = this.prayer.getToday(this.config);
     this.refreshCurrent();
   }
 
@@ -43,6 +41,8 @@ export class PrayerComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private refreshCurrent(): void {
+    if (!this.config) return;
+    this.rows = this.prayer.getToday(this.config);
     this.current = this.prayer.getCurrentName(this.rows);
   }
 }
