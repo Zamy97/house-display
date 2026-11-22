@@ -45,19 +45,23 @@ type CloudPuff = {
   i: number;
   top: number;
   scale: number;
+  opacity: number;
   delay: number;
   duration: number;
 };
 
-/** A few shapes crossing left to right, same idea as MMM-DynamicWeather's makeItCloudy. */
+/** Small and large shapes crossing left to right, same idea as MMM-DynamicWeather's makeItCloudy. */
 function cloudPuffs(count: number): CloudPuff[] {
   return Array.from({ length: count }, (_, i) => {
-    const duration = 20 + Math.random() * 14;
+    const big = i % 3 === 0;
+    const scale = big ? 0.92 + Math.random() * 0.42 : 0.28 + Math.random() * 0.26;
+    const duration = big ? 34 + Math.random() * 14 : 18 + Math.random() * 12;
     return {
       i,
-      top: 6 + (i * 78) / count + Math.random() * 8,
-      scale: 0.42 + Math.random() * 0.28,
-      delay: -((i + Math.random() * 0.4) / count) * duration,
+      top: big ? 18 + Math.random() * 55 : 4 + Math.random() * 78,
+      scale,
+      opacity: big ? 0.38 + Math.random() * 0.12 : 0.55 + Math.random() * 0.16,
+      delay: -Math.random() * duration,
       duration,
     };
   });
@@ -130,7 +134,7 @@ function rainDrops(count: number): RainDrop[] {
               [style.--delay]="c.delay + 's'"
               [style.--dur]="c.duration + 's'"
             >
-              <span class="cloud" [style.--scale]="c.scale"></span>
+              <span class="cloud" [style.--scale]="c.scale" [style.--o]="c.opacity"></span>
             </span>
           }
         }
@@ -148,5 +152,5 @@ export class WeatherEffectsComponent {
   @Input() effect: WeatherEffect = 'none';
   readonly drops = rainDrops(42);
   readonly flakes = snowFlakes(40);
-  readonly clouds = cloudPuffs(4);
+  readonly clouds = cloudPuffs(9);
 }

@@ -27,7 +27,7 @@
   border-radius: 100px;
   background: #fff;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
-  opacity: 0.62;
+  opacity: var(--o);
   transform: scale(var(--scale));
   transform-origin: left center;
 }
