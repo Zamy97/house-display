@@ -21,7 +21,7 @@ Official kiosk notes: [How to use a Raspberry Pi in kiosk mode](https://www.rasp
 - Keyboard + mouse for the first setup (can remove later)
 - Wi-Fi
 
-The steps below use the user **pi**, so paths are `/home/pi/...`. That way login still finds the script when `$HOME` is not set.
+The example paths below use `/home/pi`. On the Pi, run `whoami` and `echo $HOME` first. If echo prints a different home, use that path instead of `/home/pi`. Write the real path into the files. Do not leave `$HOME` in them, because login sometimes starts the browser before `$HOME` is set.
 
 ---
 
@@ -87,7 +87,16 @@ chromium --version || chromium-browser --version
 
 Nothing from the repo is installed on the Pi. These steps only tell Chromium to open the site full screen at login.
 
-### B1. Start script
+### B1. Find this Pi's user and home
+
+```bash
+whoami
+echo $HOME
+```
+
+`whoami` prints the user. `echo $HOME` prints the home folder, usually `/home/pi`. Use that printed path everywhere the steps say `/home/pi`.
+
+### B2. Start script
 
 ```bash
 mkdir -p /home/pi/bin
@@ -134,7 +143,7 @@ chmod +x /home/pi/bin/house-display-kiosk.sh
 
 The profile folder is why Settings survive a reboot.
 
-### B2. Autostart on desktop login
+### B3. Autostart on desktop login
 
 ```bash
 mkdir -p /home/pi/.config/autostart
@@ -149,9 +158,9 @@ X-GNOME-Autostart-enabled=true
 EOF
 ```
 
-### B3. labwc autostart
+### B4. labwc autostart
 
-Current Raspberry Pi OS starts login programs from this file. Add the same script here too. The lock in B1 keeps it from opening a second browser.
+Current Raspberry Pi OS starts login programs from this file. Add the same script here too. The lock in B2 keeps it from opening a second browser.
 
 ```bash
 mkdir -p /home/pi/.config/labwc
@@ -165,7 +174,7 @@ sleep 3
 /home/pi/bin/house-display-kiosk.sh &
 ```
 
-### B4. Configure the house in Settings
+### B5. Configure the house in Settings
 
 Reboot so the browser opens on the screen:
 
@@ -194,6 +203,7 @@ Reboot brings the display back. To stop that for good, delete `/home/pi/.config/
 
 | What you see | What to do |
 | --- | --- |
+| Username / paths wrong | Run `whoami` and `echo $HOME`. Use that home instead of `/home/pi`. |
 | Black screen / no browser after reboot | Confirm **Desktop Autologin**. Check `/home/pi/.config/autostart/house-display-kiosk.desktop` and `/home/pi/.config/labwc/autostart`. |
 | Browser opens then closes | On the Pi desktop, run `/home/pi/bin/house-display-kiosk.sh` and read the errors. Confirm Chromium is installed. |
 | Blank page | The Pi needs Wi-Fi. Open `https://house-display.vercel.app` in a normal browser first. |
