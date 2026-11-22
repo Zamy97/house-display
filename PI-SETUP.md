@@ -21,7 +21,7 @@ Official kiosk notes: [How to use a Raspberry Pi in kiosk mode](https://www.rasp
 - Keyboard + mouse for the first setup (can remove later)
 - Wi-Fi
 
-The example paths below use `/home/pi`. On the Pi, run `whoami` and `echo $HOME` first. If echo prints a different home, use that path instead of `/home/pi`. Write the real path into the files. Do not leave `$HOME` in them, because login sometimes starts the browser before `$HOME` is set.
+Run `whoami` and `echo $HOME` on the Pi before Part B. The commands below use that printed home, so settings are saved for the user who actually logs in.
 
 ---
 
@@ -94,13 +94,13 @@ whoami
 echo $HOME
 ```
 
-`whoami` prints the user. `echo $HOME` prints the home folder, usually `/home/pi`. Use that printed path everywhere the steps say `/home/pi`.
+`whoami` prints the user. `echo $HOME` prints the home folder. The later commands use that same path.
 
 ### B2. Start script
 
 ```bash
-mkdir -p /home/pi/bin
-nano /home/pi/bin/house-display-kiosk.sh
+mkdir -p "$(echo $HOME)/bin"
+nano "$(echo $HOME)/bin/house-display-kiosk.sh"
 ```
 
 Paste:
@@ -108,11 +108,18 @@ Paste:
 ```bash
 #!/usr/bin/env bash
 URL="https://house-display.vercel.app/"
-PROFILE_DIR="/home/pi/.config/house-display-kiosk/chromium"
+
+# Login sometimes has no $HOME. Look up the same path echo $HOME prints.
+if [[ -z "${HOME}" || ! -d "${HOME}" ]]; then
+  HOME="$(getent passwd "$(whoami)" | cut -d: -f6)"
+  export HOME
+fi
+
+PROFILE_DIR="$HOME/.config/house-display-kiosk/chromium"
 mkdir -p "$PROFILE_DIR"
 
 # Only one browser should open if login starts this twice.
-exec 9>"/home/pi/.config/house-display-kiosk/kiosk.lock"
+exec 9>"$HOME/.config/house-display-kiosk/kiosk.lock"
 flock -n 9 || exit 0
 
 if command -v chromium >/dev/null 2>&1; then
@@ -138,7 +145,7 @@ done
 ```
 
 ```bash
-chmod +x /home/pi/bin/house-display-kiosk.sh
+chmod +x "$(echo $HOME)/bin/house-display-kiosk.sh"
 ```
 
 The profile folder is why Settings survive a reboot.
@@ -146,17 +153,19 @@ The profile folder is why Settings survive a reboot.
 ### B3. Autostart on desktop login
 
 ```bash
-mkdir -p /home/pi/.config/autostart
-cat > /home/pi/.config/autostart/house-display-kiosk.desktop <<EOF
+mkdir -p "$(echo $HOME)/.config/autostart"
+cat > "$(echo $HOME)/.config/autostart/house-display-kiosk.desktop" <<EOF
 [Desktop Entry]
 Type=Application
 Name=House Display
 Comment=Full-screen house display
-Exec=/home/pi/bin/house-display-kiosk.sh
+Exec=$(echo $HOME)/bin/house-display-kiosk.sh
 Terminal=false
 X-GNOME-Autostart-enabled=true
 EOF
 ```
+
+`echo $HOME` is filled in when you run this, so the saved file contains the real path, such as `/home/pi/bin/house-display-kiosk.sh`.
 
 ### B4. Configure the house in Settings
 
@@ -166,11 +175,13 @@ Reboot so the browser opens on the screen:
 sudo reboot
 ```
 
+Do this in the full-screen kiosk, not in a separate browser window. A normal Chromium window is a different profile, so its settings disappear on reboot.
+
 1. Click the **gear** in the top-right corner.
 2. Set that house’s location, prayer method, and OpenWeather key.
-3. Set **Orientation** to **Horizontal** when the screen is wide. Vertical on a wide screen cuts off the calendar.
-4. Save.
-5. Reboot once more and confirm the same settings come back full screen.
+3. Set **Orientation**. **Horizontal** for a wide screen. **Vertical** is the built-in default, and on a wide screen it cuts off the calendar.
+4. Click **Save & return**.
+5. Reboot once more and confirm the same orientation comes back.
 
 To leave the kiosk and use the desktop, stop the script, then close Chromium:
 
@@ -179,7 +190,11 @@ pkill -f house-display-kiosk.sh
 pkill -f house-display-kiosk/chromium
 ```
 
-Reboot brings the display back. To stop that for good, delete `/home/pi/.config/autostart/house-display-kiosk.desktop`.
+Reboot brings the display back. To stop that for good, delete the desktop file:
+
+```bash
+rm "$(echo $HOME)/.config/autostart/house-display-kiosk.desktop"
+```
 
 ---
 
@@ -187,9 +202,9 @@ Reboot brings the display back. To stop that for good, delete `/home/pi/.config/
 
 | What you see | What to do |
 | --- | --- |
-| Username / paths wrong | Run `whoami` and `echo $HOME`. Use that home instead of `/home/pi`. |
-| Black screen / no browser after reboot | Confirm **Desktop Autologin**. Check `/home/pi/.config/autostart/house-display-kiosk.desktop`. If that file is correct and Chromium still does not open, add `/home/pi/bin/house-display-kiosk.sh &` to `/home/pi/.config/labwc/autostart`. Some Pi OS versions start programs from that file instead of the desktop login list. |
-| Browser opens then closes | On the Pi desktop, run `/home/pi/bin/house-display-kiosk.sh` and read the errors. Confirm Chromium is installed. |
+| Orientation back to the first-visit layout | Settings were saved in a different browser, or the kiosk profile was `/home/pi` for the wrong user. Run `echo $HOME`, update the script, then set Orientation again in the full-screen gear and click **Save & return**. |
+| Black screen / no browser after reboot | Confirm **Desktop Autologin**. Check `$(echo $HOME)/.config/autostart/house-display-kiosk.desktop`. If that file is correct and Chromium still does not open, add the start-script path to `$(echo $HOME)/.config/labwc/autostart`. Some Pi OS versions start programs from that file instead. |
+| Browser opens then closes | On the Pi desktop, run `"$(echo $HOME)/bin/house-display-kiosk.sh"` and read the errors. Confirm Chromium is installed. |
 | Blank page | The Pi needs Wi-Fi. Open `https://house-display.vercel.app` in a normal browser first. |
 | Calendar cut off on the left | Settings → Orientation → **Horizontal** for a wide screen. |
 | Weather says to add an API key | That key is saved per browser. Enter it in Settings on this Pi. |
