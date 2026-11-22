@@ -52,13 +52,7 @@ After deploy, open the URL → **Settings** (gear) to configure the house. Confi
 
 ## Raspberry Pi kiosk
 
-Full steps: **[PI-SETUP.md](./PI-SETUP.md)**. The Pi opens [house-display.vercel.app](https://house-display.vercel.app) full screen on desktop login. Wi-Fi stays on.
-
-```bash
-cd ~/house-display
-chmod +x scripts/pi-kiosk/*.sh
-./scripts/pi-kiosk/install.sh
-```
+Full steps: **[PI-SETUP.md](./PI-SETUP.md)**. On the Pi, Chromium opens [house-display.vercel.app](https://house-display.vercel.app) full screen at desktop login. Nothing from this repo is installed on the Pi. Wi-Fi stays on, and Settings are saved in that browser.
 
 ## Module toggles
 
