@@ -188,7 +188,8 @@ export class DisplayComponent implements AfterViewInit, OnDestroy {
     }
 
     if (this.bottomSpan() === 'full') {
-      const clipped = bar.scrollHeight > bar.clientHeight + 4;
+      // flex-end hides the top (the Islamic date) without growing scrollHeight.
+      const clipped = this.contentHeight(bar) > bar.clientHeight + 4;
       if (clipped) {
         this.declinedFull = true;
         this.bottomSpan.set('center');
