@@ -179,6 +179,14 @@
             </select>
           </label>
           <label class="field">
+            <span class="label">Text size</span>
+            <select [(ngModel)]="draft.content.textScale" name="textScale">
+              @for (opt of textScaleOptions; track opt.value) {
+                <option [ngValue]="opt.value">{{ opt.label }}</option>
+              }
+            </select>
+          </label>
+          <label class="field">
             <span class="label">Hadith</span>
             <select [(ngModel)]="draft.content.hadithRotation" name="hadith">
               <option value="daily">Daily</option>

@@ -3,6 +3,7 @@
     class="mirror"
     [attr.data-orientation]="viewOrientation()"
     [style.--display-scale]="effectiveScale()"
+    [style.--reading-scale]="readingScale()"
   >
     <app-weather-effects [effect]="weatherEffect()" />
     <a class="settings-fab" routerLink="/settings" title="Settings">⚙</a>

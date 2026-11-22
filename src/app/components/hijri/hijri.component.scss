@@ -19,7 +19,7 @@
 
 .value {
   color: #fff;
-  font-size: 1.65rem;
+  font-size: calc(1.65rem * var(--reading-scale, 1));
   font-weight: 600;
   letter-spacing: 0.06em;
   line-height: 1.15;

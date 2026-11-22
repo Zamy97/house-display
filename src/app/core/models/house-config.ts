@@ -69,6 +69,8 @@ export type HouseConfig = {
     duaLanguage: 'en' | 'bn';
     ayahIntervalMs: number;
     hadithRotation: 'daily' | 'random';
+    /** Size of the date, dua, hadith, and ayah. 1 is the normal size. */
+    textScale: number;
   };
 };
 
@@ -148,6 +150,7 @@ export const DEFAULT_HOUSE_CONFIG: HouseConfig = {
     duaLanguage: 'bn',
     ayahIntervalMs: 300000,
     hadithRotation: 'daily',
+    textScale: 1,
   },
 };
 
@@ -181,6 +184,12 @@ export const DISPLAY_SCALE_OPTIONS: { value: number; label: string }[] = [
   { value: 1.4, label: 'TV (default)' },
   { value: 1.6, label: 'Large TV' },
   { value: 1.8, label: 'Extra large' },
+];
+
+export const TEXT_SCALE_OPTIONS: { value: number; label: string }[] = [
+  { value: 1, label: 'Normal' },
+  { value: 1.15, label: 'A bit bigger' },
+  { value: 1.3, label: 'Bigger' },
 ];
 
 export const MODULE_SCALE_OPTIONS: { value: number; label: string }[] = [

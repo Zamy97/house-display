@@ -11,6 +11,7 @@ import {
   MODULE_REGION_LABELS,
   MODULE_REGION_OPTIONS,
   MODULE_SCALE_OPTIONS,
+  TEXT_SCALE_OPTIONS,
   ModuleId,
   ModuleRegion,
   ORIENTATION_LABELS,
@@ -33,6 +34,7 @@ export class SettingsComponent {
   orientationLabels = ORIENTATION_LABELS;
   scaleOptions = DISPLAY_SCALE_OPTIONS;
   moduleScaleOptions = MODULE_SCALE_OPTIONS;
+  textScaleOptions = TEXT_SCALE_OPTIONS;
   regionOptions = MODULE_REGION_OPTIONS;
   regionLabels = MODULE_REGION_LABELS;
   stackTitles: Record<ModuleRegion, string> = {

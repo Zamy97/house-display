@@ -84,6 +84,12 @@ export class DisplayComponent implements AfterViewInit, OnDestroy {
     return wanted;
   });
 
+  /** Date, dua, hadith, and ayah. Display size stays capped on a wide screen. */
+  readonly readingScale = computed(() => {
+    const value = Number(this.config().content?.textScale);
+    return value === 1.15 || value === 1.3 ? value : 1;
+  });
+
   readonly weatherEffect = computed(() => {
     const cfg = this.config();
     if (!cfg.modules.weather || !cfg.weatherEffects) return 'none';

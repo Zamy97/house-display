@@ -50,17 +50,17 @@ type CloudPuff = {
   duration: number;
 };
 
-/** Small and large shapes crossing left to right, same idea as MMM-DynamicWeather's makeItCloudy. */
+/** The same cloud picture as the current-weather icon, small and large, drifting left to right. */
 function cloudPuffs(count: number): CloudPuff[] {
   return Array.from({ length: count }, (_, i) => {
     const big = i % 3 === 0;
-    const scale = big ? 0.92 + Math.random() * 0.42 : 0.28 + Math.random() * 0.26;
-    const duration = big ? 34 + Math.random() * 14 : 18 + Math.random() * 12;
+    const scale = big ? 1.35 + Math.random() * 0.55 : 0.55 + Math.random() * 0.35;
+    const duration = big ? 42 + Math.random() * 18 : 24 + Math.random() * 14;
     return {
       i,
-      top: big ? 18 + Math.random() * 55 : 4 + Math.random() * 78,
+      top: big ? 6 + Math.random() * 58 : 2 + Math.random() * 78,
       scale,
-      opacity: big ? 0.38 + Math.random() * 0.12 : 0.55 + Math.random() * 0.16,
+      opacity: big ? 0.7 + Math.random() * 0.14 : 0.48 + Math.random() * 0.18,
       delay: -Math.random() * duration,
       duration,
     };

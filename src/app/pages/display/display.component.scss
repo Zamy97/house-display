@@ -412,7 +412,7 @@
   }
 
   .hijri-panel .value {
-    font-size: 1.25rem;
+    font-size: calc(1.25rem * var(--reading-scale, 1));
   }
 
   .content-panel {
@@ -421,12 +421,12 @@
 
   app-dua h2,
   app-hadith h2 {
-    font-size: 0.65rem;
+    font-size: calc(0.65rem * var(--reading-scale, 1));
     margin-bottom: 1px;
   }
 
   app-dua .arabic {
-    font-size: 1rem;
+    font-size: calc(1rem * var(--reading-scale, 1));
     line-height: 1.35;
     margin-bottom: 2px;
   }
@@ -434,7 +434,7 @@
   app-dua .transliteration,
   app-dua .translation,
   app-dua .bangla {
-    font-size: 0.8rem;
+    font-size: calc(0.8rem * var(--reading-scale, 1));
     line-height: 1.25;
     margin-bottom: 1px;
     display: -webkit-box;
@@ -446,12 +446,12 @@
   app-dua .repeat,
   app-dua .ref,
   app-hadith .ref {
-    font-size: 0.65rem;
+    font-size: calc(0.65rem * var(--reading-scale, 1));
   }
 
   app-hadith .text,
   app-hadith .bangla {
-    font-size: 0.85rem;
+    font-size: calc(0.85rem * var(--reading-scale, 1));
     line-height: 1.25;
     display: -webkit-box;
     -webkit-line-clamp: 2;
@@ -460,14 +460,14 @@
   }
 
   app-ayah .arabic {
-    font-size: 1.05rem;
+    font-size: calc(1.05rem * var(--reading-scale, 1));
     line-height: 1.3;
     margin-bottom: 2px;
   }
 
   app-ayah .translation,
   app-ayah .bangla {
-    font-size: 0.8rem;
+    font-size: calc(0.8rem * var(--reading-scale, 1));
     line-height: 1.2;
     display: -webkit-box;
     -webkit-line-clamp: 1;
