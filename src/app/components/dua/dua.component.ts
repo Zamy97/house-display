@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy } from '@angular/core';
 import { ContentService, DuaItem } from '../../core/services/content.service';
 
 @Component({
@@ -31,13 +31,28 @@ import { ContentService, DuaItem } from '../../core/services/content.service';
   `,
   styleUrl: './dua.component.scss',
 })
-export class DuaComponent implements OnChanges {
+export class DuaComponent implements OnChanges, OnDestroy {
   @Input() preferBn = false;
   dua: DuaItem | null = null;
+  private timer?: number;
 
   constructor(private readonly content: ContentService) {}
 
   ngOnChanges(): void {
-    this.content.pickDua(this.preferBn).subscribe((d) => (this.dua = d));
+    this.refresh();
+    if (!this.timer) {
+      this.timer = window.setInterval(() => this.refresh(), 60_000);
+    }
+  }
+
+  ngOnDestroy(): void {
+    if (this.timer) window.clearInterval(this.timer);
+  }
+
+  private refresh(): void {
+    this.content.pickDua(this.preferBn).subscribe((d) => {
+      if (d?.id === this.dua?.id) return;
+      this.dua = d;
+    });
   }
 }
