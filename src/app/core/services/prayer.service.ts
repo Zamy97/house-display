@@ -33,7 +33,7 @@ export class PrayerService {
     return config.prayerShowSunrise ? rows : rows.filter((r) => r.name !== 'Sunrise');
   }
 
-  /** Highlight the prayer in progress. After Isha, highlight the next Fajr. */
+  /** Highlight the next prayer. Once a time arrives, move the highlight to the one after it. */
   getCurrentName(rows: PrayerRow[]): string {
     const minutes = new Date().getHours() * 60 + new Date().getMinutes();
     const parsed = rows
@@ -44,11 +44,8 @@ export class PrayerService {
     const isha = parsed.find((row) => row.name === 'Isha');
     if (isha && minutes >= isha.mins) return 'Fajr';
 
-    let current = parsed[0]?.name || '';
-    for (const row of parsed) {
-      if (row.mins <= minutes) current = row.name;
-    }
-    return current;
+    const upcoming = parsed.find((row) => row.mins > minutes);
+    return upcoming?.name || parsed[0]?.name || '';
   }
 
   private parseToMinutes(value: string): number {
