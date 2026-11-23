@@ -122,6 +122,12 @@ export class SettingsComponent {
     void this.router.navigateByUrl('/');
   }
 
+  /** Save, then load the display fresh so a kiosk picks up a new deploy. */
+  reload(): void {
+    this.configService.update(this.draft);
+    window.location.assign('/');
+  }
+
   reset(): void {
     this.configService.reset();
     this.draft = structuredClone(this.configService.config());
