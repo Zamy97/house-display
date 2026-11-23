@@ -41,28 +41,83 @@ function snowFlakes(count: number): SnowFlake[] {
   });
 }
 
+type CloudPiece = {
+  x: number;
+  y: number;
+  sx: number;
+  sy: number;
+  opacity: number;
+  blur: number;
+  sheet: boolean;
+};
+
 type CloudPuff = {
   i: number;
   top: number;
-  scale: number;
-  opacity: number;
   delay: number;
   duration: number;
+  pieces: CloudPiece[];
 };
 
-/** The same cloud picture as the current-weather icon, small and large, drifting left to right. */
+function piece(
+  x: number,
+  y: number,
+  sx: number,
+  sy: number,
+  opacity: number,
+  blur = 0,
+  sheet = false
+): CloudPiece {
+  return { x, y, sx, sy, opacity, blur, sheet };
+}
+
+/** Different outlines from the weather cloud: a puff, a wide bank, a tall pile, a flat sheet. */
+function cloudPieces(style: number): CloudPiece[] {
+  const flip = Math.random() < 0.5 ? -1 : 1;
+  if (style === 0) {
+    const size = 0.38 + Math.random() * 0.28;
+    return [piece(0, 0, flip * size, size * (0.82 + Math.random() * 0.36), 0.5 + Math.random() * 0.22)];
+  }
+  if (style === 1) {
+    const size = 0.62 + Math.random() * 0.22;
+    return [
+      piece(0, 16, flip * size, size * 0.86, 0.62),
+      piece(78, 0, -flip * size * 0.72, size * 0.78, 0.54),
+      piece(148, 24, flip * size * 0.5, size * 0.55, 0.46),
+    ];
+  }
+  if (style === 2) {
+    const size = 0.78 + Math.random() * 0.28;
+    return [
+      piece(8, 34, flip * size, size * 0.92, 0.68),
+      piece(34, 0, -flip * size * 0.58, size * 0.66, 0.58),
+    ];
+  }
+  if (style === 3) {
+    const size = 1.05 + Math.random() * 0.45;
+    return [piece(0, 0, flip * size, size * (0.38 + Math.random() * 0.12), 0.32 + Math.random() * 0.12, 0.6, true)];
+  }
+  if (style === 4) {
+    const size = 0.95 + Math.random() * 0.32;
+    return [
+      piece(0, 12, flip * size, size * 0.96, 0.7),
+      piece(64, -6, -flip * size * 0.38, size * 0.34, 0.52),
+    ];
+  }
+  const size = 0.28 + Math.random() * 0.14;
+  return [piece(0, 0, flip * size * 1.35, size * 0.62, 0.38, 1.2)];
+}
+
 function cloudPuffs(count: number): CloudPuff[] {
   return Array.from({ length: count }, (_, i) => {
-    const big = i % 3 === 0;
-    const scale = big ? 1.35 + Math.random() * 0.55 : 0.55 + Math.random() * 0.35;
-    const duration = big ? 42 + Math.random() * 18 : 24 + Math.random() * 14;
+    const style = i % 6;
+    const duration = style === 0 || style === 5 ? 20 + Math.random() * 12 : 36 + Math.random() * 18;
     return {
       i,
-      top: big ? 6 + Math.random() * 58 : 2 + Math.random() * 78,
-      scale,
-      opacity: big ? 0.7 + Math.random() * 0.14 : 0.48 + Math.random() * 0.18,
+      top: 3 + Math.random() * 74,
       delay: -Math.random() * duration,
       duration,
+      pieces: cloudPieces(style),
     };
   });
 }
@@ -134,7 +189,18 @@ function rainDrops(count: number): RainDrop[] {
               [style.--delay]="c.delay + 's'"
               [style.--dur]="c.duration + 's'"
             >
-              <span class="cloud" [style.--scale]="c.scale" [style.--o]="c.opacity"></span>
+              @for (piece of c.pieces; track $index) {
+                <span
+                  class="cloud"
+                  [class.sheet]="piece.sheet"
+                  [style.--x]="piece.x"
+                  [style.--y]="piece.y"
+                  [style.--sx]="piece.sx"
+                  [style.--sy]="piece.sy"
+                  [style.--o]="piece.opacity"
+                  [style.--blur]="piece.blur"
+                ></span>
+              }
             </span>
           }
         }
@@ -152,5 +218,5 @@ export class WeatherEffectsComponent {
   @Input() effect: WeatherEffect = 'none';
   readonly drops = rainDrops(42);
   readonly flakes = snowFlakes(40);
-  readonly clouds = cloudPuffs(9);
+  readonly clouds = cloudPuffs(8);
 }

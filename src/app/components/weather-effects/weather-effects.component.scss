@@ -20,14 +20,22 @@
 }
 
 .cloud {
-  display: block;
-  width: 220px;
-  height: 151px;
+  position: absolute;
+  left: calc(var(--x) * 1px);
+  top: calc(var(--y) * 1px);
+  width: 175px;
+  height: 120px;
   background: url('/weather-icons/current/cloudy.png') center / contain no-repeat;
   opacity: var(--o);
-  transform: scale(var(--scale));
+  transform: scale(var(--sx), var(--sy));
   transform-origin: center center;
-  filter: drop-shadow(0 10px 14px rgba(0, 0, 0, 0.35));
+  filter: blur(calc(var(--blur) * 1px)) drop-shadow(0 8px 12px rgba(0, 0, 0, 0.28));
+}
+
+.cloud.sheet {
+  width: 240px;
+  height: 86px;
+  background-image: url('/weather-icons/current/fog.png');
 }
 
 .haze {
