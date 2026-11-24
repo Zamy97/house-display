@@ -112,6 +112,28 @@
 .mirror[data-orientation='vertical'] {
   width: calc(100vw / var(--display-scale));
   max-width: none;
+  /* The side columns keep their own height. Extra middle text uses the space left under them. */
+  grid-template-rows: min-content minmax(0, 1fr);
+}
+
+.mirror[data-orientation='vertical'] .region.top,
+.mirror[data-orientation='vertical'] .region.top-left,
+.mirror[data-orientation='vertical'] .region.top-right {
+  min-height: min-content;
+  overflow: visible;
+}
+
+.mirror[data-orientation='vertical'] .region.bottom-bar {
+  width: 100%;
+}
+
+.mirror[data-orientation='vertical'] .region.bottom-bar ::ng-deep .content-panel,
+.mirror[data-orientation='vertical'] .region.bottom-bar ::ng-deep .arabic,
+.mirror[data-orientation='vertical'] .region.bottom-bar ::ng-deep .transliteration,
+.mirror[data-orientation='vertical'] .region.bottom-bar ::ng-deep .translation,
+.mirror[data-orientation='vertical'] .region.bottom-bar ::ng-deep .bangla,
+.mirror[data-orientation='vertical'] .region.bottom-bar ::ng-deep .text {
+  max-width: none;
 }
 
 /* Vertical: keep bottom content tidy so nothing clips off the frame */
@@ -167,7 +189,10 @@
   width: 260px;
   flex-basis: 260px;
   align-self: start;
-  max-height: 100%;
+  position: relative;
+  z-index: 3;
+  overflow: visible;
+  background: #000;
 }
 
 .mirror[data-orientation='horizontal'] .region.top-right {
@@ -177,7 +202,10 @@
   margin-left: 0;
   align-self: start;
   justify-self: end;
-  max-height: 100%;
+  position: relative;
+  z-index: 3;
+  overflow: visible;
+  background: #000;
 }
 
 /* The bar covers the mirror. Lines that fit use the full width under the

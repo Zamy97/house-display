@@ -192,7 +192,7 @@ export class DisplayComponent implements AfterViewInit, OnDestroy {
 
     this.fitting = true;
     try {
-      this.layoutBottomText(mirror, bar, left, right);
+      this.layoutBottomText(bar, left, right);
     } finally {
       this.fitting = false;
     }
@@ -207,14 +207,12 @@ export class DisplayComponent implements AfterViewInit, OnDestroy {
   }
 
   private layoutBottomText(
-    mirror: HTMLElement,
     bar: HTMLElement,
     left: HTMLElement | null,
     right: HTMLElement | null
   ): void {
-    const gap = parseFloat(getComputedStyle(mirror).columnGap) || 0;
-    const leftLane = (left?.offsetWidth ?? 0) + gap;
-    const rightLane = (right?.offsetWidth ?? 0) + gap;
+    const leftLane = (left?.offsetWidth ?? 0) + 12;
+    const rightLane = (right?.offsetWidth ?? 0) + 12;
     const track = Math.max(160, bar.clientWidth - leftLane - rightLane);
     bar.style.setProperty('--lane-left', `${Math.round(leftLane)}px`);
     bar.style.setProperty('--center-track', `${Math.round(track)}px`);
@@ -250,6 +248,26 @@ export class DisplayComponent implements AfterViewInit, OnDestroy {
       start = i;
     }
 
+    this.applyBottomSpan(groups, start);
+    this.keepWideTextBelowSides(groups, start, sideBottom);
+  }
+
+  /** Full-width lines stay under the side modules. A line that would cover them stays in the center. */
+  private keepWideTextBelowSides(
+    groups: HTMLElement[][],
+    start: number,
+    sideBottom: number
+  ): void {
+    for (let guard = 0; guard < groups.length && start < groups.length; guard++) {
+      const first = groups[start]?.[0];
+      if (!first) return;
+      if (first.getBoundingClientRect().top + 1 >= sideBottom) return;
+      start += 1;
+      this.applyBottomSpan(groups, start);
+    }
+  }
+
+  private applyBottomSpan(groups: HTMLElement[][], start: number): void {
     groups.forEach((group, groupIndex) => {
       const wide = groupIndex >= start;
       group.forEach((el) => {
