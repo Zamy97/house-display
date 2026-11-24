@@ -64,6 +64,8 @@ export class DisplayComponent implements AfterViewInit, OnDestroy {
   private resizeObserver?: ResizeObserver;
   private contentObserver?: MutationObserver;
   private fitting = false;
+  private bottomMeasureKey = '';
+  private bottomFullHeight = 0;
 
   private readonly screenOrientation = signal<ViewOrientation>(
     this.readScreenOrientation()
@@ -172,18 +174,14 @@ export class DisplayComponent implements AfterViewInit, OnDestroy {
   }
 
   /**
-   * Each text line stretches under the side modules on its own.
-   * A line that does not fit there stays in the center column, and that
-   * does not pull the lines that do fit back into the center.
+   * On a wide screen the reading text is the row under the side modules.
+   * It stays full width. The type size changes only when that row is too short.
    */
   private fitBottomSpan(): void {
     if (this.fitting) return;
     const root = this.host.nativeElement;
-    const mirror = root.querySelector('.mirror') as HTMLElement | null;
-    const left = root.querySelector('.region.top-left') as HTMLElement | null;
-    const right = root.querySelector('.region.top-right') as HTMLElement | null;
     const bar = root.querySelector('.region.bottom-bar') as HTMLElement | null;
-    if (!mirror || !bar) return;
+    if (!bar) return;
 
     if (this.viewOrientation() !== 'horizontal' || bar.clientHeight < 40) {
       this.resetBottomText(bar);
@@ -192,13 +190,15 @@ export class DisplayComponent implements AfterViewInit, OnDestroy {
 
     this.fitting = true;
     try {
-      this.layoutBottomText(bar, left, right);
+      this.layoutBottomText(bar);
     } finally {
       this.fitting = false;
     }
   }
 
   private resetBottomText(bar: HTMLElement): void {
+    bar.style.removeProperty('--reading-scale');
+    this.bottomMeasureKey = '';
     for (const el of this.bottomLines(bar)) {
       el.classList.remove('span-full');
       el.style.order = '';
@@ -206,78 +206,37 @@ export class DisplayComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  private layoutBottomText(
-    bar: HTMLElement,
-    left: HTMLElement | null,
-    right: HTMLElement | null
-  ): void {
-    const leftLane = (left?.offsetWidth ?? 0) + 12;
-    const rightLane = (right?.offsetWidth ?? 0) + 12;
-    const track = Math.max(160, bar.clientWidth - leftLane - rightLane);
-    bar.style.setProperty('--lane-left', `${Math.round(leftLane)}px`);
-    bar.style.setProperty('--center-track', `${Math.round(track)}px`);
-
-    const groups = this.lineGroups(bar);
-    const heights = groups.map((group) =>
-      group.reduce((sum, el) => sum + this.fullOuterHeight(el), 0)
-    );
-
-    const barRect = bar.getBoundingClientRect();
-    const scale = barRect.height / (bar.clientHeight || 1) || 1;
-    const bottoms = [left, right]
-      .filter((col): col is HTMLElement => !!col)
-      .map((col) => this.columnContentBottom(col));
-    const sideBottom = bottoms.length ? Math.max(...bottoms) : barRect.top;
-    let remaining = Math.max(0, (barRect.bottom - sideBottom) / scale - 8);
-
-    // A suffix of the text, so a line never jumps ahead of the one above it.
-    // The arabic line can stay in the center while the lines under it stretch.
-    let start = groups.length;
-    let used = 0;
-    for (let i = groups.length - 1; i >= 0; i--) {
-      if (this.isHijri(groups[i])) {
-        if (start === i + 1 && used + heights[i] <= remaining + 4) start = i;
-        break;
-      }
-      if (heights[i] <= 4) {
-        start = i;
-        continue;
-      }
-      if (used + heights[i] > remaining + 4) break;
-      used += heights[i];
-      start = i;
+  private layoutBottomText(bar: HTMLElement): void {
+    for (const el of this.bottomLines(bar)) {
+      el.classList.add('span-full');
+      if (el.style.order) el.style.order = '';
+      if (el.style.zoom) el.style.zoom = '';
     }
 
-    this.applyBottomSpan(groups, start);
-    this.keepWideTextBelowSides(groups, start, sideBottom);
-  }
-
-  /** Full-width lines stay under the side modules. A line that would cover them stays in the center. */
-  private keepWideTextBelowSides(
-    groups: HTMLElement[][],
-    start: number,
-    sideBottom: number
-  ): void {
-    for (let guard = 0; guard < groups.length && start < groups.length; guard++) {
-      const first = groups[start]?.[0];
-      if (!first) return;
-      if (first.getBoundingClientRect().top + 1 >= sideBottom) return;
-      start += 1;
-      this.applyBottomSpan(groups, start);
+    const base = this.readingScale();
+    const signature = `${base}|${Math.round(bar.clientWidth)}|${bar.innerText}`;
+    if (signature !== this.bottomMeasureKey) {
+      const previous = bar.style.getPropertyValue('--reading-scale');
+      bar.style.setProperty('--reading-scale', String(base));
+      this.bottomFullHeight = bar.scrollHeight;
+      this.bottomMeasureKey = signature;
+      if (previous) bar.style.setProperty('--reading-scale', previous);
+      else bar.style.removeProperty('--reading-scale');
     }
-  }
 
-  private applyBottomSpan(groups: HTMLElement[][], start: number): void {
-    groups.forEach((group, groupIndex) => {
-      const wide = groupIndex >= start;
-      group.forEach((el) => {
-        el.classList.toggle('span-full', wide);
-        if (el.style.order) el.style.order = '';
-        const mod = el.closest('.mod') as HTMLElement | null;
-        const zoom = mod?.style.zoom && mod.style.zoom !== '1' ? mod.style.zoom : '';
-        if (el.style.zoom !== zoom) el.style.zoom = zoom;
-      });
-    });
+    const available = bar.clientHeight;
+    const full = this.bottomFullHeight || available;
+    const fit = full > available + 1 ? available / full : 1;
+    if (fit >= 0.995) {
+      if (bar.style.getPropertyValue('--reading-scale')) {
+        bar.style.removeProperty('--reading-scale');
+      }
+      return;
+    }
+    const next = String(Math.round(base * fit * 1000) / 1000);
+    if (bar.style.getPropertyValue('--reading-scale') !== next) {
+      bar.style.setProperty('--reading-scale', next);
+    }
   }
 
   private bottomLines(bar: HTMLElement): HTMLElement[] {
@@ -351,35 +310,5 @@ export class DisplayComponent implements AfterViewInit, OnDestroy {
       if (group.length) groups.push(group);
     }
     return groups;
-  }
-
-  private isHijri(group: HTMLElement[]): boolean {
-    return group[0]?.tagName === 'APP-HIJRI';
-  }
-
-  /** Bottom of the modules in a side column, not the empty space under them. */
-  private columnContentBottom(column: HTMLElement): number {
-    let bottom = column.getBoundingClientRect().top;
-    for (const child of Array.from(column.children) as HTMLElement[]) {
-      const rect = child.getBoundingClientRect();
-      if (rect.height > 0) bottom = Math.max(bottom, rect.bottom);
-    }
-    return bottom;
-  }
-
-  /** Height of one line at the full bar width, including its margin. */
-  private fullOuterHeight(el: HTMLElement): number {
-    const had = el.classList.contains('span-full');
-    const prevFlex = el.style.flex;
-    el.classList.add('span-full');
-    el.style.flex = '0 0 auto';
-    const styles = getComputedStyle(el);
-    const height =
-      el.offsetHeight +
-      (parseFloat(styles.marginTop) || 0) +
-      (parseFloat(styles.marginBottom) || 0);
-    el.style.flex = prevFlex;
-    if (!had) el.classList.remove('span-full');
-    return height;
   }
 }

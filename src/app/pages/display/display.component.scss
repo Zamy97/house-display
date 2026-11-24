@@ -120,7 +120,7 @@
 .mirror[data-orientation='vertical'] .region.top-left,
 .mirror[data-orientation='vertical'] .region.top-right {
   min-height: min-content;
-  overflow: visible;
+  overflow: hidden;
 }
 
 .mirror[data-orientation='vertical'] .region.bottom-bar {
@@ -165,16 +165,16 @@
 }
 
 /* ── Horizontal (auto when screen is wide) ───────────────── */
-/* Three columns so the center text stays between the side modules. */
+/* Side modules stay on the top row. Reading text is the full-width row under them. */
 .mirror[data-orientation='horizontal'] {
   width: calc(100vw / var(--display-scale));
   max-width: none;
   padding: 10px 22px 6px;
   display: grid;
   grid-template-columns: auto minmax(0, 1fr) auto;
-  grid-template-rows: minmax(0, 1fr);
+  grid-template-rows: auto minmax(0, 1fr);
   column-gap: 20px;
-  row-gap: 0;
+  row-gap: 8px;
   align-items: start;
 }
 
@@ -190,7 +190,7 @@
   flex-basis: 260px;
   align-self: start;
   position: relative;
-  z-index: 3;
+  z-index: 1;
   overflow: visible;
   background: #000;
 }
@@ -203,27 +203,28 @@
   align-self: start;
   justify-self: end;
   position: relative;
-  z-index: 3;
+  z-index: 1;
   overflow: visible;
   background: #000;
 }
 
-/* The bar covers the mirror. Lines that fit use the full width under the
-   side modules; lines that do not stay centered between them. */
+/* The reading text is the row under both side columns, full width. */
 .mirror[data-orientation='horizontal'] .region.bottom-bar {
   grid-column: 1 / -1;
-  grid-row: 1;
+  grid-row: 2;
   z-index: 1;
   width: 100%;
-  height: 100%;
+  height: auto;
   max-width: none;
   max-height: 100%;
   margin: 0;
   gap: 0;
   align-self: stretch;
   justify-self: stretch;
-  justify-content: flex-end;
+  justify-content: flex-start;
   align-items: stretch;
+  min-height: 0;
+  overflow: hidden;
 }
 
 .mirror[data-orientation='horizontal'] .region.bottom-bar ::ng-deep {
@@ -246,11 +247,11 @@
   .repeat,
   .ref {
     box-sizing: border-box;
-    width: var(--center-track) !important;
-    max-width: var(--center-track) !important;
+    width: 100% !important;
+    max-width: none !important;
     min-width: 0;
-    margin-left: var(--lane-left) !important;
-    margin-right: auto !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
     flex: 0 1 auto;
     min-height: 0;
     overflow: hidden;
