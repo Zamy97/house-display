@@ -249,7 +249,6 @@ export class DisplayComponent implements AfterViewInit, OnDestroy {
           'app-hijri',
           'app-dua h2',
           'app-dua .arabic',
-          'app-dua .transliteration',
           'app-dua .translation',
           'app-dua .bangla',
           'app-dua .repeat',
