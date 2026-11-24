@@ -20,12 +20,6 @@ import { ContentService, DuaItem } from '../../core/services/content.service';
         @if (preferBn && d.textBn) {
           <div class="bangla">{{ d.textBn }}</div>
         }
-        @if (d.repeat && d.repeat > 1) {
-          <div class="repeat">Repeat {{ d.repeat }}x</div>
-        }
-        @if (d.reference) {
-          <div class="ref">{{ d.reference }}</div>
-        }
       }
     </section>
   `,

@@ -65,7 +65,6 @@ export class DisplayComponent implements AfterViewInit, OnDestroy {
   private contentObserver?: MutationObserver;
   private fitting = false;
   private bottomMeasureKey = '';
-  private bottomFullHeight = 0;
 
   private readonly screenOrientation = signal<ViewOrientation>(
     this.readScreenOrientation()
@@ -183,8 +182,9 @@ export class DisplayComponent implements AfterViewInit, OnDestroy {
     const bar = root.querySelector('.region.bottom-bar') as HTMLElement | null;
     if (!bar) return;
 
-    if (this.viewOrientation() !== 'horizontal' || bar.clientHeight < 40) {
+    if (bar.clientHeight < 40) {
       this.resetBottomText(bar);
+      this.setReadingScale(bar, this.readingScale() * 0.9);
       return;
     }
 
@@ -213,27 +213,25 @@ export class DisplayComponent implements AfterViewInit, OnDestroy {
       if (el.style.zoom) el.style.zoom = '';
     }
 
-    const base = this.readingScale();
-    const signature = `${base}|${Math.round(bar.clientWidth)}|${bar.innerText}`;
-    if (signature !== this.bottomMeasureKey) {
-      const previous = bar.style.getPropertyValue('--reading-scale');
-      bar.style.setProperty('--reading-scale', String(base));
-      this.bottomFullHeight = bar.scrollHeight;
-      this.bottomMeasureKey = signature;
-      if (previous) bar.style.setProperty('--reading-scale', previous);
-      else bar.style.removeProperty('--reading-scale');
-    }
-
+    const base = this.readingScale() * 0.9;
     const available = bar.clientHeight;
-    const full = this.bottomFullHeight || available;
-    const fit = full > available + 1 ? available / full : 1;
-    if (fit >= 0.995) {
-      if (bar.style.getPropertyValue('--reading-scale')) {
-        bar.style.removeProperty('--reading-scale');
-      }
-      return;
+    const key = `${Math.round(bar.clientWidth)}|${bar.innerText}`;
+    if (key !== this.bottomMeasureKey) {
+      this.bottomMeasureKey = key;
+      this.setReadingScale(bar, base);
     }
-    const next = String(Math.round(base * fit * 1000) / 1000);
+    const rendered = bar.scrollHeight;
+    const applied = parseFloat(bar.style.getPropertyValue('--reading-scale')) || base;
+    let next = applied;
+    if (rendered > available + 1) {
+      next = applied * ((available - 8) / rendered);
+    }
+    next = Math.min(base, Math.max(0.68, next));
+    this.setReadingScale(bar, next);
+  }
+
+  private setReadingScale(bar: HTMLElement, scale: number): void {
+    const next = String(Math.round(scale * 1000) / 1000);
     if (bar.style.getPropertyValue('--reading-scale') !== next) {
       bar.style.setProperty('--reading-scale', next);
     }
@@ -259,7 +257,6 @@ export class DisplayComponent implements AfterViewInit, OnDestroy {
           'app-hadith h2',
           'app-hadith .text',
           'app-hadith .bangla',
-          'app-hadith .ref',
           'app-ayah .arabic',
           'app-ayah .translation',
           'app-ayah .bangla',

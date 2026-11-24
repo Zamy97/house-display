@@ -6,14 +6,16 @@ import { ContentService, HadithItem } from '../../core/services/content.service'
   standalone: true,
   template: `
     <section class="panel content-panel">
-      <h2>Hadith of the Day</h2>
       @if (hadith; as h) {
+        <h2>
+          <span class="title">Hadith of the Day</span>
+          @if (h.reference) {
+            <span class="ref">{{ h.reference }}</span>
+          }
+        </h2>
         <div class="text">{{ h.text }}</div>
         @if (h.textBn) {
           <div class="bangla">{{ h.textBn }}</div>
-        }
-        @if (h.reference) {
-          <div class="ref">{{ h.reference }}</div>
         }
       }
     </section>
