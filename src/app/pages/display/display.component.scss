@@ -86,17 +86,29 @@
   margin-left: auto;
 }
 
-/* The forecast drops to the left column's bottom. The left column is unchanged. */
+/* The forecast stays at the left column's bottom. The temperature sits halfway between the two rules. */
 .region.top-right .mod,
 .region.top-right app-weather,
 .region.top-right ::ng-deep .weather-stack {
   flex: 1 1 auto;
   display: flex;
   flex-direction: column;
+  min-height: 0;
 }
 
-.region.top-right ::ng-deep .forecast {
+.region.top-right ::ng-deep .current {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.region.top-right ::ng-deep .meta {
   margin-top: auto;
+}
+
+.region.top-right ::ng-deep .hero {
+  margin-bottom: auto;
 }
 
 .region.bottom-bar {
@@ -393,12 +405,14 @@
 
   .meta {
     font-size: 1rem;
-    margin: 2px 0 4px;
+    margin-top: auto;
+    margin-bottom: 4px;
     gap: 14px;
   }
 
   .hero {
-    margin: 0 0 4px;
+    margin-top: 0;
+    margin-bottom: auto;
   }
 
   .hero-icon {

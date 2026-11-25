@@ -8,6 +8,10 @@
   width: min(100%, var(--weather-wide));
   margin-left: auto;
   text-align: right;
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
 }
 
 .current,
@@ -16,6 +20,13 @@
   border: none;
   box-shadow: none;
   padding: 0 4px 6px;
+}
+
+.current {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
 }
 
 .section-title {
@@ -48,7 +59,7 @@
   gap: 20px;
   color: var(--text-dim);
   font-size: 1.55rem;
-  margin: 4px 0 8px;
+  margin: auto 0 8px;
   line-height: 1.4;
 }
 
@@ -71,7 +82,7 @@
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  margin: 4px 0 12px;
+  margin: 4px 0 auto;
 }
 
 .hero-icon {
